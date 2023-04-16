@@ -10,11 +10,11 @@ História de Usuário:
 
 #HU 1: Como Usuário Logado, gostaria de logar na plataforma para ter acesso ao sistema.
 
-#HU 2: Como Usuário Logado, gostaria de consultar o extrato da conta para ter melhor controle da conta
+#HU 2: Como Usuário Consultando, gostaria de consultar o extrato da conta para ter melhor controle da conta
 
-#HU 3: Como Usuário Logado, gostaria de visualizar o total de moedas que possuo para saber quanto me resta de saldo
+#HU 3: Como Usuário Consultando, gostaria de visualizar o total de moedas que possuo para saber quanto me resta de saldo
 
-#HU 4: Como Usuário Logado, gostaria de visualizar as transações que realizei para ter um histórico disponível
+#HU 4: Como Usuário Consultando, gostaria de visualizar as transações que realizei para ter um histórico disponível
 
 #HU 5: Como Usuário Cadastrado, gostaria de cadastrar na plataforma para ter acesso ao sistema de mérito
 
