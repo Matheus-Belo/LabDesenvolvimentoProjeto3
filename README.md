@@ -26,7 +26,5 @@ História de Usuário:
 
 #HU 9: Como Professor, gostaria de distribuir moedas aos alunos para eles receberem as moedas de merecimento
 
-#HU 10: Como Instituição, gostaria de enviar, no momento da parceria, uma lista de professores da instituição para eles terem acesso ao sistema de méritos
-
-#UH 11: Como Empresa Parceira, gostaria de cadastrar vantagens na plataforma para os alunos terem as opções para compra de vantagens
+#UH 10: Como Empresa Parceira, gostaria de cadastrar vantagens na plataforma para os alunos terem as opções para compra de vantagens
 
