@@ -24,6 +24,41 @@ CREATE TABLE address(
                         CONSTRAINT FK_city_id FOREIGN KEY (city_id) REFERENCES cities(city_id),
                         CONSTRAINT FK_state_id FOREIGN KEY (state_id) REFERENCES states(state_id)
 );
+CREATE SEQUENCE institution_seq;
+CREATE TABLE institution (
+                             institution_id INT DEFAULT NEXTVAL ('institution_seq') PRIMARY KEY,
+                             institution_name VARCHAR (50),
+                             address_id INT NOT NULL,
+                             phone1 VARCHAR(100) NOT NULL,
+                             phone2 VARCHAR(100) NOT NULL,
+                             legal_document VARCHAR(40) NOT NULL,
+                             email VARCHAR(100) NOT NULL unique,
+
+                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                             CONSTRAINT FK_address_id FOREIGN KEY (address_id) REFERENCES address(address_id)
+
+
+);
+
+CREATE SEQUENCE third_party_seq;
+CREATE TABLE third_party (
+                             third_party_id INT DEFAULT NEXTVAL ('third_party_seq') PRIMARY KEY,
+                             third_party_name VARCHAR (50),
+                             address_id INT NOT NULL,
+                             phone1 VARCHAR(100) NOT NULL,
+                             phone2 VARCHAR(100) NOT NULL,
+                             legal_document VARCHAR(40) NOT NULL,
+                             email VARCHAR(100) NOT NULL UNIQUE,
+                             area_of_operation VARCHAR(100) NOT NULL UNIQUE,
+
+                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                             CONSTRAINT FK_address_id FOREIGN KEY (address_id) REFERENCES address(address_id)
+);
+
 
 CREATE SEQUENCE users_seq;
 CREATE TABLE users (
@@ -37,11 +72,17 @@ CREATE TABLE users (
                        birth_date TIMESTAMP(0) NULL DEFAULT NULL,
                        phone1 VARCHAR(100) NOT NULL,
                        phone2 VARCHAR(100) NOT NULL,
+                       wallet MONEY,
+                       institution_id INT,
+                       third_party_id INT,
+
 
                        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                        deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
 
-                       CONSTRAINT FK_address_id FOREIGN KEY (address_id) REFERENCES address(address_id)
+                       CONSTRAINT FK_address_id FOREIGN KEY (address_id) REFERENCES address(address_id),
+                       CONSTRAINT FK_institution_id FOREIGN KEY (institution_id) REFERENCES institution(institution_id),
+                       CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
 
 );
 
@@ -72,6 +113,15 @@ CREATE TABLE roles (
                        deleted_at TIMESTAMP(0) NULL DEFAULT NULL
 );
 
+CREATE SEQUENCE department_roles_seq;
+CREATE TABLE department_roles (
+                       department_roles_id INT DEFAULT NEXTVAL ('department_roles_seq') PRIMARY KEY,
+                       name varchar(45) NOT NULL UNIQUE,
+
+                       created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                       deleted_at TIMESTAMP(0) NULL DEFAULT NULL
+);
+
 
 CREATE SEQUENCE user_roles_seq;
 CREATE TABLE user_roles (
@@ -86,3 +136,110 @@ CREATE TABLE user_roles (
                     CONSTRAINT FK_role_id FOREIGN KEY (role_id) REFERENCES roles(roles_id)
 );
 
+
+CREATE SEQUENCE teacher_seq;
+CREATE TABLE teacher (
+                            teachers_id INT DEFAULT NEXTVAL ('teacher_seq') PRIMARY KEY,
+                            institution_id INT CHECK (institution_id > 0) NOT NULL,
+                            teacher_name VARCHAR(250),
+                            user_id INT CHECK (user_id > 0) NOT NULL,
+
+                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            CONSTRAINT FK_institution_id FOREIGN KEY (institution_id) REFERENCES institution(institution_id),
+                            CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
+
+
+);
+
+
+
+CREATE SEQUENCE department_seq;
+CREATE TABLE department (
+                            department_id INT DEFAULT NEXTVAL ('department_seq') PRIMARY KEY,
+                            institution_id INT CHECK (institution_id > 0) NOT NULL,
+                            department_name VARCHAR (50),
+
+
+                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            CONSTRAINT FK_institution_id FOREIGN KEY (institution_id) REFERENCES institution(institution_id)
+
+);
+
+CREATE SEQUENCE user_department_seq;
+CREATE TABLE user_department (
+
+                        user_department_id INT DEFAULT NEXTVAL ('user_department_seq') PRIMARY KEY,
+                        department_roles_id INT CHECK (department_roles_id > 0) NOT NULL,
+                        user_id INT CHECK (user_id > 0) NOT NULL,
+                        department_id INT CHECK (department_id > 0) NOT NULL,
+
+                        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                        deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                        CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),
+                        CONSTRAINT FK_department_id FOREIGN KEY (department_id) REFERENCES department(department_id),
+                        CONSTRAINT FK_department_roles_id FOREIGN KEY (department_roles_id) REFERENCES department_roles(department_roles_id)
+
+);
+
+CREATE SEQUENCE transactions_seq;
+CREATE TABLE transactions (
+                            transaction_id INT DEFAULT NEXTVAL ('transactions_seq') PRIMARY KEY,
+                            origin_account_id INT CHECK (origin_account_id > 0) NOT NULL,
+                            destination_account_id INT CHECK (destination_account_id > 0) NOT NULL,
+                            transaction_type VARCHAR (50),
+                            description VARCHAR (250),
+                            transaction_date TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            CONSTRAINT FK_origin_account_id FOREIGN KEY (origin_account_id) REFERENCES users(user_id),
+                            CONSTRAINT FK_destination_account_id FOREIGN KEY (destination_account_id) REFERENCES users(user_id)
+);
+
+
+CREATE SEQUENCE advantages_seq;
+CREATE TABLE advantages (
+                             advantages_id INT DEFAULT NEXTVAL ('advantages_seq') PRIMARY KEY,
+                             advantage_name VARCHAR (50),
+                             advantage_description VARCHAR(100) NOT NULL,
+                             price MONEY,
+                             validation_date TIMESTAMP,
+
+                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL
+
+);
+CREATE SEQUENCE advantages_images_seq;
+CREATE TABLE advantages_images (
+                            advantages_images_id INT DEFAULT NEXTVAL ('advantages_images_seq') PRIMARY KEY,
+                            advantages_id INT CHECK (advantages_id > 0) NOT NULL,
+                            advantage_image_name VARCHAR (50),
+                            advantage_image_description VARCHAR(100) NOT NULL,
+                            advantage_image_path VARCHAR(100) NOT NULL,
+
+                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            CONSTRAINT FK_advantages_id  FOREIGN KEY (advantages_id) REFERENCES advantages(advantages_id)
+);
+
+
+CREATE SEQUENCE advantages_thirdParty_seq;
+CREATE TABLE advantages_thirdParty (
+                            advantages_thirdParty_id INT DEFAULT NEXTVAL ('advantages_thirdParty_seq') PRIMARY KEY,
+                            advantages_id INT CHECK (advantages_id > 0) NOT NULL,
+                            third_party_id INT CHECK (third_party_id > 0) NOT NULL,
+
+                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            CONSTRAINT FK_advantages_id  FOREIGN KEY (advantages_id) REFERENCES advantages(advantages_id),
+                            CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
+
+);
