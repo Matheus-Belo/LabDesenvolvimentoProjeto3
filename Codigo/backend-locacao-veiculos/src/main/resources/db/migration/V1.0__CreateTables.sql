@@ -73,16 +73,30 @@ CREATE TABLE users (
                        phone1 VARCHAR(100) NOT NULL,
                        phone2 VARCHAR(100) NOT NULL,
                        wallet MONEY,
-                       institution_id INT,
-                       third_party_id INT,
+
 
 
                        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                        deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
 
-                       CONSTRAINT FK_address_id FOREIGN KEY (address_id) REFERENCES address(address_id),
-                       CONSTRAINT FK_institution_id FOREIGN KEY (institution_id) REFERENCES institution(institution_id),
-                       CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
+                       CONSTRAINT FK_address_id FOREIGN KEY (address_id) REFERENCES address(address_id)
+
+);
+
+CREATE SEQUENCE users_relatedEntity_seq;
+CREATE TABLE users_relatedEntity (
+
+                                     users_relatedEntity_id INT DEFAULT NEXTVAL ('users_relatedEntity_seq') PRIMARY KEY,
+                                     user_id INT CHECK (user_id > 0) NOT NULL,
+                                     institution_id INT,
+                                     third_party_id INT,
+
+                                     created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                                     deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                                     CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),
+                                     CONSTRAINT FK_institution_id FOREIGN KEY (institution_id) REFERENCES institution(institution_id),
+                                     CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
 
 );
 
@@ -135,25 +149,6 @@ CREATE TABLE user_roles (
                     CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),
                     CONSTRAINT FK_role_id FOREIGN KEY (role_id) REFERENCES roles(roles_id)
 );
-
-
-CREATE SEQUENCE teacher_seq;
-CREATE TABLE teacher (
-                            teachers_id INT DEFAULT NEXTVAL ('teacher_seq') PRIMARY KEY,
-                            institution_id INT CHECK (institution_id > 0) NOT NULL,
-                            teacher_name VARCHAR(250),
-                            user_id INT CHECK (user_id > 0) NOT NULL,
-
-                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
-                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
-
-                            CONSTRAINT FK_institution_id FOREIGN KEY (institution_id) REFERENCES institution(institution_id),
-                            CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
-
-
-);
-
-
 
 CREATE SEQUENCE department_seq;
 CREATE TABLE department (
