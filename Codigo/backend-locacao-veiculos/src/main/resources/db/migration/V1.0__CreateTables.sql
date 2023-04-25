@@ -189,6 +189,7 @@ CREATE TABLE transactions (
                             transaction_type VARCHAR (50),
                             description VARCHAR (250),
                             transaction_date TIMESTAMP(0) NULL DEFAULT NULL,
+                            amount Money,
 
                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
