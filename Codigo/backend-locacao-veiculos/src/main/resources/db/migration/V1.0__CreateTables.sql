@@ -84,7 +84,7 @@ CREATE TABLE users (
 );
 
 CREATE SEQUENCE users_relatedEntity_seq;
-CREATE TABLE users_relatedEntity (
+CREATE TABLE users_related_entity (
 
                                      users_relatedEntity_id INT DEFAULT NEXTVAL ('users_relatedEntity_seq') PRIMARY KEY,
                                      user_id INT CHECK (user_id > 0) NOT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE advantages_images (
 
 
 CREATE SEQUENCE advantages_thirdParty_seq;
-CREATE TABLE advantages_thirdParty (
+CREATE TABLE advantages_third_party (
                             advantages_thirdParty_id INT DEFAULT NEXTVAL ('advantages_thirdParty_seq') PRIMARY KEY,
                             advantages_id INT CHECK (advantages_id > 0) NOT NULL,
                             third_party_id INT CHECK (third_party_id > 0) NOT NULL,

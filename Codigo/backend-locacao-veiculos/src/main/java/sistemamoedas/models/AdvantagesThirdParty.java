@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Data
 @ToString
-@Table(name = "advantages_thirdParty")
+@Table(name = "advantages_third_party")
 public class AdvantagesThirdParty {
 
     @Id

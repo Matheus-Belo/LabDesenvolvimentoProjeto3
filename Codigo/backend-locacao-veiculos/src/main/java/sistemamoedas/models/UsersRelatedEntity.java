@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Data
 @ToString
-@Table(name = "users_relatedEntity")
+@Table(name = "users_related_entity")
 public class UsersRelatedEntity {
 
     @Id
