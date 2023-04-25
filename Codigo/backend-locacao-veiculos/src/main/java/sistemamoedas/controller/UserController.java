@@ -83,7 +83,7 @@ public class UserController {
 
     }
 
-    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN','FINANCIAL','SELLERS','THIRDPARTY','CLIENT'})")
+    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
     @GetMapping(path = "page/{page}/size/{size}/name/{name}")
     @ResponseBody
     @ApiOperation(value = "Lista usuários por página quantidade")
@@ -104,7 +104,7 @@ public class UserController {
 
     }
 
-    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN','FINANCIAL','SELLERS','THIRDPARTY','CLIENT'})")
+    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
     @GetMapping(path = "getuserbyid/userId/{userId}")
     @ResponseBody
     @ApiOperation(value = "Lista usuários por página quantidade")

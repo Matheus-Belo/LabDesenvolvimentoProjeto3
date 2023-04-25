@@ -58,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// dont authenticate this particular request
 				.authorizeRequests().antMatchers(
 						"/auth/*",
-						           "/user/create"
+						           "/user/create",
+						           "thirdParty/create"
 				).permitAll()
 				.antMatchers("/v2/api-docs", "/swagger-resources/**",
 				"/swagger-ui.html", "/webjars/springfox-swagger-ui/**","/user/create").permitAll()
