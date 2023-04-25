@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJleHAiOjE2ODI0NTgwNTIsImlhdCI6MTY4MjQ0MDA1Mn0.LNHCt7Jre3AT8Ux-zkU4vJyVZnYw_U58-NR55MIdzRUeFqbTWhLXt1YLpLH2iRYkiLKBHEa_bKqqVIadQNp3cg";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJleHAiOjE2ODI0ODQ1NDEsImlhdCI6MTY4MjQ2NjU0MX0.RthoHRyZob6TEV_LG4GY1qlsBBY06f7Ktxw7_AvnCWwuT0XJlx8YjZaUCnvr_cEug-sMymqHct_l-ozZbXNkdQ";
 
 export async function getAllUsers(){
     try{
@@ -12,7 +12,7 @@ export async function getAllUsers(){
 }
 
 export async function createUser(data) {
-    const response = await fetch(`/api/user`, {
+    const response = await fetch(`/api/user/create`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: data})
