@@ -7,7 +7,13 @@ import LayoutSidebar from "./components/Sidebar/Sidebar";
 //import useAuth from "./service/useAuth";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import Users from "./pages/Users"
+import Users from "./pages/CreateUsers"
+import UserTable from "./pages/TabelaUsers";
+import EditUsers from "./pages/EditUser";
+import ThirdPartyTable from "./pages/TabelaThird";
+import EditThirdParty from "./pages/EditThird";
+import ThirdParty from "./pages/CreateThird"
+
 import Dashboard from "./pages/dashboard";
 
 export default function App() {
@@ -24,7 +30,11 @@ export default function App() {
                         <Topbar setIsSidebar={setIsSidebar} />
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
-                            <Route path="/Users" element={<Users />} />
+                            <Route path="/CreateUsers" element={<Users />} />
+                            <Route path="/ListUsers" element={<UserTable />} />
+                            <Route path="/EditUsers" element={<EditUsers />} />
+                            <Route path="/CreateThirdParty" element={<ThirdParty />} />
+                            <Route path="/ListThirdParty" element={<ThirdPartyTable />} />
                         </Routes>
                         
                     </main>

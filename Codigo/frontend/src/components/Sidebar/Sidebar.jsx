@@ -111,12 +111,42 @@ const LayoutSidebar = () => {
           </Box>
 
           <Box>
-          <MenuItem
-            component={<Link to="/Users" />}
-          >
-            Users
-          </MenuItem>
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Usuarios
+            </Typography>
+              <MenuItem
+                component={<Link to="/CreateUsers" />}
+              >
+                Criar Usuarios
+              </MenuItem>
+              <MenuItem
+                component={<Link to="/ListUsers" />}
+              >
+                Tabela Usuarios
+              </MenuItem>
 
+            <Typography
+            variant="h6"
+            color={colors.grey[300]}
+            sx={{ m: "15px 0 5px 20px" }}
+            >
+              Empresas  
+            </Typography>
+
+              <MenuItem
+                component={<Link to="/CreateThirdParty" />}
+              >
+                Criar Empresas
+              </MenuItem>
+              <MenuItem
+                component={<Link to="/ListThirdParty" />}
+              >
+                Tabela Empresas
+              </MenuItem>
           </Box>
         </Menu>
       </Sidebar>

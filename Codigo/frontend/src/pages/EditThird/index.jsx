@@ -6,116 +6,97 @@ import { DataGrid, gridClasses, getGridStringOperators } from "@mui/x-data-grid"
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header/Header";
-import api from "../../services/API/api"
-import { mockDataContacts } from "../../data/mockData";
+import api from "../../services/API/api";
+import DateObject from "react-date-object";
 
-const ODD_OPACITY = 0.2;
-
-const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-  [`& .${gridClasses.row}.even`]: {
-    backgroundColor: theme.palette.grey[200],
-    '&:hover, &.Mui-hovered': {
-      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
-      '@media (hover: none)': {
-        backgroundColor: 'transparent',
-      },
-    },
-    '&.Mui-selected': {
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        ODD_OPACITY + theme.palette.action.selectedOpacity,
-      ),
-      '&:hover, &.Mui-hovered': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          ODD_OPACITY +
-          theme.palette.action.selectedOpacity +
-          theme.palette.action.hoverOpacity,
-        ),
-        // Reset on touch devices, it doesn't add specificity
-        '@media (hover: none)': {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            ODD_OPACITY + theme.palette.action.selectedOpacity,
-          ),
-        },
-      },
-    },
-  },
-}));
-
-
-const Users = () => {
-
-  const columns = [
-    { field: "idUser", headerName: "ID", flex: 0.5 },
-    {
-      field: "name",
-      headerName: "Nome",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "phone1",
-      headerName: "Telefone 1",
-      flex: 1,
-    },
-    {
-      field: "phone2",
-      headerName: "Telefone 2",
-      flex: 1,
-    },
-    {
-      field: "role.name",
-      headerName: "Papel",
-      flex: 1,
-    },
-  ];
-
+const EditUsers = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
-    console.log(values);
+    var role = values.papel
+    var addressID = 0
+
+    if(values.estado === localStorage.getItem("state")){
+        addressID = localStorage.getItem("addresId")
+    }else{
+        addressID = 0
+    }
+
+    const UserBody = {
+        
+      address: {
+        addressId: addressID,
+        city: values.cidade,
+        district: values.bairro,
+        number: values.numero,
+        state: values.estado,
+        street: values.rua,
+        zipCode: values.cep
+      },
+      birthDate: new DateObject(values.ano + "/" + values.mes + "/" + values.dia),
+      email: values.email,
+      idUser: localStorage.getItem("EditUserId"),
+      legalDocument: values.documentoLegal,
+      name: values.nome,
+      password: values.senha,
+      phone1: values.telefone1,
+      phone2: values.telefone2,
+      roles: [
+        role,
+      ],
+      sex: values.sexo,
+    }
+
+    api
+        .post("/user/edit", UserBody)
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log("The request was made but no response was received");
+            console.log(error.request);
+            console.log(error.toJSON());
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+
+    localStorage.removeItem("ano")
+    localStorage.removeItem("dia")
+    localStorage.removeItem("number")
+    localStorage.removeItem("phone1")
+    localStorage.removeItem("phone2")
+    localStorage.removeItem("EditUserId")
+    localStorage.removeItem("district")
+    localStorage.removeItem("legalDocument")
+    localStorage.removeItem("zip")
+    localStorage.removeItem("city")
+    localStorage.removeItem("name")
+    localStorage.removeItem("street")
+    localStorage.removeItem("state")
+    localStorage.removeItem("addressId")
+    localStorage.removeItem("mes")
+    localStorage.removeItem("email")
+    localStorage.removeItem("sex")
+
   };
 
-  const [user, setUser] = useState(''); 
 
-  useEffect(() => {
-    api
-      .get("/user/page/0/size/10")
-      .then((response) => { console.log("sucess")})
-      .catch(function (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log("The request was made but no response was received");
-          console.log(error.request);
-          console.log(error.toJSON());
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
-  }, []);
+  //Pegar os dados para mostrar na Tabela
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="Editar Usuarios" subtitle="Editar um Usuario existente" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -150,6 +131,32 @@ const Users = () => {
                 name="nome"
                 error={!!touched.nome && !!errors.nome}
                 helperText={touched.nome && errors.nome}
+                sx={{ gridColumn: "span 3" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="password"
+                label="Senha"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.senha}
+                name="senha"
+                error={!!touched.senha && !!errors.senha}
+                helperText={touched.senha && errors.senha}
+                sx={{ gridColumn: "span 3" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Documento Legal"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.documentoLegal}
+                name="documentoLegal"
+                error={!!touched.documentoLegal && !!errors.documentoLegal}
+                helperText={touched.documentoLegal && errors.documentoLegal}
                 sx={{ gridColumn: "span 3" }}
               />
               <TextField
@@ -352,52 +359,14 @@ const Users = () => {
 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
+              
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Editar Usuario
               </Button>
             </Box>
           </form>
         )}
       </Formik>
-
-      
-      <Box
-          m="40px 0 0 0"
-          height="70vh"
-          width='95%'
-          sx={{
-            "& .MuiDataGrid-root": {
-              border: "none",
-            },
-            '& .MuiDataGrid-cell': {
-              borderRight: `0px solid black`,
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#CCCCCC",
-              borderBottom: "0.5px solid black",
-            },
-            "& .MuiDataGrid-virtualScroller": {
-              //backgroundColor: ,
-            },
-            "& .MuiDataGrid-footerContainer": {
-              borderTop: `0px solid black`,
-              //backgroundColor: colors.collors.bg,
-            },
-            "& .MuiCheckbox-root": {
-             // color: `${colors.collors.bg} !important`,
-            },
-            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              //color: `${colors.collors.bg} !important`,
-            },
-            boxShadow: 3,
-          }}
-        >
-          <StripedDataGrid
-            rows={mockDataContacts}
-            columns={columns}
-          />
-        </Box>
     </Box>
   );
 };
@@ -427,22 +396,27 @@ const checkoutSchema = yup.object().shape({
   rua: yup.string().required("Requirido"),
   cep: yup.string().required("Requirido"),
   papel: yup.string().required("Requirido"),
+  documentoLegal: yup.string().required("Requirido"),
+  senha: yup.string().required("Requirido"),
 });
+
 const initialValues = {
-  nome: "",
-  papel: "",
-  email: "",
-  telefone1: "",
-  telefone2: "",
-  sexo: "",
-  bairro: "",
-  numero: "",
-  estado: "",
-  rua: "",
-  cep: "",
-  dia: "",
-  mes: "",
-  ano: "2000",
+  nome: localStorage.getItem("name"),
+  senha: "",
+  papel: "TEST",
+  email: localStorage.getItem("email"),
+  telefone1: localStorage.getItem("phone1"),
+  telefone2: localStorage.getItem("phone2"),
+  sexo: localStorage.getItem("sex"),
+  documentoLegal: localStorage.getItem("legalDocument"),
+  bairro: localStorage.getItem("district"),
+  numero: localStorage.getItem("number"),
+  estado: localStorage.getItem("state"),
+  rua: localStorage.getItem("street"),
+  cep: localStorage.getItem("zip"),
+  dia: localStorage.getItem("dia"),
+  mes: localStorage.getItem("mes"),
+  ano: localStorage.getItem("ano"),
 };
 
-export default Users;
+export default EditUsers;
