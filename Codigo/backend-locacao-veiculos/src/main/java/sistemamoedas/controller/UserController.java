@@ -50,7 +50,7 @@ public class UserController {
     }
 
 //    @Secure({RolesEnum.ADMIN})
-    @DeleteMapping(path = "/delete/{email}")
+    @DeleteMapping(path = "/delete/email/{email}")
     @ApiOperation(value = "Desativa usuário existente")
     public ResponseEntity<UserDto> deleteUser(@PathVariable(value="email") final String email){
         return ResponseEntity.ok().body(
@@ -58,7 +58,7 @@ public class UserController {
         );
     }
 
-    @DeleteMapping(path = "/delete")
+    @DeleteMapping(path = "/deleteByPrincipal")
     @ApiOperation(value = "Desativa usuário existente")
     public ResponseEntity<UserDto> deleteLoggedUser(){
         return ResponseEntity.ok().body(

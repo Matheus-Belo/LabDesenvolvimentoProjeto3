@@ -118,7 +118,7 @@ const UserTable = () => {
         e.stopPropagation();
         console.log(row)
         api
-        .post("/user/delete/", row.email)
+        .delete("/user/delete/email/"+row.email)
         .catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
