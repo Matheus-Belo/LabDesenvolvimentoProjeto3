@@ -140,7 +140,7 @@ const UserTable = () => {
     const EditarUser = (e, row) => {
         e.stopPropagation();
         console.log(row)
-        localStorage.setItem("EditUserId", row.idUser)
+        localStorage.setItem("EditThirdPartyID", row.idThirdParty)
         localStorage.setItem("addressId", row.address.addressId)
         localStorage.setItem("city", row.address.city.city)
         localStorage.setItem("district", row.address.district)
@@ -161,7 +161,6 @@ const UserTable = () => {
         localStorage.setItem("name", row.name)
         localStorage.setItem("phone1", row.phone1)
         localStorage.setItem("phone2", row.phone2)
-        localStorage.setItem("sex", row.sex)
         navigate("/EditUsers")
     };
   
@@ -236,7 +235,7 @@ const UserTable = () => {
           <StripedDataGrid           
             rows={tableData}
             columns={columns}
-            getRowId={(row) => row.idUser}
+            getRowId={(row) => row.idThirdParty}
           />
         </Box>
     </Box>

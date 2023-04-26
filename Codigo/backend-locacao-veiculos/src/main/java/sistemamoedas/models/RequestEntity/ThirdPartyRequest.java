@@ -3,6 +3,7 @@ package sistemamoedas.models.RequestEntity;
 import lombok.Data;
 import sistemamoedas.models.Address;
 import sistemamoedas.models.ThirdParty;
+import sistemamoedas.models.dto.AddressDto;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class ThirdPartyRequest {
 
     private String areaOfOperation;
 
-    private Address address;
+    private AddressDto address;
 
     private Date createdAt;
 
@@ -34,7 +35,7 @@ public class ThirdPartyRequest {
     }
 
 
-    public static ThirdParty toThirdPart ( ThirdPartyRequest request){
+    public static ThirdParty toThirdPart ( ThirdPartyRequest request, Address address){
         return new ThirdParty(
                 request.getIdThirdParty()!=null? request.getIdThirdParty() : 0,
                 request.getThirdPartyName(),
@@ -43,7 +44,7 @@ public class ThirdPartyRequest {
                 request.getEmail(),
                 request.getLegalDocument(),
                 request.getAreaOfOperation(),
-                request.getAddress(),
+                address,
                 new Date(),
                 null
 

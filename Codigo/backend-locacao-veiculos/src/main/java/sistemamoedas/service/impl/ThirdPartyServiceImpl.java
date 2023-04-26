@@ -1,16 +1,20 @@
 package sistemamoedas.service.impl;
 
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sistemamoedas.models.*;
 import sistemamoedas.models.RequestEntity.ThirdPartyRequest;
 import sistemamoedas.models.RequestEntity.UserRequest;
 import sistemamoedas.models.ResponseEntity.ThirdPartyResponse;
-import sistemamoedas.models.ThirdParty;
-import sistemamoedas.models.User;
+import sistemamoedas.models.dto.AddressDto;
+import sistemamoedas.repository.AddressRepository;
 import sistemamoedas.repository.ThirdPartyRepository;
+import sistemamoedas.service.CityService;
+import sistemamoedas.service.StateService;
 import sistemamoedas.service.ThirdPartyService;
 
 import javax.persistence.NonUniqueResultException;
@@ -24,9 +28,18 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
     @Autowired
     private ThirdPartyRepository thirdPartyRepository;
 
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
+    private StateService stateService;
+
 
     @Override
-    public ThirdPartyResponse create(ThirdPartyRequest request) {
+    public ThirdPartyResponse create(ThirdPartyRequest request) throws NotFoundException {
 
         Optional<ThirdParty> verifyThirdParty = Optional.ofNullable(
                 this.thirdPartyRepository.findOneByEmailAndDeletedAtIsNull(request.getEmail())
@@ -34,7 +47,14 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
 
         if(!verifyThirdParty.isPresent()) {
 
-            ThirdParty thirdParty = this.thirdPartyRepository.save(ThirdPartyRequest.toThirdPart(request));
+            Cities city = this.cityService.findByCity(request.getAddress().getCity());
+            States state = this.stateService.findByUf(request.getAddress().getState());
+
+            AddressDto addressDto = request.getAddress();
+            Address address = this.addressRepository.save(Address.fromAddressDTO(addressDto, city, state));
+
+
+            ThirdParty thirdParty = this.thirdPartyRepository.save(ThirdPartyRequest.toThirdPart(request,address));
 
             return ThirdPartyResponse.fromThirdParty(thirdParty);
         }else{
@@ -43,15 +63,19 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
     }
 
     @Override
-    public ThirdPartyResponse edit(ThirdPartyRequest request) {
+    public ThirdPartyResponse edit(ThirdPartyRequest request) throws NotFoundException {
         Optional<ThirdParty> verifyThirdParty = Optional.ofNullable(
                 this.thirdPartyRepository.findOneByIdThirdPartyAndDeletedAtIsNull(request.getIdThirdParty())
         );
 
         if(!verifyThirdParty.isPresent()) {
+            Cities city = this.cityService.findByCity(request.getAddress().getCity());
+            States state = this.stateService.findByUf(request.getAddress().getState());
 
+            AddressDto addressDto = request.getAddress();
+            Address address = this.addressRepository.save(Address.fromAddressDTO(addressDto, city, state));
 
-            ThirdParty thirdParty = this.thirdPartyRepository.save(ThirdPartyRequest.toThirdPart(request));
+            ThirdParty thirdParty = this.thirdPartyRepository.save(ThirdPartyRequest.toThirdPart(request,address));
             return ThirdPartyResponse.fromThirdParty(thirdParty);
         }else{
             throw new NonUniqueResultException("Empresa Parceira Inexistentee - Falha ao editar");

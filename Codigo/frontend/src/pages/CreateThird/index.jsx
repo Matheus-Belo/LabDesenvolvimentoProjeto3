@@ -19,17 +19,10 @@ const Users = () => {
     const UserBody = {
       address: {
         addressId: 0,
-        city: {
-            city: cidade,
-            id_city: 0,
-        },
+        city: cidade,
         district: values.bairro,
         number: values.numero,
-        state: {
-            id_state: 0,
-            state: "",
-            uf: estado,
-        },
+        state: estado,
         street: values.rua,
         zipCode: values.cep
       },
