@@ -1,22 +1,24 @@
-import { Box, TextField, Select } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import React, { useEffect, useState } from "react";
 import { alpha, styled } from '@mui/material/styles';
+import MenuItem from '@mui/material/MenuItem';
 import { Field, Formik } from "formik";
 import { DataGrid, gridClasses, getGridStringOperators } from "@mui/x-data-grid";
 import * as yup from "yup";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
-import FormControl from '@mui/material/FormControl';
 
-const Users = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, initialValues } ) => {
+    const isNonMobile = useMediaQuery("(min-width:600px)");
+    console.log(initialValues)
 
+    if(!isFormOpen) return null;
+    else{
+        console.log(initialValues.nome)
   return (
     <>
 
@@ -82,8 +84,7 @@ const Users = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
                 helperText={touched.documentoLegal && errors.documentoLegal}
                 sx={{ gridColumn: "span 3" }}
               />
-
-                <TextField
+              <TextField
                 fullWidth
                 variant="filled"
                 select
@@ -321,11 +322,11 @@ const Users = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-            <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
-                    Cancelar Criação
+                <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
+                    Cancelar Editação
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Criar Usuario
+                    Editar Usuario
               </Button>
             </Box>
           </form>
@@ -334,6 +335,7 @@ const Users = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
       </Collapse>
       </>
   );
+            }
 };
 
 const phoneRegExp =
@@ -365,23 +367,5 @@ const checkoutSchema = yup.object().shape({
   senha: yup.string().required("Requirido"),
 });
 
-const initialValues = {
-  nome: "",
-  senha: "",
-  papel: "",
-  email: "",
-  telefone1: "",
-  telefone2: "",
-  sexo: "",
-  documentoLegal: "",
-  bairro: "",
-  numero: "",
-  estado: "",
-  rua: "",
-  cep: "",
-  dia: "",
-  mes: "",
-  ano: "2000",
-};
 
-export default Users;
+export default EditUsers;

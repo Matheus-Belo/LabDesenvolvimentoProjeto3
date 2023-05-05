@@ -7,7 +7,6 @@ import * as yup from "yup";
 import api from "../../services/API/api";
 import Header from "../../components/Header/Header";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import AuthContext from "../../services/AuthProvider/AuthProvider";
 
 
 
@@ -16,13 +15,15 @@ const Login = () => {
     const colors = ColorTokens(theme.palette.mode);
     const isNonMobile = useMediaQuery("(min-width:600px)");
     let navigate = useNavigate();
-    const { setAuth } = useContext(AuthContext);
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
+    const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
 
+    /** 
     if(localStorage.getItem("token") !== null){
         localStorage.removeItem("token");
     }
+    */
 
     const handleFormSubmit = async (values) => {
         const LoginInfo = {
@@ -47,9 +48,11 @@ const Login = () => {
             }
         });
 
+        setauthenticated(true)
+        localStorage.setItem("authenticated", true);
         localStorage.setItem("token", Info.data.token);
 
-        navigate("/");
+        window.location.reload(true)
     };
 
     return (
@@ -58,11 +61,13 @@ const Login = () => {
                 sx={{
                     boxShadow: "0px 0px 20px 0px rgba(0,0,0,0.75)",
                     textAlign: "center",
+                    width: "100%",
+                    height: "30%",
                     backgroundColor: "#111",
                 }}
                 ml="30%" mt="5%" mr="30%"
             >
-                <Header title="Login" subtitle="Faça o login para poder acessar o sistema" />
+                <Header  title="Login" subtitle="Faça o login para poder acessar o sistema" />
                 <p
                     className={errMsg ? "errmsg" : "offscreen"}
                     aria-live="assertive"

@@ -1,7 +1,7 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Collapse  } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { alpha, styled } from '@mui/material/styles';
-import { Field, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { DataGrid, gridClasses, getGridStringOperators } from "@mui/x-data-grid";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -91,13 +91,19 @@ const RegisterUser = () => {
 
   };
 
-
-  //Pegar os dados para mostrar na Tabela
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const handleFormToggle = () => {
+    setIsFormOpen(!isFormOpen);
+  };
 
   return (
     <Box m="20px">
       <Header title="Editar Usuarios" subtitle="Editar um Usuario existente" />
 
+      <Button onClick={handleFormToggle}>
+        {isFormOpen ? 'Hide form' : 'Show form'}
+      </Button>
+      <Collapse in={isFormOpen}>
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -367,6 +373,7 @@ const RegisterUser = () => {
           </form>
         )}
       </Formik>
+      </Collapse>
     </Box>
   );
 };

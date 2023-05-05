@@ -121,17 +121,12 @@ const LayoutSidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Usuarios
+              Painel Admin
             </Typography>
               <MenuItem
-                component={<Link to="/CreateUsers" />}
+                component={<Link to="/Usuarios" />}
               >
-                Criar Usuarios
-              </MenuItem>
-              <MenuItem
-                component={<Link to="/ListUsers" />}
-              >
-                Tabela Usuarios
+                Usuarios
               </MenuItem>
 
             <Typography

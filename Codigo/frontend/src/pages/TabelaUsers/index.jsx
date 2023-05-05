@@ -12,8 +12,6 @@ import DateObject from "react-date-object";
 
 const ODD_OPACITY = 0.2;
 
-
-
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   [`& .${gridClasses.row}.even`]: {
     backgroundColor: theme.palette.grey[100],
@@ -146,29 +144,6 @@ const UserTable = () => {
     const EditarUser = (e, row) => {
         e.stopPropagation();
         console.log(row)
-        localStorage.setItem("EditUserId", row.idUser)
-        localStorage.setItem("addressId", row.address.addressId)
-        localStorage.setItem("city", row.address.city.city)
-        localStorage.setItem("district", row.address.district)
-        localStorage.setItem("number", row.address.number)
-        localStorage.setItem("state", row.address.state.uf)
-        localStorage.setItem("street", row.address.street)
-        localStorage.setItem("zip", row.address.zipCode)
-
-        var dia = new DateObject(row.birthDate).format("DD")
-        var mes = new DateObject(row.birthDate).format("MM")
-        var ano = new DateObject(row.birthDate).format("YYYY")
-
-        localStorage.setItem("dia", dia)
-        localStorage.setItem("mes", mes)
-        localStorage.setItem("ano", ano)
-        localStorage.setItem("email", row.email)
-        localStorage.setItem("legalDocument", row.legalDocument)
-        localStorage.setItem("name", row.name)
-        localStorage.setItem("phone1", row.phone1)
-        localStorage.setItem("phone2", row.phone2)
-        localStorage.setItem("sex", row.sex)
-        navigate("/EditUsers")
     };
   
     const isNonMobile = useMediaQuery("(min-width:600px)");

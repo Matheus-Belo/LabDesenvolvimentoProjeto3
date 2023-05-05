@@ -19,6 +19,7 @@
     "react-date-object": "^2.1.7",
     "react-date-picker": "^10.0.3",
     "react-dom": "^18.2.0",
+    "react-dropdown-select": "^4.9.3",
     "react-hook-form": "^7.43.9",
     "react-pro-sidebar": "^1.0.0",
     "react-router-dom": "^6.10.0",
