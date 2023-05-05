@@ -10,7 +10,7 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-import Users from "../CreateUsers"
+import Users from "../../components/CreateUser"
 import EditUsers from "../../components/EditUser"
 
 const ODD_OPACITY = 0.2;
@@ -132,8 +132,11 @@ const Userarios = () => {
                 onClick={ (e) => { 
                     if(isCriarOpen){
                         setIsCriarOpen(!isCriarOpen);
+                        handleEditToggle();
                     }else if(isEditOpen){
-                        //trocar os valores no form
+                        if(initialValues.idUser === params.row.idUser){
+                            handleEditToggle();
+                        }
                     }else{
                         handleEditToggle();
                     };
