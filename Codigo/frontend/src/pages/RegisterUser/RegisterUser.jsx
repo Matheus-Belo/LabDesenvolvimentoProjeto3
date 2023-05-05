@@ -9,15 +9,23 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-const Users = () => {
+const RegisterUser = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
     var role = values.papel
+    var addressID = 0
+
+    if(values.estado === localStorage.getItem("state")){
+        addressID = localStorage.getItem("addresId")
+    }else{
+        addressID = 0
+    }
 
     const UserBody = {
+        
       address: {
-        addressId: 0,
+        addressId: addressID,
         city: values.cidade,
         district: values.bairro,
         number: values.numero,
@@ -27,7 +35,7 @@ const Users = () => {
       },
       birthDate: new DateObject(values.ano + "/" + values.mes + "/" + values.dia),
       email: values.email,
-      idUser: 0,
+      idUser: localStorage.getItem("EditUserId"),
       legalDocument: values.documentoLegal,
       name: values.nome,
       password: values.senha,
@@ -40,7 +48,7 @@ const Users = () => {
     }
 
     api
-        .post("/user/create", UserBody)
+        .post("/user/edit", UserBody)
         .catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
@@ -62,6 +70,25 @@ const Users = () => {
           }
           console.log(error.config);
         });
+
+    localStorage.removeItem("ano")
+    localStorage.removeItem("dia")
+    localStorage.removeItem("number")
+    localStorage.removeItem("phone1")
+    localStorage.removeItem("phone2")
+    localStorage.removeItem("EditUserId")
+    localStorage.removeItem("district")
+    localStorage.removeItem("legalDocument")
+    localStorage.removeItem("zip")
+    localStorage.removeItem("city")
+    localStorage.removeItem("name")
+    localStorage.removeItem("street")
+    localStorage.removeItem("state")
+    localStorage.removeItem("addressId")
+    localStorage.removeItem("mes")
+    localStorage.removeItem("email")
+    localStorage.removeItem("sex")
+
   };
 
 
@@ -69,7 +96,7 @@ const Users = () => {
 
   return (
     <Box m="20px">
-      <Header title="Criar Usuario" subtitle="Criar um Usuario Novo" />
+      <Header title="Editar Usuarios" subtitle="Editar um Usuario existente" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -201,7 +228,7 @@ const Users = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="email"
+                type="text"
                 label="Email"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -332,8 +359,9 @@ const Users = () => {
 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
+              
               <Button type="submit" color="secondary" variant="contained">
-                Criar Usuario
+                Editar Usuario
               </Button>
             </Box>
           </form>
@@ -373,22 +401,22 @@ const checkoutSchema = yup.object().shape({
 });
 
 const initialValues = {
-  nome: "",
+  nome: localStorage.getItem("name"),
   senha: "",
-  papel: "",
-  email: "",
-  telefone1: "",
-  telefone2: "",
-  sexo: "",
-  documentoLegal: "",
-  bairro: "",
-  numero: "",
-  estado: "",
-  rua: "",
-  cep: "",
-  dia: "",
-  mes: "",
-  ano: "2000",
+  papel: "TEST",
+  email: localStorage.getItem("email"),
+  telefone1: localStorage.getItem("phone1"),
+  telefone2: localStorage.getItem("phone2"),
+  sexo: localStorage.getItem("sex"),
+  documentoLegal: localStorage.getItem("legalDocument"),
+  bairro: localStorage.getItem("district"),
+  numero: localStorage.getItem("number"),
+  estado: localStorage.getItem("state"),
+  rua: localStorage.getItem("street"),
+  cep: localStorage.getItem("zip"),
+  dia: localStorage.getItem("dia"),
+  mes: localStorage.getItem("mes"),
+  ano: localStorage.getItem("ano"),
 };
 
-export default Users;
+export default RegisterUser;

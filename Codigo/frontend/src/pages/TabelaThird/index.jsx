@@ -158,7 +158,7 @@ const UserTable = () => {
         localStorage.setItem("ano", ano)
         localStorage.setItem("email", row.email)
         localStorage.setItem("legalDocument", row.legalDocument)
-        localStorage.setItem("name", row.name)
+        localStorage.setItem("name", row.thirdPartyName)
         localStorage.setItem("phone1", row.phone1)
         localStorage.setItem("phone2", row.phone2)
         navigate("/EditUsers")
@@ -195,6 +195,7 @@ const UserTable = () => {
         }
         console.log(error.config);
       });
+      
   }, []);
 
   return (

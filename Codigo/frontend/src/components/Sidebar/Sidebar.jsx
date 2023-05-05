@@ -111,6 +111,11 @@ const LayoutSidebar = () => {
           </Box>
 
           <Box>
+            <MenuItem
+                component={<Link to="/" />}
+              >
+                Menu Principal
+              </MenuItem>
             <Typography
               variant="h6"
               color={colors.grey[300]}

@@ -4,9 +4,31 @@ const api = axios.create({
   baseURL: "http://localhost:9999"
 });
 
-const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJleHAiOjE2ODI1Njk1OTAsI" +
-    "mlhdCI6MTY4MjU1MTU5MH0.BBu7RvchIyu0nJlNrp6RHxMe26844fuAB-_ggVP-dlgGRNR_jg3Df_QPRhuJoSRtx29pu_N8TN9J9ERMf0kwSA";
+/** 
+api.interceptors.request.use(async config => {
+  // Declaramos um token manualmente para teste.
+  const token = localStorage.getItem("token");
 
-api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  if (token) {
+    api.defaults.headers.authorization = `Bearer ${token}`;
+  }else{
+    api.defaults.headers.authorization = `'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, GET, OPTIONS',
+    'Access-Control-Request-Method' : '*',
+    'Access-Control-Allow-Headers' : 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    'Content-Type': 'application/JSON'`;
+  }
+
+  return config;
+});
+
+*/
+if(localStorage.getItem("token") != null){
+  api.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("token")}`;
+}else{
+  axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+}
+
 
 export default api;
