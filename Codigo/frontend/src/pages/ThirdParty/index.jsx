@@ -10,8 +10,8 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-import Users from "../../components/CreateUser"
-import EditUsers from "../../components/EditUser"
+import CreateThirdParty from "../../components/CreateThirdParty"
+import EditThirdParty from "../../components/EditThirdParty"
 
 const ODD_OPACITY = 0.2;
 
@@ -49,24 +49,20 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   }));
 
 
-const Usuarios = () => {
+const ThirdParty = () => {
     const[initialValues, setInitialValues] = useState({
-        nome: "",
-        senha: "",
-        papel: "",
-        email: "",
-        telefone1: "",
-        telefone2: "",
-        sexo: "",
-        documentoLegal: "",
-        bairro: "",
-        numero: "",
-        estado: "",
-        rua: "",
-        cep: "",
-        dia: "",
-        mes: "",
-        ano: "2000",
+      nome: "",
+      //senha: "",
+      operacao: "",
+      email: "",
+      telefone1: "",
+      telefone2: "",
+      documentoLegal: "",
+      bairro: "",
+      numero: "",
+      estado: "",
+      rua: "",
+      cep: "",
       });
 
 
@@ -90,11 +86,11 @@ const Usuarios = () => {
 
   const columns = [
     { 
-      field: "idUser", 
+      field: "idThirdParty", 
       headerName: "ID",
     },
     {
-      field: "name",
+      field: "thirdPartyName",
       headerName: "Nome",
       flex: 1,
     },
@@ -116,12 +112,6 @@ const Usuarios = () => {
       flex: 1,
     },
       {
-      field: "legal_document",
-      headerName: "Documento Legal",
-      flex: 1,
-      },
-
-      {
       field: "Edit",
       headerName: "Alterar",
       flex: 1,
@@ -141,24 +131,20 @@ const Usuarios = () => {
                         handleEditToggle();
                     };
                         const newInitialValues = {
-                            idUser: params.row.idUser ,
-                            nome: params.row.name ,
-                            senha: "",
-                            papel: params.row.roles[0].name,
+                            idThirdParty: params.row.idThirdParty ,
+                            nome: params.row.thirdPartyName ,
+                            operacao: params.row.areaOfOperation ,
                             email: params.row.email ,
                             telefone1: params.row.phone1 ,
                             telefone2: params.row.phone2 ,
                             sexo: params.row.sex ,
-                            documentoLegal: params.row.legal_document ,
+                            documentoLegal: params.row.legalDocument ,
                             bairro: params.row.address.district ,
                             cidade: params.row.address.city.city ,
                             numero: params.row.address.number ,
                             estado: params.row.address.state.uf ,
                             rua: params.row.address.street ,
                             cep: params.row.address.zipCode ,
-                            dia: new DateObject(params.row.birthDate).format("DD") ,
-                            mes: new DateObject(params.row.birthDate).format("MM") ,
-                            ano: new DateObject(params.row.birthDate).format("YYYY"),
                         }
                         const rowData = e.row;
                         setInitialValues(newInitialValues);
@@ -194,7 +180,7 @@ const Usuarios = () => {
     e.stopPropagation();
     console.log(row)
     api
-    .delete("/user/delete/email/"+row.email)
+    .delete("/thirdParty/delete/idThirdParty/"+row.idThirdParty)
     .then(() => window.location.reload(false))
     .catch(function (error) {
       if (error.response) {
@@ -232,56 +218,52 @@ const EditarUser = (values) => {
 };
 
 const handleCreateSubmit = (values) => {
-    var role = values.papel
+  var cidade = values.cidade
+  var estado = values.estado
 
-    const UserBody = {
-      address: {
-        addressId: 0,
-        city: values.cidade,
-        district: values.bairro,
-        number: values.numero,
-        state: values.estado,
-        street: values.rua,
-        zipCode: values.cep
-      },
-      birthDate: new DateObject(values.ano + "/" + values.mes + "/" + values.dia),
-      email: values.email,
-      idUser: 0,
-      legalDocument: values.documentoLegal,
-      name: values.nome,
-      password: values.senha,
-      phone1: values.telefone1,
-      phone2: values.telefone2,
-      roles: [
-        role,
-      ],
-      sex: values.sexo,
-    }
+  const UserBody = {
+    address: {
+      addressId: 0,
+      city: cidade,
+      district: values.bairro,
+      number: values.numero,
+      state: estado,
+      street: values.rua,
+      zipCode: values.cep
+    },
+    areaOfOperation: values.operacao,
+    email: values.email,
+    idThirdParty: 0,
+    legalDocument: values.documentoLegal,
+    thirdPartyName: values.nome,
+    phone1: values.telefone1,
+    phone2: values.telefone2,
+  }
 
-    api
-        .post("/user/create", UserBody)
-        .then(() => window.location.reload(false))
-        .catch(function (error) {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log("The request was made but no response was received");
-            console.log(error.request);
-            console.log(error.toJSON());
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
-        });
+  api
+      .post("/thirdParty/create", UserBody)
+      .then(() => window.location.reload(false))
+      .catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log("The request was made but no response was received");
+          console.log(error.request);
+          console.log(error.toJSON());
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      });
         setIsCriarOpen(false);
   };
 
@@ -291,47 +273,48 @@ const isNonMobile = useMediaQuery("(min-width:600px)");
 const [tableData, setTableData] = useState([])
 
 useEffect(() => {
-api
-  .get("/user/page/0/size/10")
-  .then((response) =>  response.data.content)
-  .then((response) => setTableData(response))
-  .catch(function (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-    } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-      // http.ClientRequest in node.js
-      console.log("The request was made but no response was received");
-      console.log(error.request);
-      console.log(error.toJSON());
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      console.log('Error', error.message);
-    }
-    console.log(error.config);
-  });
+  api
+    .get("/thirdParty/page/0/size/10")
+    .then((response) =>  response.data.content)
+    .then((response) => setTableData(response))
+    .catch(function (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log("The request was made but no response was received");
+        console.log(error.request);
+        console.log(error.toJSON());
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
+    
 }, []);
 
 
     return (
-        <Box m="20px">
-            <Header title="Usuários" subtitle="Aqui você pode Criar, Visualizar, Editar ou Deletar Usuários" />
+      <Box m="20px">
+        <Header title="Instituição" subtitle="Aqui está todas as Instituições" />
             <Button variant="outlined" color="success" sx={{ mb: 2 }} size="large" 
                 onClick={() => {
                     if(isEditOpen) setisEditOpen(false);
                     {handleCriarToggle()};
                 }}
             >
-                Criar Usuario
+                Criar Instituição
             </Button>
-            <Users isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
-            <EditUsers isFormOpen = {isEditOpen} handleFormSubmit={EditarUser} valores={userEditParams} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
+            <CreateThirdParty isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
+            <EditThirdParty isFormOpen = {isEditOpen} handleFormSubmit={EditarUser} valores={userEditParams} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
             <Box
                 m="40px 0 0 0"
                 height="70vh"
@@ -368,11 +351,11 @@ api
                 <StripedDataGrid           
                     rows={tableData}
                     columns={columns}
-                    getRowId={(row) => row.idUser}
+                    getRowId={(row) => row.idThirdParty}
                 />
             </Box>
         </Box>
     );
 };
 
-export default Usuarios;
+export default ThirdParty;

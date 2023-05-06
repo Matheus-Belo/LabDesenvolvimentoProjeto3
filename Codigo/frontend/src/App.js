@@ -10,11 +10,11 @@ import { ColorModeContext, useMode } from "./theme";
 import EditUsers from "./pages/EditUser";
 import ThirdPartyTable from "./pages/TabelaThird";
 import EditThirdParty from "./pages/EditThird";
-import ThirdParty from "./pages/CreateThird"
 import Login from "./pages/Login/index"
 import Dashboard from "./pages/dashboard";
 //import PrivateRoute from "./service/PrivateRoute";
 import Usuarios from "./pages/Usuarios";
+import ThirdParty from "./pages/ThirdParty";
 
 export default function App() {
     const [theme, colorMode] = useMode();
@@ -43,7 +43,7 @@ export default function App() {
                                         <Route path="/" element={<Dashboard />} />
                                         <Route path="/Usuarios" element={<Usuarios />} />
                                         <Route path="/Login" element={<Login />} />
-                                        <Route path="/CreateThirdParty" element={<ThirdParty />} />
+                                        <Route path="/ThirdParty" element={<ThirdParty />} />
                                         <Route path="/ListThirdParty" element={<ThirdPartyTable />} />
                                     </Routes>
                                 </main>

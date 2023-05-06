@@ -129,23 +129,10 @@ const LayoutSidebar = () => {
                 Usuarios
               </MenuItem>
 
-            <Typography
-            variant="h6"
-            color={colors.grey[300]}
-            sx={{ m: "15px 0 5px 20px" }}
-            >
-              Empresas  
-            </Typography>
-
               <MenuItem
-                component={<Link to="/CreateThirdParty" />}
+                component={<Link to="/ThirdParty" />}
               >
-                Criar Empresas
-              </MenuItem>
-              <MenuItem
-                component={<Link to="/ListThirdParty" />}
-              >
-                Tabela Empresas
+                Instituições
               </MenuItem>
           </Box>
         </Menu>
