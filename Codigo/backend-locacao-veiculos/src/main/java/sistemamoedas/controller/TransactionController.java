@@ -1,9 +1,5 @@
 package sistemamoedas.controller;
 
-import sistemamoedas.models.RequestEntity.UserRequest;
-import sistemamoedas.models.User;
-import sistemamoedas.models.dto.UserDto;
-import sistemamoedas.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import javassist.NotFoundException;
@@ -14,21 +10,49 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sistemamoedas.models.RequestEntity.UserRequest;
+import sistemamoedas.models.User;
+import sistemamoedas.models.dto.UserDto;
+import sistemamoedas.service.UserService;
 
 import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/transaction")
+public class TransactionController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping(path = "/create")
+    @PostMapping(path = "/createDeposit")
     @ApiOperation(value = "Criar novo usuário")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
-    public ResponseEntity<UserDto> createUser(
+    public ResponseEntity<UserDto> createDeposit(
+            @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
+            @Valid @RequestBody UserRequest request) throws NotFoundException {
+        UserDto userDto = this.userService.create(request);
+        return ResponseEntity.ok().body(
+                userDto
+        );
+    }
+
+    @PostMapping(path = "/createSale")
+    @ApiOperation(value = "Criar novo usuário")
+    //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
+    public ResponseEntity<UserDto> createSale(
+            @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
+            @Valid @RequestBody UserRequest request) throws NotFoundException {
+        UserDto userDto = this.userService.create(request);
+        return ResponseEntity.ok().body(
+                userDto
+        );
+    }
+
+    @PostMapping(path = "/viewExtract")
+    @ApiOperation(value = "Criar novo usuário")
+    //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
+    public ResponseEntity<UserDto> viewExtract(
             @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
             @Valid @RequestBody UserRequest request) throws NotFoundException {
         UserDto userDto = this.userService.create(request);
@@ -38,39 +62,12 @@ public class UserController {
     }
 
 
-    @PostMapping(path = "/edit")
-    @ApiOperation(value = "Editar usuário existente")
-    public ResponseEntity<UserDto> editUser(
-            @ApiParam(value = "Json da requisição que contem o dado a ser editado")
-            @Valid @RequestBody UserRequest request) throws NotFoundException {
-
-        return ResponseEntity.ok().body(
-                this.userService.editUser(request)
-        );
-    }
-
-//    @Secure({RolesEnum.ADMIN})
-    @DeleteMapping(path = "/delete/email/{email}")
-    @ApiOperation(value = "Desativa usuário existente")
-    public ResponseEntity<UserDto> deleteUser(@PathVariable(value="email") final String email){
-        return ResponseEntity.ok().body(
-                this.userService.deleteUser(email)
-        );
-    }
-
-    @DeleteMapping(path = "/deleteByPrincipal")
-    @ApiOperation(value = "Desativa usuário existente")
-    public ResponseEntity<UserDto> deleteLoggedUser(){
-        return ResponseEntity.ok().body(
-                this.userService.deleteLoggedUser()
-        );
-    }
 
 
     @GetMapping(path = "/page/{page}/size/{size}")
     @ResponseBody
     @ApiOperation(value = "Lista usuários por página quantidade")
-    public Page<User> listUsersByPageWithSize(
+    public Page<User> listTransactionsByPageWithSize(
             @ApiParam(value = "Página que deseja visualizar iniciando em 0", example = "0")
             @PathVariable(value="page")
             int page,
@@ -103,23 +100,6 @@ public class UserController {
         return this.userService.listUsersByPageAndName(pages, name);
 
     }
-
-    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
-    @GetMapping(path = "getuserbyid/userId/{userId}")
-    @ResponseBody
-    @ApiOperation(value = "Lista usuários por página quantidade")
-    public ResponseEntity<User> getUserById(
-              @PathVariable(value="userId")
-            Long userId)throws NotFoundException{
-
-        return ResponseEntity.ok().body(
-                this.userService.getUserById(userId)
-        );
-    }
-
-
-
-
 
 
 }
