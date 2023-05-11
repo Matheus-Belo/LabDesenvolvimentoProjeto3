@@ -228,6 +228,66 @@ let handleEditCancel = () => {
 
 const EditarUser = (values) => {
     console.log(values)
+    console.log("email: " + values.email)
+
+    var role = values.papel
+    var addressID = 0
+
+    if(values.estado === localStorage.getItem("state")){
+        addressID = localStorage.getItem("addresId")
+    }else{
+        addressID = 0
+    }
+
+    const UserBody = {
+        
+      address: {
+        addressId: addressID,
+        city: values.cidade,
+        district: values.bairro,
+        number: values.numero,
+        state: values.estado,
+        street: values.rua,
+        zipCode: values.cep
+      },
+      birthDate: new DateObject(values.ano + "/" + values.mes + "/" + values.dia),
+      email: values.email,
+      idUser: values.idUser,
+      legalDocument: values.documentoLegal,
+      name: values.nome,
+      password: values.senha,
+      phone1: values.telefone1,
+      phone2: values.telefone2,
+      roles: [
+        role.name,
+      ],
+      sex: values.sexo,
+    }
+
+    api
+        .post("/user/edit", UserBody)
+        .then(() => window.location.reload(false))
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log("The request was made but no response was received");
+            console.log(error.request);
+            console.log(error.toJSON());
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
     
 };
 

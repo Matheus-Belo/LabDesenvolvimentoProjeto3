@@ -322,10 +322,10 @@ const Users = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
-                    Cancelar Criação
+                    Cancelar
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Criar Usuario
+                Criar Novo Usuario
               </Button>
             </Box>
           </form>

@@ -12,7 +12,7 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, initialValues } ) => {
+const EditThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel, initialValues } ) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
     console.log(initialValues)
 
@@ -236,10 +236,10 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
                 <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
-                    Cancelar Editação
+                    Cancelar
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                    Editar Usuario
+                    Editar Instutituição
               </Button>
             </Box>
           </form>
@@ -256,9 +256,6 @@ const phoneRegExp =
 
 const checkoutSchema = yup.object().shape({
   nome: yup.string().required("Requirido"),
-  dia: yup.number().min(1, 'Dia Invalido').max(31, 'Dia Invalido').required("Requirido"),
-  mes: yup.number().min(1, 'Mes Invalido').max(13, 'Mes Invalido').required("Requirido"),
-  ano: yup.number().min(1900, 'Ano Invalido').max(2023, 'Ano Invalido').required("Requirido"),
   email: yup.string().email("Email Invalido").required("Requirido"),
   telefone1: yup
     .string()
@@ -269,16 +266,14 @@ const checkoutSchema = yup.object().shape({
     .matches(phoneRegExp, "Telefone Invalido")
     .required("Requirido"),
 
-  sexo: yup.string().required("Requirido"),
+  operacao: yup.string().required("Requirido"),
   bairro: yup.string().required("Requirido"),
   numero: yup.string().required("Requirido"),
   estado: yup.string().required("Requirido"),
   rua: yup.string().required("Requirido"),
   cep: yup.string().required("Requirido"),
-  papel: yup.string().required("Requirido"),
   documentoLegal: yup.string().required("Requirido"),
-  senha: yup.string().required("Requirido"),
 });
 
 
-export default EditUsers;
+export default EditThirdParty;

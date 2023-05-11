@@ -18,7 +18,7 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
 
     if(!isFormOpen) return null;
     else{
-        console.log(initialValues.nome)
+        console.log(initialValues.idUser)
   return (
     <>
 
@@ -159,6 +159,7 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
               <TextField
                 fullWidth
                 variant="filled"
+                //disabled={true}
                 type="email"
                 label="Email"
                 onBlur={handleBlur}
@@ -323,7 +324,7 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
                 <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
-                    Cancelar Editação
+                    Cancelar
               </Button>
               <Button type="submit" color="secondary" variant="contained">
                     Editar Usuario

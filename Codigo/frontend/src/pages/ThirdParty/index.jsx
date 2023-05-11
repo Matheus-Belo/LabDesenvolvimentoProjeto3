@@ -51,18 +51,18 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 
 const ThirdParty = () => {
     const[initialValues, setInitialValues] = useState({
-      nome: "",
-      //senha: "",
-      operacao: "",
-      email: "",
-      telefone1: "",
-      telefone2: "",
-      documentoLegal: "",
-      bairro: "",
-      numero: "",
-      estado: "",
-      rua: "",
-      cep: "",
+        nome: "",
+        //senha: "",
+        operacao: "",
+        email: "",
+        telefone1: "",
+        telefone2: "",
+        documentoLegal: "",
+        bairro: "",
+        numero: "",
+        estado: "",
+        rua: "",
+        cep: "",
       });
 
 
@@ -137,7 +137,6 @@ const ThirdParty = () => {
                             email: params.row.email ,
                             telefone1: params.row.phone1 ,
                             telefone2: params.row.phone2 ,
-                            sexo: params.row.sex ,
                             documentoLegal: params.row.legalDocument ,
                             bairro: params.row.address.district ,
                             cidade: params.row.address.city.city ,
@@ -212,8 +211,56 @@ let handleEditCancel = () => {
     setIsCriarOpen(false);
   };
 
-const EditarUser = (values) => {
+const EditarTerceiro = (values) => {
     console.log(values)
+
+    var cidade = values.cidade
+  var estado = values.estado
+
+  const UserBody = {
+    address: {
+      addressId: 0,
+      city: cidade,
+      district: values.bairro,
+      number: values.numero,
+      state: estado,
+      street: values.rua,
+      zipCode: values.cep
+    },
+    areaOfOperation: values.operacao,
+    email: values.email,
+    idThirdParty: values.idThirdParty,
+    legalDocument: values.documentoLegal,
+    thirdPartyName: values.nome,
+    phone1: values.telefone1,
+    phone2: values.telefone2,
+    thirdPartyName: values.nome,
+  }
+
+  api 
+    .post("/thirdParty/edit", UserBody)
+    .then(() => window.location.reload(false))
+    .catch(function (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log("The request was made but no response was received");
+        console.log(error.request);
+        console.log(error.toJSON());
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
     
 };
 
@@ -238,7 +285,10 @@ const handleCreateSubmit = (values) => {
     thirdPartyName: values.nome,
     phone1: values.telefone1,
     phone2: values.telefone2,
+    thirdPartyName: values.nome,
   }
+
+  
 
   api
       .post("/thirdParty/create", UserBody)
@@ -314,7 +364,7 @@ useEffect(() => {
                 Criar Instituição
             </Button>
             <CreateThirdParty isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
-            <EditThirdParty isFormOpen = {isEditOpen} handleFormSubmit={EditarUser} valores={userEditParams} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
+            <EditThirdParty isFormOpen = {isEditOpen} handleFormSubmit={EditarTerceiro} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
             <Box
                 m="40px 0 0 0"
                 height="70vh"
