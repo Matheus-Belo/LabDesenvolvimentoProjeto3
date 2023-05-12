@@ -16,7 +16,7 @@ const Topbar = () => {
   const colorMode = useContext(ColorModeContext);
 
   const Logout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = "/";
   }
 

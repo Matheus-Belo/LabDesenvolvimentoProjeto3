@@ -17,7 +17,7 @@ const Login = () => {
     let navigate = useNavigate();
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
-    const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
+    const [authenticated, setauthenticated] = useState(sessionStorage.getItem(sessionStorage.getItem("authenticated")|| false));
 
     /** 
     if(localStorage.getItem("token") !== null){
@@ -49,8 +49,8 @@ const Login = () => {
         });
 
         setauthenticated(true)
-        localStorage.setItem("authenticated", true);
-        localStorage.setItem("token", Info.data.token);
+        sessionStorage.setItem("authenticated", true);
+        sessionStorage.setItem("token", Info.data.token);
 
         window.location.reload(true)
     };

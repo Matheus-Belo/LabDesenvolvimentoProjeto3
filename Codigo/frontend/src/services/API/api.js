@@ -23,8 +23,8 @@ api.interceptors.request.use(async config => {
 });
 
 */
-if(localStorage.getItem("token") != null){
-  api.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("token")}`;
+if(sessionStorage.getItem("token") != null){
+  api.defaults.headers.common.Authorization = `Bearer ${sessionStorage.getItem("token")}`;
 }else{
   axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
   axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';

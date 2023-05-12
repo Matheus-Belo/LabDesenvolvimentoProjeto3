@@ -124,7 +124,7 @@ const ThirdParty = () => {
                         setIsCriarOpen(!isCriarOpen);
                         handleEditToggle();
                     }else if(isEditOpen){
-                        if(initialValues.idUser === params.row.idUser){
+                        if(initialValues.idThirdParty === params.row.idThirdParty){
                             handleEditToggle();
                         }
                     }else{

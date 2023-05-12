@@ -6,7 +6,7 @@ export const ColorTokens = (mode) => ({
   ...(mode === "dark"
     ? {
         grey: {
-          100: "#e0e0e0",
+          100: "#c2c2c2",
           200: "#c2c2c2",
           300: "#a3a3a3",
           400: "#858585",

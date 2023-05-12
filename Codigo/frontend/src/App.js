@@ -7,9 +7,6 @@ import LayoutSidebar from "./components/Sidebar/Sidebar";
 //import useAuth from "./service/useAuth";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import EditUsers from "./pages/EditUser";
-import ThirdPartyTable from "./pages/TabelaThird";
-import EditThirdParty from "./pages/EditThird";
 import Login from "./pages/Login/index"
 import Dashboard from "./pages/dashboard";
 //import PrivateRoute from "./service/PrivateRoute";
@@ -21,7 +18,7 @@ export default function App() {
     const [isSidebar, setIsSidebar] = useState(true);
 
     const PrivateRoute = ({ children }) => {
-        const userIsLogged = localStorage.getItem("authenticated");// Your hook to get login status
+        const userIsLogged = sessionStorage.getItem("authenticated");// Your hook to get login status
       
         if (!userIsLogged) {
           return <Login />;
@@ -44,7 +41,6 @@ export default function App() {
                                         <Route path="/Usuarios" element={<Usuarios />} />
                                         <Route path="/Login" element={<Login />} />
                                         <Route path="/ThirdParty" element={<ThirdParty />} />
-                                        <Route path="/ListThirdParty" element={<ThirdPartyTable />} />
                                     </Routes>
                                 </main>
                             </PrivateRoute>
