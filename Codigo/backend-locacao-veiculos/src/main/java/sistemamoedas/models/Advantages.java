@@ -30,6 +30,9 @@ public class Advantages {
     @Column(name = "validation_date")
     private Date validationDate;
 
+    @Column(name = "advantage_category")
+    private String advantageCategory;
+
     @Column(name = "created_at")
     private Date createdAt;
 

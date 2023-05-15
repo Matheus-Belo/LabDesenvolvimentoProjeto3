@@ -205,6 +205,7 @@ CREATE TABLE advantages (
                              advantage_name VARCHAR (50),
                              advantage_description VARCHAR(100) NOT NULL,
                              price MONEY,
+                             advantage_category VARCHAR (50),
                              validation_date TIMESTAMP,
 
                              created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
