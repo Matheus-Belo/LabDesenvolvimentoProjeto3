@@ -3,7 +3,6 @@ package sistemamoedas.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import javassist.NotFoundException;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,12 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sistemamoedas.models.RequestEntity.TransactionRequest;
 import sistemamoedas.models.RequestEntity.UserRequest;
-import sistemamoedas.models.ResponseEntity.TransactionResponse;
 import sistemamoedas.models.User;
 import sistemamoedas.models.dto.UserDto;
-import sistemamoedas.service.TransactionService;
 import sistemamoedas.service.UserService;
 
 import javax.validation.Valid;
@@ -24,41 +20,37 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin
 @RequestMapping("/transaction")
-public class TransactionController {
+public class AdvantagesController {
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private TransactionService transactionService;
-
     @PostMapping(path = "/createDeposit")
-    @ApiOperation(value = "Criar nova transação de deposito")
+    @ApiOperation(value = "Criar novo usuário")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
-    public ResponseEntity<TransactionResponse> createDeposit(
-            @ApiParam(value = "Json da requisição que contem os dados da transação")
-            @Valid @RequestBody TransactionRequest request) throws NotFoundException {
-        TransactionResponse transactionResponse = this.transactionService.createDeposit(request);
+    public ResponseEntity<UserDto> createDeposit(
+            @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
+            @Valid @RequestBody UserRequest request) throws NotFoundException {
+        UserDto userDto = this.userService.create(request);
         return ResponseEntity.ok().body(
-                transactionResponse
+                userDto
         );
     }
 
     @PostMapping(path = "/createSale")
-    @ApiOperation(value = "Criar nova transação de venda")
+    @ApiOperation(value = "Criar novo usuário")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
-    public ResponseEntity<TransactionResponse> createSale(
-            @ApiParam(value = "Json da requisição que contem os dados da transação")
-            @Valid @RequestBody TransactionRequest request) throws NotFoundException {
-        TransactionResponse transactionResponse = this.transactionService.createSale(request);
+    public ResponseEntity<UserDto> createSale(
+            @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
+            @Valid @RequestBody UserRequest request) throws NotFoundException {
+        UserDto userDto = this.userService.create(request);
         return ResponseEntity.ok().body(
-                transactionResponse
+                userDto
         );
     }
 
-    @GetMapping(path = "viewExtract/idConta/{idConta}")
-    @ResponseBody
-    @ApiOperation(value = "retorna lista completa do extrato deste usuario")
+    @PostMapping(path = "/viewExtract")
+    @ApiOperation(value = "Criar novo usuário")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
     public ResponseEntity<UserDto> viewExtract(
             @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
@@ -70,9 +62,28 @@ public class TransactionController {
     }
 
 
-    @GetMapping(path = "viewExtractPaged/{page}/size/{size}/idConta/{idConta}")
+
+
+    @GetMapping(path = "/page/{page}/size/{size}")
     @ResponseBody
-    @ApiOperation(value = "lista o extrato bancario do Usuario paginado")
+    @ApiOperation(value = "Lista usuários por página quantidade")
+    public Page<User> listTransactionsByPageWithSize(
+            @ApiParam(value = "Página que deseja visualizar iniciando em 0", example = "0")
+            @PathVariable(value="page")
+            int page,
+            @ApiParam(value = "Quantidade de usuários a serem listados por página", example = "10")
+            @PathVariable(value="size")
+            int size){
+
+        Pageable pages = PageRequest.of(page, size);
+        return this.userService.listUsersByPage(pages);
+
+    }
+
+    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
+    @GetMapping(path = "page/{page}/size/{size}/name/{name}")
+    @ResponseBody
+    @ApiOperation(value = "Lista usuários por página quantidade")
     public Page<User> listUserByNameAndPageWithSize(
             @ApiParam(value = "Página que deseja visualizar iniciando em 0", example = "0")
             @PathVariable(value="page")
