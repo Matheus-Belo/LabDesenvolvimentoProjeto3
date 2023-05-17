@@ -23,6 +23,7 @@ import sistemamoedas.service.UserService;
 
 import javax.validation.Valid;
 import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -62,10 +63,10 @@ public class TransactionController {
     @GetMapping(path = "viewExtract/idConta/{idConta}")
     @ApiOperation(value = "retorna lista completa do extrato deste usuario")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
-    public LinkedList<Transactions> viewExtract(
+    public List<Transactions> viewExtract(
             @PathVariable(value="idConta")
             Long idConta) throws NotFoundException {
-        LinkedList<Transactions> list = this.transactionService.getExtractAsList(idConta);
+        List<Transactions> list = this.transactionService.getExtractAsList(idConta);
         return list;
     }
 

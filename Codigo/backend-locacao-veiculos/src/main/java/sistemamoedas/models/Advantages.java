@@ -6,6 +6,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +22,14 @@ public class Advantages {
 
     @Column(name = "advantage_name")
     private String advantageName;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "advantages_third_party",
+            joinColumns = @JoinColumn(name = "advantages_id"),
+            inverseJoinColumns = @JoinColumn(name = "third_party_id")
+    )
+    private List<Advantages> advantages;
 
     @Column(name = "advantage_description")
     private String advantageDescription;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,8 @@ public class AdvantagesController {
     @Autowired
     private AdvantageService advantageService;
 
-    @PostMapping(path = "/create")
+    @PostMapping(path = "/create",
+            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @ApiOperation(value = "Criar nova vantagem")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
     public ResponseEntity<AdvantagesResponse> createAdvantage(
@@ -42,7 +44,8 @@ public class AdvantagesController {
     }
 
 
-    @PostMapping(path = "/edit")
+    @PostMapping(path = "/edit",
+            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @ApiOperation(value = "Editar vantagem existente")
     public ResponseEntity<AdvantagesResponse> editAdvantage(
             @ApiParam(value = "Json da requisição que contem o dado da vantagem a ser editado")

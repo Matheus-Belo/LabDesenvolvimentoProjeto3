@@ -7,5 +7,6 @@ import sistemamoedas.models.Cities;
 
 @Repository
 public interface AdvantagesRepository extends JpaRepository<Advantages,Long> {
-    
+
+    Advantages findOneByIdAdvantagesAndDeletedAtIsNull(Long idAdvantages);
 }

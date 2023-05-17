@@ -59,7 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers(
 						"/auth/*",
 						           "/user/create",
-						           "thirdParty/create","/user/page/{page}/size/{size}","/user/page/*"
+						           "/thirdParty/create",
+									"/user/page/{page}/size/{size}",
+									"/user/page/*"
 				).permitAll()
 				.antMatchers("/v2/api-docs", "/swagger-resources/**",
 				"/swagger-ui.html", "/webjars/springfox-swagger-ui/**","/user/create").permitAll()

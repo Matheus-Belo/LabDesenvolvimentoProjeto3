@@ -39,12 +39,6 @@ public class Transactions {
     @Column(name = "amount")
     private BigDecimal amount;
 
-
-    //quantidade original da conta de destino
-    //quantidade total da conta de destino depois da transaçao
-    //quantidade original da conta de origem
-    //quantidade total da conta de origem depois da transaçao
-
     @Column(name = "created_at")
     private Date createdAt;
 

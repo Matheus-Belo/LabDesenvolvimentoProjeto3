@@ -117,7 +117,7 @@ public class UserRequest {
                     birthDate,
                     user.getPhone1(),
                     user.getPhone2(),
-                    new BigDecimal(1500)
+                    new BigDecimal(1000)
             );
         }else if (!roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.THIRDPARTY.getCode()))){
 

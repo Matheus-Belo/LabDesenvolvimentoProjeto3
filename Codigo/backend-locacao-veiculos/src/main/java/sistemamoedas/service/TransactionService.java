@@ -9,6 +9,7 @@ import sistemamoedas.models.ResponseEntity.TransactionResponse;
 import sistemamoedas.models.Transactions;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public interface TransactionService {
 
@@ -16,7 +17,7 @@ public interface TransactionService {
 
     TransactionResponse createSale(TransactionRequest request);
 
-    LinkedList<Transactions> getExtractAsList(Long idConta);
+    List<Transactions> getExtractAsList(Long idConta);
 
     Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta);
 

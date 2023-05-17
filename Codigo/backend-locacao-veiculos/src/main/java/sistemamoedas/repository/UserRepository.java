@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User,Long > {
             "where extract(day from u.due_date) = extract(day from now()) and r.\"name\" = 'ALUNO'",
     nativeQuery = true)
     List<User> findAllByCurrentDay();
+
+    User findOneByEmail(String email);
 }

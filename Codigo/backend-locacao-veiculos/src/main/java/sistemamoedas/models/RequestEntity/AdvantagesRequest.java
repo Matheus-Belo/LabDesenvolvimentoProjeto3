@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -43,7 +44,11 @@ public class AdvantagesRequest {
 
     private Date deletedAt;
 
-    private MultipartFile[] advantagesImages;
+    private LinkedList<MultipartFile> advantagesImages;
+
+    private LinkedList<String> imagesNames;
+
+    private LinkedList<String> imagesDescription;
 
 
 

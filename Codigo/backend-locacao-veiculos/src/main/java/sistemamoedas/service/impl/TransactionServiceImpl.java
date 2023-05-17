@@ -21,6 +21,7 @@ import sistemamoedas.service.UserService;
 
 import javax.persistence.NonUniqueResultException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,8 +31,9 @@ public class TransactionServiceImpl implements TransactionService {
     TransactionsRepository transactionsRepository;
     @Autowired
     UserService userService;
-    @Autowired
-    EmailService emailService;
+
+    /*@Autowired
+    EmailService emailService;*/
 
     @Override
     //Ao receber uma moeda, o aluno deve ser notificado por email.
@@ -81,14 +83,14 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
-    public LinkedList<Transactions> getExtractAsList(Long idConta) {
-        return this.transactionsRepository.findAllByIdOriginAccountInAndDeletedAtIsNullOrderByIdTransaction(idConta);
+    public List<Transactions> getExtractAsList(Long idConta) {
+        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdOriginAccount(idConta);
     }
 
     @Override
     //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
     public Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta) {
-        return  this.transactionsRepository.findAllByIdOriginAccountInAndDeletedAtIsNullOrderByIdTransaction(pages,idConta);
+        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdTransaction(pages,idConta);
     }
 
     @Override

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NonUniqueResultException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> usr = Optional.ofNullable(this.userRepository.findOneByEmailAndDeletedAtIsNull(user.getEmail()));
 
+        Optional<User> usr2 = Optional.ofNullable(this.userRepository.findOneByEmail(user.getEmail()));
+
+
         if(!usr.isPresent()){
             List<Role> roles = Optional.of(this.roleService.findAllByNameIn(user.getRoles()))
                     .orElseThrow(() -> new NoSuchElementException("Role not Founded"));
@@ -69,6 +73,33 @@ public class UserServiceImpl implements UserService {
             /*if(roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.USER.getCode()))){
                 this.monthlyPaymentService.create(savedUser);
             }*/
+            return UserDto.fromUser(savedUser);
+
+        }else if (usr2.get().getDeletedAt() != null){
+
+            List<Role> roles = Optional.of(this.roleService.findAllByNameIn(user.getRoles()))
+                    .orElseThrow(() -> new NoSuchElementException("Role not Founded"));
+
+            user.setPassword(this.bcryptEncoder.encode(user.getPassword()));
+
+
+            Cities city = this.cityService.findByCity(user.getAddress().getCity());
+            States state = this.stateService.findByUf(user.getAddress().getState());
+
+            AddressDto addressDto = user.getAddress();
+            Address address = this.addressRepository.save(Address.fromAddressDTO(addressDto, city, state));
+
+            user.setIdUser(usr.get().getIdUser());
+
+            user.setWallet(new BigDecimal(0));
+
+            User usuarioForSave = UserRequest.toUser(user, roles, address);
+
+            usuarioForSave.setDeletedAt(null);
+
+            User savedUser = this.userRepository.save(usuarioForSave);
+
+
             return UserDto.fromUser(savedUser);
         }else{
             throw new NonUniqueResultException("Email ja cadastrado!");

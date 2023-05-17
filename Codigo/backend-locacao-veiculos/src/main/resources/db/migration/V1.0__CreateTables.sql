@@ -50,8 +50,8 @@ CREATE TABLE third_party (
                              phone1 VARCHAR(100) NOT NULL,
                              phone2 VARCHAR(100) NOT NULL,
                              legal_document VARCHAR(40) NOT NULL,
-                             email VARCHAR(100) NOT NULL UNIQUE,
-                             area_of_operation VARCHAR(100) NOT NULL UNIQUE,
+                             email VARCHAR(100) NOT NULL ,
+                             area_of_operation VARCHAR(100) NOT NULL,
 
                              created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                              deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE users (
                        birth_date TIMESTAMP(0) NULL DEFAULT NULL,
                        phone1 VARCHAR(100) NOT NULL,
                        phone2 VARCHAR(100) NOT NULL,
-                       wallet MONEY,
+                       wallet NUMERIC,
 
 
 

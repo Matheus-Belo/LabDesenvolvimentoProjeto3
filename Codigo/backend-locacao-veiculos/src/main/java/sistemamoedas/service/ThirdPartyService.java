@@ -20,4 +20,6 @@ public interface ThirdPartyService {
     Page<ThirdParty> listThirdPartiesByPageAndId(Pageable pages, String areaOfOperation);
 
     ThirdPartyResponse getThirdPartyById(Long idThirdParty);
+
+    ThirdParty getThirdPartyByIdThirdParty(Long idThirdParty);
 }

@@ -114,4 +114,9 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
                 this.thirdPartyRepository.findOneByIdThirdPartyAndDeletedAtIsNull(idThirdParty)
         );
     }
+
+    @Override
+    public ThirdParty getThirdPartyByIdThirdParty(Long idThirdParty) {
+        return this.thirdPartyRepository.findOneByIdThirdPartyAndDeletedAtIsNull(idThirdParty);
+    }
 }
