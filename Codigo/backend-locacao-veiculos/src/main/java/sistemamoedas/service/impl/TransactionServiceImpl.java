@@ -27,6 +27,8 @@ public class TransactionServiceImpl implements TransactionService {
     EmailService emailService;
 
     @Override
+    //Ao receber uma moeda, o aluno deve ser notificado por email.
+    //notificar o professor por email com novo saldo.
     public TransactionResponse createDeposit(TransactionRequest request) {
         return null;
     }
@@ -37,11 +39,13 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
     public LinkedList<Transactions> getExtractAsList(UserRequest request) {
         return null;
     }
 
     @Override
+    //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
     public Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta) {
         return null;
     }
