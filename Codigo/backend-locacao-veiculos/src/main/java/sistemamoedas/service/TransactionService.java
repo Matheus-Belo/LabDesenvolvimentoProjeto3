@@ -20,4 +20,6 @@ public interface TransactionService {
     Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta);
 
     LinkedList<TransactionResponse> enviaMoedasProfessores();
+
+    Transactions getTransactionById(Long idTransaction);
 }

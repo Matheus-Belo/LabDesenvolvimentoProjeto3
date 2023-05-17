@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sistemamoedas.models.Advantages;
 import sistemamoedas.models.RequestEntity.TransactionRequest;
 import sistemamoedas.models.RequestEntity.UserRequest;
 import sistemamoedas.models.ResponseEntity.TransactionResponse;
@@ -89,5 +90,16 @@ public class TransactionController {
 
     }
 
+    @GetMapping(path = "gettransactionbyid/idTransaction/{idTransaction}")
+    @ResponseBody
+    @ApiOperation(value = "retorna uma transaçao por id")
+    public ResponseEntity<Transactions> getTransactionById(
+            @PathVariable(value="idTransaction")
+            Long idTransaction)throws NotFoundException{
+
+        return ResponseEntity.ok().body(
+                this.transactionService.getTransactionById(idTransaction)
+        );
+    }
 
 }

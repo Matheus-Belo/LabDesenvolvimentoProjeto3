@@ -54,4 +54,9 @@ public class TransactionServiceImpl implements TransactionService {
     public LinkedList<TransactionResponse> enviaMoedasProfessores() {
         return null;
     }
+
+    @Override
+    public Transactions getTransactionById(Long idTransaction) {
+        return null;
+    }
 }
