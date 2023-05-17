@@ -33,6 +33,12 @@ public class AdvantagesRequest {
 
     private String advantageCategory;
 
+    private String couponCode;
+
+    private String status;
+
+    private String amount;
+
     private Date createdAt;
 
     private Date deletedAt;

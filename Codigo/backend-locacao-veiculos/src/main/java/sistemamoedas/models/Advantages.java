@@ -26,13 +26,20 @@ public class Advantages {
     private String advantageDescription;
     @Column(name = "price")
     private BigDecimal price;
-
     @Column(name = "validation_date")
     private Date validationDate;
 
     @Column(name = "advantage_category")
     private String advantageCategory;
 
+    @Column(name = "coupon_code")
+    private String couponCode;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "amount")
+    private String amount;
     @Column(name = "created_at")
     private Date createdAt;
 

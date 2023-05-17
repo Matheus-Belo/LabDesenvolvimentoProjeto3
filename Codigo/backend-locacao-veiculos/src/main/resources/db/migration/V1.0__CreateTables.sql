@@ -206,6 +206,9 @@ CREATE TABLE advantages (
                              advantage_description VARCHAR(100) NOT NULL,
                              price MONEY,
                              advantage_category VARCHAR (50),
+                             coupon_code varchar(50),
+                             status varchar(50),
+                             amount varchar(50),
                              validation_date TIMESTAMP,
 
                              created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,

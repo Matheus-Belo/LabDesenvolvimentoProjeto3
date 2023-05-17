@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import sistemamoedas.models.RequestEntity.TransactionRequest;
 import sistemamoedas.models.RequestEntity.UserRequest;
 import sistemamoedas.models.ResponseEntity.TransactionResponse;
+import sistemamoedas.models.Transactions;
 import sistemamoedas.models.User;
 import sistemamoedas.models.dto.UserDto;
 import sistemamoedas.service.TransactionService;
 import sistemamoedas.service.UserService;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
 
 @RestController
 @CrossOrigin
@@ -57,36 +59,33 @@ public class TransactionController {
     }
 
     @GetMapping(path = "viewExtract/idConta/{idConta}")
-    @ResponseBody
     @ApiOperation(value = "retorna lista completa do extrato deste usuario")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
-    public ResponseEntity<UserDto> viewExtract(
+    public LinkedList<Transactions> viewExtract(
             @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
             @Valid @RequestBody UserRequest request) throws NotFoundException {
-        UserDto userDto = this.userService.create(request);
-        return ResponseEntity.ok().body(
-                userDto
-        );
+        LinkedList<Transactions> list = this.transactionService.getExtractAsList(request);
+        return list;
     }
 
 
     @GetMapping(path = "viewExtractPaged/{page}/size/{size}/idConta/{idConta}")
     @ResponseBody
-    @ApiOperation(value = "lista o extrato bancario do Usuario paginado")
-    public Page<User> listUserByNameAndPageWithSize(
+    @ApiOperation(value = "lista o extrato bancario do Usuario, paginado")
+    public Page<Transactions> viewExtractPaged(
             @ApiParam(value = "Página que deseja visualizar iniciando em 0", example = "0")
             @PathVariable(value="page")
                     int page,
-            @ApiParam(value = "Quantidade de usuários a serem listados por página", example = "10")
+            @ApiParam(value = "Quantidade de registros a serem listados por página", example = "10")
             @PathVariable(value="size")
                     int size,
-            @PathVariable(value="name")
-                    String name
+            @PathVariable(value="idConta")
+                    Long idConta
     ){
 
         Pageable pages = PageRequest.of(page, size);
 
-        return this.userService.listUsersByPageAndName(pages, name);
+        return this.transactionService.getExtractAsPaged(pages, idConta);
 
     }
 
