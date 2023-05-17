@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +74,9 @@ public class User {
     @Column(name = "phone2")
     private String phone2;
 
+    @Column(name = "wallet")
+    private BigDecimal wallet;
+
     private Date createdAt;
     private Date deletedAt;
 
@@ -102,7 +106,7 @@ public class User {
     }
 
     public User(String name, String email, String password, String sex, String legal_document, Address address,
-                List<Role> roles, Date birthDate, String phone1, String phone2) {
+                List<Role> roles, Date birthDate, String phone1, String phone2, BigDecimal wallet) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -113,6 +117,7 @@ public class User {
         this.birthDate = birthDate;
         this.phone1 = phone1;
         this.phone2 = phone2;
+        this.wallet = wallet;
 
     }
 

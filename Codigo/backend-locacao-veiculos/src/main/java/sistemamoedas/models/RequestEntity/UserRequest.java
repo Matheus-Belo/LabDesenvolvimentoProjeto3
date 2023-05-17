@@ -8,9 +8,11 @@ import sistemamoedas.models.dto.AddressDto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -56,11 +58,13 @@ public class UserRequest {
 
     private Long idUser;
 
+    private BigDecimal wallet;
+
     public UserRequest() {
     }
 
     public UserRequest(String name, String email, String password, List<String> roles, String legalDocument,
-                       AddressDto address, String sex, Date birthDate, String phone1, String phone2) {
+                       AddressDto address, String sex, Date birthDate, String phone1, String phone2, BigDecimal wallet) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -71,6 +75,7 @@ public class UserRequest {
         this.birthDate = birthDate;
         this.phone1 = phone1;
         this.phone2 = phone2;
+        this.wallet = wallet;
     }
 
 
@@ -95,8 +100,40 @@ public class UserRequest {
                     roles,
                     birthDate,
                     user.getPhone1(),
-                    user.getPhone2()
+                    user.getPhone2(),
+                    new BigDecimal(0)
                     );
+
+        }else if (!roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.PROFESSOR.getCode()))){
+
+            newUSer = new User(
+                    user.getName(),
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getSex(),
+                    user.getLegalDocument(),
+                    address,
+                    roles,
+                    birthDate,
+                    user.getPhone1(),
+                    user.getPhone2(),
+                    new BigDecimal(1500)
+            );
+        }else if (!roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.THIRDPARTY.getCode()))){
+
+            newUSer = new User(
+                    user.getName(),
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getSex(),
+                    user.getLegalDocument(),
+                    address,
+                    roles,
+                    birthDate,
+                    user.getPhone1(),
+                    user.getPhone2(),
+                    new BigDecimal(0)
+            );
 
         }else {
 
@@ -110,8 +147,11 @@ public class UserRequest {
                     roles,
                     birthDate,
                     user.getPhone1(),
-                    user.getPhone2()
+                    user.getPhone2(),
+                    new BigDecimal(0)
             );
+
+
         }
         return newUSer;
     }

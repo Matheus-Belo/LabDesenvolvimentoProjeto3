@@ -37,7 +37,10 @@ public class TransactionRequest {
     public TransactionRequest() {
     }
 
-    public static Transactions toTransactions(TransactionRequest request, User originAccount, User destinationAccount) {
+    public static Transactions toTransactions(TransactionRequest request,
+                                              User originAccount,
+                                              User destinationAccount,
+                                              String transactionType) {
 
         return new Transactions(
 

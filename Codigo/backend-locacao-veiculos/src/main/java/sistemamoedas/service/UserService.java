@@ -14,6 +14,9 @@ public interface UserService {
     UserDto create(UserRequest user) throws NotFoundException;
     Optional<User> findByEmail(String email);
     UserDto save(User user);
+
+    UserDto saveUser(User user);
+
     UserDto editUser(UserRequest userRequest) throws NotFoundException;
     UserDto deleteUser(String email);
     UserDto deleteLoggedUser();

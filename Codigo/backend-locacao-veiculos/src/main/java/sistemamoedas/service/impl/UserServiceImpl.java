@@ -88,6 +88,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto saveUser(User user) {
+
+        return UserDto.fromUser(this.userRepository.save(user));
+    }
+
+    @Override
     public UserDto editUser(UserRequest userRequest) throws NotFoundException {
 
         User user = this.userRepository.findOneByEmailAndDeletedAtIsNull(userRequest.getEmail());

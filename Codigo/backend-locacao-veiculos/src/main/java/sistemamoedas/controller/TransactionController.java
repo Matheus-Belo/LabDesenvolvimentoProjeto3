@@ -63,9 +63,9 @@ public class TransactionController {
     @ApiOperation(value = "retorna lista completa do extrato deste usuario")
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
     public LinkedList<Transactions> viewExtract(
-            @ApiParam(value = "Json da requisição que contem o dado do usuario a ser salvo")
-            @Valid @RequestBody UserRequest request) throws NotFoundException {
-        LinkedList<Transactions> list = this.transactionService.getExtractAsList(request);
+            @PathVariable(value="idConta")
+            Long idConta) throws NotFoundException {
+        LinkedList<Transactions> list = this.transactionService.getExtractAsList(idConta);
         return list;
     }
 
