@@ -39,7 +39,7 @@ export default function Transferencia(User) {
             amount: values.envio,
             description: description,
             idDestinationAccount: User.User.idUser,
-            idOriginAccount: id,
+            idOriginAccount: parseInt(id),
             idTransaction: 0,
             transactionDate: date,
             transactionType: "Envio"
