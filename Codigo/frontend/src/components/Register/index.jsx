@@ -82,14 +82,7 @@ const Register = ( { isRegisterOpen, closeLogin } ) => {
 
 
 
-    const handleFormSubmit = async (values) => {
-        
-        
-        
-        
-        
-        
-        
+    const handleFormSubmit = async (values) => {    
         const LoginInfo = {
             email: values.email,
             password: values.senha,
@@ -118,6 +111,7 @@ const Register = ( { isRegisterOpen, closeLogin } ) => {
         sessionStorage.setItem("authenticated", true);
         sessionStorage.setItem("token", Info.data.token);
         sessionStorage.setItem("Role", Info.data.roles);
+        sessionStorage.setItem("ID", Info.data.user.id);
 
         window.location.reload(true)
     };

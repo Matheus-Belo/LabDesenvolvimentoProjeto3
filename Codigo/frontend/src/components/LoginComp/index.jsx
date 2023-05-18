@@ -49,6 +49,7 @@ const LoginComp = ( { isLoginOpen, closeLogin } ) => {
         sessionStorage.setItem("authenticated", true);
         sessionStorage.setItem("token", Info.data.token);
         sessionStorage.setItem("Role", Info.data.roles);
+        sessionStorage.setItem("ID", Info.data.user.id);
 
         window.location.reload(true)
     };

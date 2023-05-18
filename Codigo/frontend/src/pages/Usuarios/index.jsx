@@ -311,7 +311,7 @@ const handleCreateSubmit = (values) => {
         role,
       sex: values.sexo,
     }
-/** 
+
     api
         .post("/user/create", UserBody)
         .then(() => window.location.reload(false))
@@ -339,7 +339,6 @@ const handleCreateSubmit = (values) => {
         setIsCriarOpen(false);
 
 
-      */
 
         console.log("Create Body: " + JSON.stringify(UserBody))  
   };

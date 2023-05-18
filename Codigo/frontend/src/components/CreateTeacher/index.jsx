@@ -305,7 +305,7 @@ const CreateTeacher = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => 
                     Cancelar
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                Criar Novo Usuario
+                Criar Novo Professor
               </Button>
             </Box>
           </form>

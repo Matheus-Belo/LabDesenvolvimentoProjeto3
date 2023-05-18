@@ -310,7 +310,7 @@ const EditTeacher = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, 
                     Cancelar
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                    Editar Usuario
+                    Editar Professor
               </Button>
             </Box>
           </form>
