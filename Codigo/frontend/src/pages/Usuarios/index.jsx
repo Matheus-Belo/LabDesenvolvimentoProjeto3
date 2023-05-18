@@ -133,10 +133,6 @@ const Usuarios = () => {
                     if(isCriarOpen){
                         setIsCriarOpen(!isCriarOpen);
                         handleEditToggle();
-                    }else if(isEditOpen){
-                        if(initialValues.idUser === params.row.idUser){
-                            handleEditToggle();
-                        }
                     }else{
                         handleEditToggle();
                     };
@@ -229,6 +225,7 @@ let handleEditCancel = () => {
 const EditarUser = (values) => {
     console.log(values)
     console.log("email: " + values.email)
+    console.log("id: " + values.papel)
 
     var role = values.papel
     var addressID = 0
@@ -259,11 +256,10 @@ const EditarUser = (values) => {
       phone1: values.telefone1,
       phone2: values.telefone2,
       roles: [
-        role.name,
+        values.papel
       ],
       sex: values.sexo,
     }
-
     api
         .post("/user/edit", UserBody)
         .then(() => window.location.reload(false))
@@ -288,7 +284,6 @@ const EditarUser = (values) => {
           }
           console.log(error.config);
         });
-    
 };
 
 const handleCreateSubmit = (values) => {
@@ -312,12 +307,11 @@ const handleCreateSubmit = (values) => {
       password: values.senha,
       phone1: values.telefone1,
       phone2: values.telefone2,
-      roles: [
+      roles: 
         role,
-      ],
       sex: values.sexo,
     }
-
+/** 
     api
         .post("/user/create", UserBody)
         .then(() => window.location.reload(false))
@@ -343,6 +337,11 @@ const handleCreateSubmit = (values) => {
           console.log(error.config);
         });
         setIsCriarOpen(false);
+
+
+      */
+
+        console.log("Create Body: " + JSON.stringify(UserBody))  
   };
 
 const isNonMobile = useMediaQuery("(min-width:600px)");

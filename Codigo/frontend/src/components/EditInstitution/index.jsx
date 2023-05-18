@@ -12,7 +12,7 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-const EditThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel, initialValues } ) => {
+const EditInstitution = ( {isFormOpen, handleFormSubmit, handleFormCancel, initialValues } ) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
     if(!isFormOpen) {
@@ -74,14 +74,14 @@ const EditThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel, initia
                   <TextField
                     fullWidth
                     variant="filled"
-                    type="text"
-                    label="Area de Atuação"
+                    type="email"
+                    label="Email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.operacao}
-                    name="operacao"
-                    error={!!touched.operacao && !!errors.operacao}
-                    helperText={touched.operacao && errors.operacao}
+                    value={values.email}
+                    name="email"
+                    error={!!touched.email && !!errors.email}
+                    helperText={touched.email && errors.email}
                     sx={{ gridColumn: "span 3" }}
                   />
                   <TextField
@@ -225,7 +225,7 @@ const EditThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel, initia
                         Cancelar
                   </Button>
                   <Button type="submit" color="secondary" variant="contained">
-                        Editar Empresa Parceira
+                        Editar Instituição
                   </Button>
                 </Box>
               </form>
@@ -242,6 +242,7 @@ const phoneRegExp =
 
 const checkoutSchema = yup.object().shape({
   nome: yup.string().required("Requirido"),
+  email: yup.string().email("Email Invalido").required("Requirido"),
   telefone1: yup
     .string()
     .matches(phoneRegExp, "Telefone Invalido")
@@ -250,8 +251,6 @@ const checkoutSchema = yup.object().shape({
     .string()
     .matches(phoneRegExp, "Telefone Invalido")
     .required("Requirido"),
-
-  operacao: yup.string().required("Requirido"),
   bairro: yup.string().required("Requirido"),
   numero: yup.string().required("Requirido"),
   estado: yup.string().required("Requirido"),
@@ -261,4 +260,4 @@ const checkoutSchema = yup.object().shape({
 });
 
 
-export default EditThirdParty;
+export default EditInstitution;

@@ -12,7 +12,7 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-const CreateThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel} ) => {
+const CreateInstitution = ( {isFormOpen, handleFormSubmit, handleFormCancel} ) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   //Pegar os dados para mostrar na Tabela
 
@@ -65,19 +65,6 @@ const CreateThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel} ) =>
                   name="documentoLegal"
                   error={!!touched.documentoLegal && !!errors.documentoLegal}
                   helperText={touched.documentoLegal && errors.documentoLegal}
-                  sx={{ gridColumn: "span 3" }}
-                />
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Area de Operação"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.operacao}
-                  name="operacao"
-                  error={!!touched.operacao && !!errors.operacao}
-                  helperText={touched.operacao && errors.operacao}
                   sx={{ gridColumn: "span 3" }}
                 />
 
@@ -235,7 +222,7 @@ const CreateThirdParty = ( {isFormOpen, handleFormSubmit, handleFormCancel} ) =>
                       Cancelar
                   </Button>
                   <Button type="submit" color="secondary" variant="contained">
-                      Criar Nova Empresa Parceira 
+                      Criar Nova Instituição
                   </Button>
               </Box>
             </form>
@@ -266,7 +253,6 @@ const checkoutSchema = yup.object().shape({
   estado: yup.string().required("Requirido"),
   rua: yup.string().required("Requirido"),
   cep: yup.string().required("Requirido"),
-  operacao: yup.string().required("Requirido"),
   documentoLegal: yup.string().required("Requirido"),
   //senha: yup.string().required("Requirido"),
 });
@@ -274,7 +260,7 @@ const checkoutSchema = yup.object().shape({
 const initialValues = {
   nome: "",
   //senha: "",
-  operacao: "",
+  operacao: "Educação",
   email: "",
   telefone1: "",
   telefone2: "",
@@ -286,4 +272,4 @@ const initialValues = {
   cep: "",
 };
 
-export default CreateThirdParty;
+export default CreateInstitution;

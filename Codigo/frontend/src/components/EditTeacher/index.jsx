@@ -12,7 +12,7 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, initialValues } ) => {
+const EditTeacher = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, initialValues } ) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
 
     if(!isFormOpen) return null;
@@ -351,4 +351,4 @@ const checkoutSchema = yup.object().shape({
 });
 
 
-export default EditUsers;
+export default EditTeacher;

@@ -1,22 +1,22 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Select } from "@mui/material";
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import React, { useEffect, useState } from "react";
 import { alpha, styled } from '@mui/material/styles';
-import MenuItem from '@mui/material/MenuItem';
 import { Field, Formik } from "formik";
 import { DataGrid, gridClasses, getGridStringOperators } from "@mui/x-data-grid";
 import * as yup from "yup";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
+import FormControl from '@mui/material/FormControl';
 
-const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, initialValues } ) => {
-    const isNonMobile = useMediaQuery("(min-width:600px)");
+const CreateTeacher = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
-    if(!isFormOpen) return null;
-    else{
   return (
     <>
 
@@ -82,25 +82,6 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
                 helperText={touched.documentoLegal && errors.documentoLegal}
                 sx={{ gridColumn: "span 3" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                select
-                label="Papel"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.papel}
-                name="papel"
-                error={!!touched.papel && !!errors.papel}
-                helperText={touched.papel && errors.papel}
-                sx={{ gridColumn: "span 3" }}
-              >
-                <MenuItem value={"ADMIN"}>Admin</MenuItem>
-                <MenuItem value={"ALUNO"}>Aluno</MenuItem>
-                <MenuItem value={"INSTITUICAO"}>Instituição</MenuItem>
-                <MenuItem value={"PROFESSOR"}>Professor</MenuItem>
-                <MenuItem value={"THIRDPARTY"}>Empresa</MenuItem>
-              </TextField>
               Aniversario
               <Box
                 display="grid"
@@ -153,6 +134,20 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
                   sx={{ gridColumn: "span 1" }}
                 />
               </Box>
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="email"
+                label="Email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.email}
+                name="email"
+                error={!!touched.email && !!errors.email}
+                helperText={touched.email && errors.email}
+                sx={{ gridColumn: "span 3" }}
+              />
               <TextField
                 fullWidth
                 variant="filled"
@@ -306,11 +301,11 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-                <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
+              <Button type="button" onClick={handleFormCancel} color="error" variant="contained" sx={{ mr: 2}}>
                     Cancelar
               </Button>
               <Button type="submit" color="secondary" variant="contained">
-                    Editar Usuario
+                Criar Novo Usuario
               </Button>
             </Box>
           </form>
@@ -319,7 +314,6 @@ const EditUsers = ( {isFormOpen, handleFormSubmit, valores, handleFormCancel, in
       </Collapse>
       </>
   );
-            }
 };
 
 const phoneRegExp =
@@ -330,6 +324,7 @@ const checkoutSchema = yup.object().shape({
   dia: yup.number().min(1, 'Dia Invalido').max(31, 'Dia Invalido').required("Requirido"),
   mes: yup.number().min(1, 'Mes Invalido').max(13, 'Mes Invalido').required("Requirido"),
   ano: yup.number().min(1900, 'Ano Invalido').max(2023, 'Ano Invalido').required("Requirido"),
+  email: yup.string().email("Email Invalido").required("Requirido"),
   telefone1: yup
     .string()
     .matches(phoneRegExp, "Telefone Invalido")
@@ -345,10 +340,27 @@ const checkoutSchema = yup.object().shape({
   estado: yup.string().required("Requirido"),
   rua: yup.string().required("Requirido"),
   cep: yup.string().required("Requirido"),
-  papel: yup.string().required("Requirido"),
   documentoLegal: yup.string().required("Requirido"),
   senha: yup.string().required("Requirido"),
 });
 
+const initialValues = {
+  nome: "",
+  senha: "",
+  papel: "",
+  email: "",
+  telefone1: "",
+  telefone2: "",
+  sexo: "",
+  documentoLegal: "",
+  bairro: "",
+  numero: "",
+  estado: "",
+  rua: "",
+  cep: "",
+  dia: "",
+  mes: "",
+  ano: "2000",
+};
 
-export default EditUsers;
+export default CreateTeacher;

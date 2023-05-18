@@ -10,8 +10,8 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-import CreateThirdParty from "../../components/CreateThirdParty"
-import EditThirdParty from "../../components/EditThirdParty"
+import CreateTeacher from "../../components/CreateTeacher"
+import EditTeacher from "../../components/EditTeacher"
 
 const ODD_OPACITY = 0.2;
 
@@ -49,20 +49,24 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   }));
 
 
-const ThirdParty = () => {
+const Teachers = () => {
     const[initialValues, setInitialValues] = useState({
         nome: "",
-        //senha: "",
-        operacao: "",
+        senha: "",
+        papel: "",
         email: "",
         telefone1: "",
         telefone2: "",
+        sexo: "",
         documentoLegal: "",
         bairro: "",
         numero: "",
         estado: "",
         rua: "",
         cep: "",
+        dia: "",
+        mes: "",
+        ano: "2000",
       });
 
 
@@ -86,11 +90,11 @@ const ThirdParty = () => {
 
   const columns = [
     { 
-      field: "idThirdParty", 
+      field: "idUser", 
       headerName: "ID",
     },
     {
-      field: "thirdPartyName",
+      field: "name",
       headerName: "Nome",
       flex: 1,
     },
@@ -112,6 +116,12 @@ const ThirdParty = () => {
       flex: 1,
     },
       {
+      field: "legal_document",
+      headerName: "Documento Legal",
+      flex: 1,
+      },
+
+      {
       field: "Edit",
       headerName: "Alterar",
       flex: 1,
@@ -124,26 +134,31 @@ const ThirdParty = () => {
                         setIsCriarOpen(!isCriarOpen);
                         handleEditToggle();
                     }else if(isEditOpen){
-                        if(initialValues.idThirdParty === params.row.idThirdParty){
+                        if(initialValues.idUser === params.row.idUser){
                             handleEditToggle();
                         }
                     }else{
                         handleEditToggle();
                     };
                         const newInitialValues = {
-                            idThirdParty: params.row.idThirdParty ,
-                            nome: params.row.thirdPartyName ,
-                            operacao: params.row.areaOfOperation ,
+                            idUser: params.row.idUser ,
+                            nome: params.row.name ,
+                            senha: "",
+                            papel: params.row.roles[0].name,
                             email: params.row.email ,
                             telefone1: params.row.phone1 ,
                             telefone2: params.row.phone2 ,
-                            documentoLegal: params.row.legalDocument ,
+                            sexo: params.row.sex ,
+                            documentoLegal: params.row.legal_document ,
                             bairro: params.row.address.district ,
                             cidade: params.row.address.city.city ,
                             numero: params.row.address.number ,
                             estado: params.row.address.state.uf ,
                             rua: params.row.address.street ,
                             cep: params.row.address.zipCode ,
+                            dia: new DateObject(params.row.birthDate).format("DD") ,
+                            mes: new DateObject(params.row.birthDate).format("MM") ,
+                            ano: new DateObject(params.row.birthDate).format("YYYY"),
                         }
                         const rowData = e.row;
                         setInitialValues(newInitialValues);
@@ -179,7 +194,7 @@ const ThirdParty = () => {
     e.stopPropagation();
     console.log(row)
     api
-    .delete("/thirdParty/delete/idThirdParty/"+row.idThirdParty)
+    .delete("/user/delete/email/"+row.email)
     .then(() => window.location.reload(false))
     .catch(function (error) {
       if (error.response) {
@@ -207,114 +222,123 @@ const ThirdParty = () => {
 let handleEditCancel = () => {
     setisEditOpen(false);
   };
-  
   let handleCriarCancel = () => {
     setIsCriarOpen(false);
   };
 
-const EditarTerceiro = (values) => {
-    console.log(values)
+const EditarUser = (values) => {
 
-    var cidade = values.cidade
-    var estado = values.estado
+    var role = values.papel
+    var addressID = 0
+
+    if(values.estado === localStorage.getItem("state")){
+        addressID = localStorage.getItem("addresId")
+    }else{
+        addressID = 0
+    }
 
     const UserBody = {
+        
       address: {
-        addressId: 0,
-        city: cidade,
+        addressId: addressID,
+        city: values.cidade,
         district: values.bairro,
         number: values.numero,
-        state: estado,
+        state: values.estado,
         street: values.rua,
         zipCode: values.cep
       },
-      areaOfOperation: values.operacao,
+      birthDate: new DateObject(values.ano + "/" + values.mes + "/" + values.dia),
       email: values.email,
-      idThirdParty: values.idThirdParty,
+      idUser: values.idUser,
       legalDocument: values.documentoLegal,
-      thirdPartyName: values.nome,
+      name: values.nome,
+      password: values.senha,
       phone1: values.telefone1,
       phone2: values.telefone2,
-      thirdPartyName: values.nome,
+      roles: 
+        role,
+      sex: values.sexo,
     }
 
-  api 
-    .post("/thirdParty/edit", UserBody)
-    .then(() => window.location.reload(false))
-    .catch(function (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log("The request was made but no response was received");
-        console.log(error.request);
-        console.log(error.toJSON());
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
-    });
+    api
+        .post("/user/edit", UserBody)
+        .then(() => window.location.reload(false))
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log("The request was made but no response was received");
+            console.log(error.request);
+            console.log(error.toJSON());
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
     
 };
 
 const handleCreateSubmit = (values) => {
-  var cidade = values.cidade
-  var estado = values.estado
+    var role = values.papel
 
-  const UserBody = {
-    address: {
-      addressId: 0,
-      city: cidade,
-      district: values.bairro,
-      number: values.numero,
-      state: estado,
-      street: values.rua,
-      zipCode: values.cep
-    },
-    areaOfOperation: values.operacao,
-    email: values.email,
-    idThirdParty: 0,
-    legalDocument: values.documentoLegal,
-    thirdPartyName: values.nome,
-    phone1: values.telefone1,
-    phone2: values.telefone2,
-    thirdPartyName: values.nome,
-  }
+    const UserBody = {
+      address: {
+        addressId: 0,
+        city: values.cidade,
+        district: values.bairro,
+        number: values.numero,
+        state: values.estado,
+        street: values.rua,
+        zipCode: values.cep
+      },
+      birthDate: new DateObject(values.ano + "/" + values.mes + "/" + values.dia),
+      email: values.email,
+      idUser: 0,
+      legalDocument: values.documentoLegal,
+      name: values.nome,
+      password: values.senha,
+      phone1: values.telefone1,
+      phone2: values.telefone2,
+      roles: [
+        "PROFESSOR",
+      ],
+      sex: values.sexo,
+    }
 
-  
-
-  api
-      .post("/thirdParty/create", UserBody)
-      .then(() => window.location.reload(false))
-      .catch(function (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log("The request was made but no response was received");
-          console.log(error.request);
-          console.log(error.toJSON());
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+    api
+        .post("/user/create", UserBody)
+        .then(() => window.location.reload(false))
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log("The request was made but no response was received");
+            console.log(error.request);
+            console.log(error.toJSON());
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
         setIsCriarOpen(false);
   };
 
@@ -324,60 +348,58 @@ const isNonMobile = useMediaQuery("(min-width:600px)");
 const [tableData, setTableData] = useState([])
 
 useEffect(() => {
-  api
-    .get("/thirdParty/page/0/size/10")
-    .then((response) =>  response.data.content)
-    .then((response) => LogResponse(response))
-    
-    .catch(function (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log("The request was made but no response was received");
-        console.log(error.request);
-        console.log(error.toJSON());
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
-    });
-    
+api
+  .get("/user/page/0/size/10")
+  .then((response) =>  response.data.content)
+  .then((response) => LogResponse(response))
+  .catch(function (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log("The request was made but no response was received");
+      console.log(error.request);
+      console.log(error.toJSON());
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
+  });
 }, []);
 
 const LogResponse = (values) =>{
-  var arr = [];
-
-  for(let i = 0; i < values.length; i++){
-    if(values[i].areaOfOperation != "Educação"){
-      arr.push(values[i])
+    var arr = [];
+  
+    for(let i = 0; i < values.length; i++){
+        if(values[i].roles[0].name == "PROFESSOR"){
+            arr.push(values[i])
+        } 
     }
+    setTableData(arr)
   }
 
-  setTableData(arr)
-}
 
     return (
-      <Box m="20px">
-        <Header title="Empresa Parceira" subtitle="Aqui está todas as Empresas Parceiras" />
+        <Box m="20px">
+            <Header title="Usuários" subtitle="Aqui você pode Criar, Visualizar, Editar ou Deletar Usuários" />
             <Button variant="outlined" color="success" sx={{ mb: 2 }} size="large" 
                 onClick={() => {
                     if(isEditOpen) setisEditOpen(false);
                     {handleCriarToggle()};
                 }}
             >
-                Criar Empresa Parceira
+                Criar Usuario
             </Button>
-            <CreateThirdParty isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
-            <EditThirdParty isFormOpen = {isEditOpen} handleFormSubmit={EditarTerceiro} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
+            <CreateTeacher isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
+            <EditTeacher isFormOpen = {isEditOpen} handleFormSubmit={EditarUser} valores={userEditParams} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
             <Box
                 m="40px 0 0 0"
                 height="70vh"
@@ -414,11 +436,11 @@ const LogResponse = (values) =>{
                 <StripedDataGrid           
                     rows={tableData}
                     columns={columns}
-                    getRowId={(row) => row.idThirdParty}
+                    getRowId={(row) => row.idUser}
                 />
             </Box>
         </Box>
     );
 };
 
-export default ThirdParty;
+export default Teachers;

@@ -12,13 +12,15 @@ import Dashboard from "./pages/dashboard";
 //import PrivateRoute from "./service/PrivateRoute";
 import Usuarios from "./pages/Usuarios";
 import ThirdParty from "./pages/ThirdParty";
+import Institution from "./pages/Institution";
+import Teachers from "./pages/Teachers";
 
 export default function App() {
     const [theme, colorMode] = useMode();
     const [isSidebar, setIsSidebar] = useState(true);
 
     const PrivateRoute = ({ children }) => {
-        const userIsLogged = sessionStorage.getItem("authenticated");// Your hook to get login status
+        const userIsLogged = sessionStorage.getItem("authenticated");
       
         if (!userIsLogged) {
           return <Login />;
@@ -41,6 +43,8 @@ export default function App() {
                                         <Route path="/Usuarios" element={<Usuarios />} />
                                         <Route path="/Login" element={<Login />} />
                                         <Route path="/ThirdParty" element={<ThirdParty />} />
+                                        <Route path="/Institution" element={<Institution />} />
+                                        <Route path="/Teachers" element={<Teachers />} />
                                     </Routes>
                                 </main>
                             </PrivateRoute>

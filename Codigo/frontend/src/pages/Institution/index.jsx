@@ -10,8 +10,8 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-import CreateThirdParty from "../../components/CreateThirdParty"
-import EditThirdParty from "../../components/EditThirdParty"
+import CreateInstitution from "../../components/CreateInstitution"
+import EditInstitution from "../../components/EditInstitution"
 
 const ODD_OPACITY = 0.2;
 
@@ -219,7 +219,7 @@ const EditarTerceiro = (values) => {
     var estado = values.estado
 
     const UserBody = {
-      address: {
+        address: {
         addressId: 0,
         city: cidade,
         district: values.bairro,
@@ -227,16 +227,16 @@ const EditarTerceiro = (values) => {
         state: estado,
         street: values.rua,
         zipCode: values.cep
-      },
-      areaOfOperation: values.operacao,
-      email: values.email,
-      idThirdParty: values.idThirdParty,
-      legalDocument: values.documentoLegal,
-      thirdPartyName: values.nome,
-      phone1: values.telefone1,
-      phone2: values.telefone2,
-      thirdPartyName: values.nome,
-    }
+        },
+        areaOfOperation: values.operacao,
+        email: values.email,
+        idThirdParty: values.idThirdParty,
+        legalDocument: values.documentoLegal,
+        thirdPartyName: values.nome,
+        phone1: values.telefone1,
+        phone2: values.telefone2,
+        thirdPartyName: values.nome,
+  }
 
   api 
     .post("/thirdParty/edit", UserBody)
@@ -357,7 +357,7 @@ const LogResponse = (values) =>{
   var arr = [];
 
   for(let i = 0; i < values.length; i++){
-    if(values[i].areaOfOperation != "Educação"){
+    if(values[i].areaOfOperation == "Educação"){
       arr.push(values[i])
     }
   }
@@ -367,17 +367,17 @@ const LogResponse = (values) =>{
 
     return (
       <Box m="20px">
-        <Header title="Empresa Parceira" subtitle="Aqui está todas as Empresas Parceiras" />
+        <Header title="Instuição" subtitle="Aqui está todas as Instuições" />
             <Button variant="outlined" color="success" sx={{ mb: 2 }} size="large" 
                 onClick={() => {
                     if(isEditOpen) setisEditOpen(false);
                     {handleCriarToggle()};
                 }}
             >
-                Criar Empresa Parceira
+                Criar Instuições
             </Button>
-            <CreateThirdParty isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
-            <EditThirdParty isFormOpen = {isEditOpen} handleFormSubmit={EditarTerceiro} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
+            <CreateInstitution isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
+            <EditInstitution isFormOpen = {isEditOpen} handleFormSubmit={EditarTerceiro} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
             <Box
                 m="40px 0 0 0"
                 height="70vh"
