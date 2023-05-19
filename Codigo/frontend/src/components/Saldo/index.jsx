@@ -17,15 +17,19 @@ export const OverviewBudget = (props) => {
     <Box
         display="grid"
         gridTemplateColumns="repeat(3, 1fr)"
-        gridAutoRows="140px"
-        gap="5px"    
+        gridAutoRows="140px"  
         
     >
         <Grid
             sx={{
-                backgroundColor: colors.background,
+                backgroundColor: colors.primary[800],
                 textAlign: "center",
                 height: "100%",
+                borderTop: 1,
+                borderLeft: 1,
+                borderRight: 0.1,
+                borderBottom: 1,
+                borderRadius: '35px 0 0 35px'
             }}
             display="flex"
             justifyContent="center"
@@ -51,13 +55,15 @@ export const OverviewBudget = (props) => {
                 backgroundColor: colors.background,
                 height: "100%",
                 textAlign: "center",
+                borderTop: 1,
+                borderBottom: 1,
             }}
             display="flex"
             justifyContent="center"
             textAlign= "center"
             alignItems="center"
         >
-            <Typography variant="h2">
+            <Typography variant="h3">
                 R$ {value}
             </Typography>
 
@@ -67,6 +73,10 @@ export const OverviewBudget = (props) => {
                 backgroundColor: colors.background,
                 height: "100%",
                 textAlign: "center",
+                borderTop: 1,
+                borderRight: 1,
+                borderBottom: 1,
+                borderRadius: '0 35px 35px 0'
             }}
             display="flex"
             justifyContent="center"
