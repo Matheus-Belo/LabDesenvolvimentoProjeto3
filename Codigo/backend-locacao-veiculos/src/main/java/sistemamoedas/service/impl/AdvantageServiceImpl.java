@@ -50,12 +50,7 @@ public class AdvantageServiceImpl implements AdvantageService {
 
             ThirdParty thirdParty = thirdPartyService.getThirdPartyByIdThirdParty(request.getThirdPartyId());
 
-            Advantages savedAdvantage = this.advantagesRepository.save(AdvantagesRequest.toAdvantages(request, thirdParty));
-
-            AdvantagesResponse advantagesResponse = AdvantagesResponse.fromAdvantages(
-                    savedAdvantage
-            );
-
+            List<AdvantagesImages> receivedImages = new LinkedList<AdvantagesImages>();
             LinkedList<String> paths = new LinkedList<String>();
 
             if(request.getAdvantagesImages()!= null) {
@@ -66,8 +61,8 @@ public class AdvantageServiceImpl implements AdvantageService {
 
                     String actualPath = uploadImage(actualImage);
 
-                    this.advantagesImagesRepository.save(new AdvantagesImages(
-                            savedAdvantage,
+                    receivedImages.add(new AdvantagesImages(
+                            0L,
                             request.getImagesNames().get(contLista),
                             request.getImagesDescription().get(contLista),
                             actualPath,
@@ -78,6 +73,12 @@ public class AdvantageServiceImpl implements AdvantageService {
                     paths.add(actualPath);
                 }
             }
+
+            Advantages savedAdvantage = this.advantagesRepository.save(AdvantagesRequest.toAdvantages(request, thirdParty, receivedImages));
+
+            AdvantagesResponse advantagesResponse = AdvantagesResponse.fromAdvantages(
+                    savedAdvantage
+            );
 
 
 
@@ -102,7 +103,31 @@ public class AdvantageServiceImpl implements AdvantageService {
 
             ThirdParty thirdParty = thirdPartyService.getThirdPartyByIdThirdParty(request.getThirdPartyId());
 
-            Advantages savedAdvantage = this.advantagesRepository.save(AdvantagesRequest.toAdvantages(request, thirdParty));
+            List<AdvantagesImages> receivedImages = new LinkedList<AdvantagesImages>();
+            LinkedList<String> paths = new LinkedList<String>();
+
+            if(request.getAdvantagesImages()!= null) {
+
+                int contLista = 0;
+                for (MultipartFile actualImage :
+                        request.getAdvantagesImages()) {
+
+                    String actualPath = uploadImage(actualImage);
+
+                    receivedImages.add(new AdvantagesImages(
+                            0L,
+                            request.getImagesNames().get(contLista),
+                            request.getImagesDescription().get(contLista),
+                            actualPath,
+                            new Date(),
+                            null
+                    ));
+                    contLista++;
+                    paths.add(actualPath);
+                }
+            }
+
+            Advantages savedAdvantage = this.advantagesRepository.save(AdvantagesRequest.toAdvantages(request, thirdParty,receivedImages));
 
             return AdvantagesResponse.fromAdvantages(savedAdvantage);
 

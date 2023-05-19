@@ -210,9 +210,12 @@ CREATE TABLE advantages (
                              status varchar(50),
                              amount varchar(50),
                              validation_date TIMESTAMP,
+                             third_party_id INT CHECK (third_party_id > 0) NOT NULL,
 
                              created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
-                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL
+                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                             CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
 
 );
 CREATE SEQUENCE advantages_images_seq;
@@ -227,19 +230,4 @@ CREATE TABLE advantages_images (
                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
 
                             CONSTRAINT FK_advantages_id  FOREIGN KEY (advantages_id) REFERENCES advantages(advantages_id)
-);
-
-
-CREATE SEQUENCE advantages_thirdParty_seq;
-CREATE TABLE advantages_third_party (
-                            advantages_thirdParty_id INT DEFAULT NEXTVAL ('advantages_thirdParty_seq') PRIMARY KEY,
-                            advantages_id INT CHECK (advantages_id > 0) NOT NULL,
-                            third_party_id INT CHECK (third_party_id > 0) NOT NULL,
-
-                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
-                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
-
-                            CONSTRAINT FK_advantages_id  FOREIGN KEY (advantages_id) REFERENCES advantages(advantages_id),
-                            CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
-
 );

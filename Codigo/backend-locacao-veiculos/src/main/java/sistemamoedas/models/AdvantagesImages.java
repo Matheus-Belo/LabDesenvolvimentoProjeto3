@@ -1,6 +1,7 @@
 package sistemamoedas.models;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
@@ -18,9 +19,9 @@ public class AdvantagesImages {
     @Column(name = "advantages_images_id")
     private Long idAdvantagesImages;
 
-    @OneToOne
-    @JoinColumn(name = "advantages_id")
-    private Advantages idAdvantages;
+
+    @Column(name = "advantages_id")
+    private Long idAdvantages;
 
     @Column(name = "advantage_image_name")
     private String advantageImageName;
@@ -41,9 +42,8 @@ public class AdvantagesImages {
     public AdvantagesImages() {
     }
 
-    public AdvantagesImages(Long idAdvantagesImages, Advantages idAdvantages, String advantageImageName,
-                            String advantageImageDescription, String advantageImagePath, Date createdAt,
-                            Date deletedAt) {
+    public AdvantagesImages(Long idAdvantagesImages, Long idAdvantages, String advantageImageName,
+                            String advantageImageDescription, String advantageImagePath, Date createdAt, Date deletedAt) {
         this.idAdvantagesImages = idAdvantagesImages;
         this.idAdvantages = idAdvantages;
         this.advantageImageName = advantageImageName;
@@ -53,9 +53,18 @@ public class AdvantagesImages {
         this.deletedAt = deletedAt;
     }
 
-    public AdvantagesImages(Advantages idAdvantages, String advantageImageName, String advantageImageDescription,
+    public AdvantagesImages(Long idAdvantages, String advantageImageName, String advantageImageDescription,
                             String advantageImagePath, Date createdAt, Date deletedAt) {
         this.idAdvantages = idAdvantages;
+        this.advantageImageName = advantageImageName;
+        this.advantageImageDescription = advantageImageDescription;
+        this.advantageImagePath = advantageImagePath;
+        this.createdAt = createdAt;
+        this.deletedAt = deletedAt;
+    }
+
+    public AdvantagesImages(String advantageImageName, String advantageImageDescription,
+                            String advantageImagePath, Date createdAt, Date deletedAt) {
         this.advantageImageName = advantageImageName;
         this.advantageImageDescription = advantageImageDescription;
         this.advantageImagePath = advantageImagePath;

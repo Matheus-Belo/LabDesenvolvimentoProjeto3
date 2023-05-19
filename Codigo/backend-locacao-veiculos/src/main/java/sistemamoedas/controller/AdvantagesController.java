@@ -36,7 +36,7 @@ public class AdvantagesController {
     //@PreAuthorize("@authorityChecker.isAllowed({'ADMIN','DEF'})")
     public ResponseEntity<AdvantagesResponse> createAdvantage(
             @ApiParam(value = "Json da requisição que contem o dado da vantagem a ser salva")
-            @Valid @RequestBody AdvantagesRequest request) throws NotFoundException {
+            @Valid  AdvantagesRequest request) throws NotFoundException {
         AdvantagesResponse advantagesResponse = this.advantageService.createAdvantage(request);
         return ResponseEntity.ok().body(
                 advantagesResponse
@@ -49,7 +49,7 @@ public class AdvantagesController {
     @ApiOperation(value = "Editar vantagem existente")
     public ResponseEntity<AdvantagesResponse> editAdvantage(
             @ApiParam(value = "Json da requisição que contem o dado da vantagem a ser editado")
-            @Valid @RequestBody AdvantagesRequest request) throws NotFoundException {
+            @Valid  AdvantagesRequest request) throws NotFoundException {
 
 
         AdvantagesResponse advantagesResponse = this.advantageService.editAdvantage(request);

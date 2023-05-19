@@ -2,10 +2,7 @@ package sistemamoedas.models.RequestEntity;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-import sistemamoedas.models.Advantages;
-import sistemamoedas.models.ThirdParty;
-import sistemamoedas.models.Transactions;
-import sistemamoedas.models.User;
+import sistemamoedas.models.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -52,7 +49,7 @@ public class AdvantagesRequest {
 
 
 
-    public static Advantages toAdvantages(AdvantagesRequest request, ThirdParty thirdParty) {
+    public static Advantages toAdvantages(AdvantagesRequest request, ThirdParty thirdParty, List<AdvantagesImages> receivedImages) {
 
         return new Advantages(
 

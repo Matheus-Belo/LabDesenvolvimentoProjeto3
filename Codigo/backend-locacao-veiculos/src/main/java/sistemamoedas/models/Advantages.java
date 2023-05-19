@@ -23,13 +23,14 @@ public class Advantages {
     @Column(name = "advantage_name")
     private String advantageName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "advantages_third_party",
-            joinColumns = @JoinColumn(name = "advantages_id"),
-            inverseJoinColumns = @JoinColumn(name = "third_party_id")
-    )
-    private List<Advantages> advantages;
+
+    @OneToOne
+    @JoinColumn(name = "third_party_id")
+    private ThirdParty thirdParty;
+
+    @OneToMany
+    @JoinColumn(name = "advantages_images_id")
+    private List<AdvantagesImages> advantagesImages;
 
     @Column(name = "advantage_description")
     private String advantageDescription;
