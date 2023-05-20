@@ -69,7 +69,7 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
                 this.thirdPartyRepository.findOneByIdThirdPartyAndDeletedAtIsNull(request.getIdThirdParty())
         );
 
-        if(!verifyThirdParty.isPresent()) {
+        if(verifyThirdParty.isPresent()) {
             Cities city = this.cityService.findByCity(request.getAddress().getCity());
             States state = this.stateService.findByUf(request.getAddress().getState());
 
