@@ -293,9 +293,6 @@ const handleCreateSubmit = (values) => {
 
     console.log(values.papel)
 
-    if(values.papel == "PROFESSOR"){
-      Moedas = 1000.00
-    }
     const UserBody = {
       address: {
         addressId: 0,
@@ -318,7 +315,6 @@ const handleCreateSubmit = (values) => {
         role,
       ],
       sex: values.sexo,
-      wallet: Moedas,
     }
 
     api

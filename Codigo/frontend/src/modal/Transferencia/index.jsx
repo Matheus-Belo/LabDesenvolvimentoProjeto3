@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/API/api";
 import * as yup from "yup";
 import { Field, Formik } from "formik";
+import DateObject from "react-date-object";
+import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute',
@@ -29,60 +31,80 @@ export default function Transferencia(User) {
     const site = "/user/getuserbyid/userId/" + id
     const nome = User.User.name
 
+    const [errorMessage, setErrorMessage] = React.useState("");
+
     
     const handleFormSubmit = (values) => {
-        const description = "ID: " + id + " Manda " + values.envio + " para  ID: " + User.User.idUser
-        const current = new Date();
-        const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
-        const TransactionBody = {
-            idTransaction: 0,
-            idOriginAccount: parseInt(id),
-            idDestinationAccount: User.User.idUser,
-            transactionType: "Envio",
-            description: description,            
-            transactionDate: date,
-            amount: values.envio, 
+        if(wallet > values.envio){
+            const description = "ID: " + id + " Manda " + values.envio + " para  ID: " + User.User.idUser
+            const current = new Date();
+            const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+
+            const TransactionBody = {
+                amount: values.envio,
+                description: description, 
+                idDestinationAccount: User.User.idUser,
+                idOriginAccount: parseInt(id),
+                idTransaction: 0,           
+            }
+
+            /**
+             * "amount":  quantidade de dinheiro transferida, sem virgula nem cifrao ex: 1500   1600,
+                "description": "descriçao",
+                "idDestinationAccount": id origem,
+                "idOriginAccount": id destino,
+                "idTransaction": 0
+             * 
+             * 
+             * 
+             * 
+             * 
+             * "amount": 0,
+                "description": "string",
+                "idDestinationAccount": 0,
+                "idOriginAccount": 0,
+                "idTransaction": 0,
+                "itemCode": 0,
+                "transactionDate": "string",
+                "transactionType": "string"
+            */
+
+            console.log(TransactionBody)
+
+            api
+            .post("/transaction/createDeposit", TransactionBody)
+            .then(() => console.log("Success"))
+            .catch(function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log("The request was made but no response was received");
+                console.log(error.request);
+                console.log(error.toJSON());
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+            });
+            handleClose();
+        }else{
+            setErrorMessage(<Alert  
+                                severity="error"
+                            >
+                                Voce não tem saldo o suficiente
+                            </Alert>)
         }
-
-        /**
-         * "amount": 0,
-            "description": "string",
-            "idDestinationAccount": 0,
-            "idOriginAccount": 0,
-            "idTransaction": 0,
-            "itemCode": 0,
-            "transactionDate": "string",
-            "transactionType": "string"
-         */
-
-        console.log(TransactionBody)
-
-        api
-        .post("/transaction/createDeposit", TransactionBody)
-        .then(() => console.log("Success"))
-        .catch(function (error) {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log("The request was made but no response was received");
-            console.log(error.request);
-            console.log(error.toJSON());
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
-        });
-        handleClose();
+            
 
     };
 
@@ -163,6 +185,7 @@ export default function Transferencia(User) {
                                 }}
                                 mt="30px"
                             >
+                                {errorMessage && <div className="error"> {errorMessage} </div>}
                                 <Button type="submit" color="secondary" variant="contained">
                                     Mandar Moedas
                                 </Button>
@@ -175,6 +198,7 @@ export default function Transferencia(User) {
         </div>
     );
 }
+
 
 const checkoutSchema = yup.object().shape({
     envio: yup.number().min(1, 'Quantidade Invalida').max(1000, 'Quantidade Invalida').required("Requirido"),

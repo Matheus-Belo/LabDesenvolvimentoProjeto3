@@ -61,7 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						           "/user/create",
 						           "/thirdParty/create",
 									"/user/page/{page}/size/{size}",
-									"/user/page/*"
+									"/user/page/*",
+									"/user/getuserbyid/userId/{userId}"
 				).permitAll()
 				.antMatchers("/v2/api-docs", "/swagger-resources/**",
 				"/swagger-ui.html", "/webjars/springfox-swagger-ui/**","/user/create").permitAll()

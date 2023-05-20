@@ -179,7 +179,7 @@ const LayoutSidebar = () => {
         </Sidebar>
       </Box>
     );
-  }else{
+  }else if(role === "PROFESSOR"){
     return (
       <Box
         sx={{
@@ -256,12 +256,12 @@ const LayoutSidebar = () => {
                 color={colors.grey[300]}
                 sx={{ m: "15px 0 5px 20px" }}
               >
-                Painel Admin
+                Painel Professor
               </Typography>
                 <MenuItem
-                  component={<Link to="/Usuarios" />}
+                  component={<Link to="/Alunos" />}
                 >
-                  Usuarios
+                  Alunos
                 </MenuItem>
             </Box>
           </Menu>
