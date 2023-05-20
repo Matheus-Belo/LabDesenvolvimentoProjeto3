@@ -45,4 +45,6 @@ public interface AdvantageService {
     public LinkedList<String> getImagesPaths(Long idRiskArea) throws IOException;
 
     List<String> getAllCategories();
+
+    Advantages saveAdvantage(Advantages advantage);
 }

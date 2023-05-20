@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sistemamoedas.enums.AdvantageStatusEnum;
 import sistemamoedas.enums.RolesEnum;
 import sistemamoedas.models.*;
 import sistemamoedas.models.RequestEntity.AdvantagesRequest;
@@ -164,12 +165,12 @@ public class AdvantageServiceImpl implements AdvantageService {
 
     @Override
     public Page<Advantages> listAdvantagesByPage(Pageable pages) {
-        return this.advantagesRepository.findAllByDeletedAtIsNullOrderByIdAdvantages(pages);
+        return this.advantagesRepository.findAllByDeletedAtIsNullAndStatusOrderByIdAdvantages(pages, AdvantageStatusEnum.AVAILABLE.getCode());
     }
 
     @Override
     public Page<Advantages> listAdvantagesByPageAndThirdPartyId(Pageable pages, Long idThirdParty) {
-        return this.advantagesRepository.findAllByThirdPartyAndDeletedAtIsNullOrderByIdAdvantages(pages,getThirdParty(idThirdParty));
+        return this.advantagesRepository.findAllByThirdPartyAndDeletedAtIsNullAndStatusOrderByIdAdvantages(pages,getThirdParty(idThirdParty), AdvantageStatusEnum.AVAILABLE.getCode());
     }
     @Override
     public Advantages getAdvantageById(Long idAdvantage) {
@@ -178,12 +179,12 @@ public class AdvantageServiceImpl implements AdvantageService {
 
     @Override
     public Page<Advantages> listAdvantagesByPageAndCategory(Pageable pages, String category) {
-        return this.advantagesRepository.findAllByAdvantageCategoryAndDeletedAtIsNullOrderByIdAdvantages(pages,category);
+        return this.advantagesRepository.findAllByAdvantageCategoryAndDeletedAtIsNullAndStatusOrderByIdAdvantages(pages,category, AdvantageStatusEnum.AVAILABLE.getCode());
     }
 
     @Override
     public Page<Advantages> listAdvantagesByPageAndName(Pageable pages, String advantageName) {
-        return this.advantagesRepository.findAllByAdvantageNameAndDeletedAtIsNullOrderByIdAdvantages(pages,advantageName);
+        return this.advantagesRepository.findAllByAdvantageNameAndDeletedAtIsNullAndStatusOrderByIdAdvantages(pages,advantageName, AdvantageStatusEnum.AVAILABLE.getCode());
     }
 
     @Override
@@ -239,5 +240,10 @@ public class AdvantageServiceImpl implements AdvantageService {
         allAdvantages.stream().forEach(category -> categories.add(category.getAdvantageCategory()));
 
         return categories;
+    }
+
+    @Override
+    public Advantages saveAdvantage(Advantages advantage) {
+        return this.advantagesRepository.save(advantage);
     }
 }

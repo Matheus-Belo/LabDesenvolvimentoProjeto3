@@ -18,12 +18,12 @@ public interface AdvantagesRepository extends JpaRepository<Advantages,Long> {
 
     List<Advantages> findAllByDeletedAtIsNullOrderByIdAdvantagesAsc();
 
-    Page<Advantages> findAllByDeletedAtIsNullOrderByIdAdvantages(Pageable page);
+    Page<Advantages> findAllByDeletedAtIsNullAndStatusOrderByIdAdvantages(Pageable page, String status);
 
-    Page<Advantages> findAllByThirdPartyAndDeletedAtIsNullOrderByIdAdvantages(Pageable page, ThirdParty thirdParty);
+    Page<Advantages> findAllByThirdPartyAndDeletedAtIsNullAndStatusOrderByIdAdvantages(Pageable page, ThirdParty thirdParty, String status);
 
-    Page<Advantages> findAllByAdvantageCategoryAndDeletedAtIsNullOrderByIdAdvantages(Pageable page, String advantageCategory);
-    Page<Advantages> findAllByAdvantageNameAndDeletedAtIsNullOrderByIdAdvantages(Pageable page, String advantageName);
+    Page<Advantages> findAllByAdvantageCategoryAndDeletedAtIsNullAndStatusOrderByIdAdvantages(Pageable page, String advantageCategory, String status);
+    Page<Advantages> findAllByAdvantageNameAndDeletedAtIsNullAndStatusOrderByIdAdvantages(Pageable page, String advantageName,String status );
 
 
 }

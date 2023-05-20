@@ -15,7 +15,7 @@ public interface TransactionService {
 
     TransactionResponse createDeposit(TransactionRequest request) throws NotFoundException;
 
-    TransactionResponse createSale(TransactionRequest request);
+    TransactionResponse createSale(TransactionRequest request) throws NotFoundException;
 
     List<Transactions> getExtractAsList(Long idConta);
 

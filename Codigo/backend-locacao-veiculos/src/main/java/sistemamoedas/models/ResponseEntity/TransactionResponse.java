@@ -34,6 +34,7 @@ public class TransactionResponse {
     private BigDecimal amount;
 
 
+    private Advantages boughtItem;
     private Date createdAt;
 
 
@@ -41,7 +42,7 @@ public class TransactionResponse {
 
     public TransactionResponse(Long idTransaction, User idOriginAccount, User idDestinationAccount,
                                String transactionType, String description, String transactionDate,
-                               BigDecimal amount, Date createdAt, Date deletedAt) {
+                               BigDecimal amount, Advantages boughtItem, Date createdAt, Date deletedAt) {
         this.idTransaction = idTransaction;
         this.idOriginAccount = idOriginAccount;
         this.idDestinationAccount = idDestinationAccount;
@@ -49,6 +50,7 @@ public class TransactionResponse {
         this.description = description;
         this.transactionDate = transactionDate;
         this.amount = amount;
+        this.boughtItem = boughtItem;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
     }
@@ -64,6 +66,7 @@ public class TransactionResponse {
                 transaction.getDescription(),
                 transaction.getTransactionDate(),
                 transaction.getAmount(),
+                transaction.getDesiredItem(),
                 transaction.getCreatedAt(),
                 transaction.getDeletedAt()
 

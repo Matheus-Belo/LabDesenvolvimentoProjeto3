@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sistemamoedas.enums.AdvantageStatusEnum;
 import sistemamoedas.enums.TransactionTypeEnum;
 import sistemamoedas.models.*;
 import sistemamoedas.models.RequestEntity.ThirdPartyRequest;
@@ -15,6 +16,7 @@ import sistemamoedas.models.ResponseEntity.ThirdPartyResponse;
 import sistemamoedas.models.ResponseEntity.TransactionResponse;
 import sistemamoedas.models.dto.AddressDto;
 import sistemamoedas.repository.TransactionsRepository;
+import sistemamoedas.service.AdvantageService;
 import sistemamoedas.service.EmailService;
 import sistemamoedas.service.TransactionService;
 import sistemamoedas.service.UserService;
@@ -33,8 +35,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     UserService userService;
 
-    /*@Autowired
-    EmailService emailService;*/
+    @Autowired
+    AdvantageService advantageService;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     //Ao receber uma moeda, o aluno deve ser notificado por email.
@@ -47,29 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         if(!verifyTransaction.isPresent()) {
 
-            User originAccount = Optional.of(this.userService.getUserById(request.getIdOriginAccount()))
-                    .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de origem não encontrado"));
-
-            User destinationAccount = Optional.of(this.userService.getUserById(request.getIdDestinationAccount()))
-                    .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de destino não encontrado"));
-
-            if (originAccount.getWallet().compareTo(request.getAmount()) >= 0  ) {
-
-                originAccount.setWallet(originAccount.getWallet().subtract(request.getAmount()));
-                destinationAccount.setWallet(destinationAccount.getWallet().add(request.getAmount()));
-
-                this.userService.saveUser(originAccount);
-                this.userService.saveUser(destinationAccount);
-
-                Transactions transactionResponse = this.transactionsRepository.save(
-                        TransactionRequest.toTransactions(request, originAccount, destinationAccount, TransactionTypeEnum.DEPOSIT.getCode())
-                );
-
-                return TransactionResponse.fromTransactions(transactionResponse);
-
-            }else {
-                throw new NonUniqueResultException(" Transação não concluida, Conta de origem não possui saldo ");
-            }
+            return getTransactionResponse(request,false);
 
         }else{
             throw new NonUniqueResultException(" Transação não instanciada, falha ao gerar ");
@@ -78,14 +61,81 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponse createSale(TransactionRequest request) {
+    public TransactionResponse createSale(TransactionRequest request) throws NotFoundException {
+
+        Optional<Transactions> verifyTransaction = Optional.ofNullable(
+                this.transactionsRepository.findOneByIdTransactionAndDeletedAtIsNull(request.getIdTransaction())
+        );
+
+        if(!verifyTransaction.isPresent()) {
+
+            return getTransactionResponse(request,true);
+        }else{
+            throw new NonUniqueResultException(" Transação não instanciada, falha ao gerar ");
+        }
+    }
+
+    private TransactionResponse getTransactionResponse(TransactionRequest request, boolean sale) throws NotFoundException {
+        Advantages advantage = null;
+
+        User originAccount = Optional.of(this.userService.getUserById(request.getIdOriginAccount()))
+                .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de origem não encontrado"));
+
+        User destinationAccount = Optional.of(this.userService.getUserById(request.getIdDestinationAccount()))
+                .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de destino não encontrado"));
+
+        if(request.getItemCode()!=null && sale){
+           advantage = Optional.of(this.advantageService.getAdvantageById(request.getItemCode()))
+                    .orElseThrow(() -> new NonUniqueResultException("Vantagem não encontrada"));
+
+            request.setAmount(advantage.getPrice());
+
+        }
 
 
 
+        if (originAccount.getWallet().compareTo(request.getAmount()) >= 0) {
+
+            originAccount.setWallet(originAccount.getWallet().subtract(request.getAmount()));
+            destinationAccount.setWallet(destinationAccount.getWallet().add(request.getAmount()));
+
+            this.userService.saveUser(originAccount);
+            this.userService.saveUser(destinationAccount);
+
+            if(sale){
+                advantage.setStatus(AdvantageStatusEnum.SOLD.getCode());
+                this.advantageService.saveAdvantage(advantage);
+            }
+
+            Transactions transactionResponse = this.transactionsRepository.save(
+                    TransactionRequest.toTransactions(
+                            request,
+                            originAccount,
+                            destinationAccount,
+                            sale ? TransactionTypeEnum.SALE.getCode() : TransactionTypeEnum.DEPOSIT.getCode(),
+                            sale? advantage :null
+                    )
+            );
 
 
+            if(sale) {
 
-        return null;
+                String messageToBuyer = "Compra do item: "+advantage.getAdvantageName()+" Efetuada com sucesso. Cupom: "+advantage.getCouponCode()+" .";
+                String messageToOwner = "Venda do item: "+advantage.getAdvantageName()+" Efetuada com sucesso. Cupom: "+advantage.getCouponCode()+" .";
+                emailService.sendEmail(originAccount.getEmail(),"Compra Sistema Moedas", messageToBuyer);
+                emailService.sendEmail(destinationAccount.getEmail(),"Venda Sistema Moedas", messageToOwner);
+            }else{
+                String messageToDestination = "Transferencia no valor de: "+transactionResponse.getAmount()+" Recebida com sucesso.";
+                String messageToOrigin = "Transferencia no valor de: "+transactionResponse.getAmount()+" Efetuada com sucesso.";
+
+                emailService.sendEmail(originAccount.getEmail(),"Transferencia Efetuada Sistema Moedas", messageToOrigin);
+                emailService.sendEmail(destinationAccount.getEmail(),"Transferencia Recebida Sistema Moedas", messageToDestination);
+            }
+            return TransactionResponse.fromTransactions(transactionResponse);
+
+        } else {
+            throw new NonUniqueResultException(" Transação não concluida, Conta de origem não possui saldo ");
+        }
     }
 
     @Override
@@ -125,6 +175,9 @@ public class TransactionServiceImpl implements TransactionService {
                 Transactions transactionResponse = this.transactionsRepository.save(
                         TransactionRequest.toTransactionsAuto(originAccount, destinationAccount, TransactionTypeEnum.DEPOSIT.getCode())
                 );
+
+                String messageToDestination = "Transferencia Automatica mensal no valor de: "+transactionResponse.getAmount()+" Recebida com sucesso.";
+                emailService.sendEmail(destinationAccount.getEmail(),"Transferencia Recebida Sistema Moedas", messageToDestination);
 
                 responses.add(TransactionResponse.fromTransactions(transactionResponse));
         }

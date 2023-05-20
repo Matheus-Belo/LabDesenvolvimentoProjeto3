@@ -1,10 +1,7 @@
 package sistemamoedas.models.RequestEntity;
 
 import lombok.Data;
-import sistemamoedas.models.Address;
-import sistemamoedas.models.Role;
-import sistemamoedas.models.Transactions;
-import sistemamoedas.models.User;
+import sistemamoedas.models.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -28,6 +25,8 @@ public class TransactionRequest {
     private String transactionDate;
 
     private BigDecimal amount;
+
+    private Long itemCode;
 
     private Date createdAt;
 
@@ -55,7 +54,8 @@ public class TransactionRequest {
     public static Transactions toTransactions(TransactionRequest request,
                                               User originAccount,
                                               User destinationAccount,
-                                              String transactionType) {
+                                              String transactionType,
+                                              Advantages itenCode) {
 
         return new Transactions(
 
@@ -66,6 +66,7 @@ public class TransactionRequest {
                 request.getDescription(),
                 new Date().toString(),
                 request.getAmount(),
+                itenCode,
                 new Date(),
                 null
         );
@@ -85,6 +86,7 @@ public class TransactionRequest {
                 "Automatic monthly deposit for teachers",
                 new Date().toString(),
                 BigDecimal.valueOf(1000),
+                null,
                 new Date(),
                 null
         );

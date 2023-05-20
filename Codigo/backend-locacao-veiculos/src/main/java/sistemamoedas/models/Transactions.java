@@ -39,6 +39,10 @@ public class Transactions {
     @Column(name = "amount")
     private BigDecimal amount;
 
+    @OneToOne
+    @JoinColumn(name = "advantages_id")
+    Advantages desiredItem;
+
     @Column(name = "created_at")
     private Date createdAt;
 
@@ -51,7 +55,7 @@ public class Transactions {
 
     public Transactions(Long idTransaction, User idOriginAccount,
                         User idDestinationAccount, String transactionType, String description, String transactionDate,
-                        BigDecimal amount, Date createdAt, Date deletedAt) {
+                        BigDecimal amount, Advantages desiredItem, Date createdAt, Date deletedAt) {
         this.idTransaction = idTransaction;
         this.idOriginAccount = idOriginAccount;
         this.idDestinationAccount = idDestinationAccount;
@@ -59,12 +63,14 @@ public class Transactions {
         this.description = description;
         this.transactionDate = transactionDate;
         this.amount = amount;
+        this.desiredItem = desiredItem;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
     }
 
     public Transactions(User idOriginAccount, User idDestinationAccount, String transactionType,
-                        String description, String transactionDate, BigDecimal amount, Date createdAt, Date deletedAt){
+                        String description, String transactionDate, BigDecimal amount, Advantages desiredItem,
+                        Date createdAt, Date deletedAt){
 
         this.idOriginAccount = idOriginAccount;
         this.idDestinationAccount = idDestinationAccount;
@@ -72,6 +78,7 @@ public class Transactions {
         this.description = description;
         this.transactionDate = transactionDate;
         this.amount = amount;
+        this.desiredItem = desiredItem;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
     }

@@ -180,6 +180,25 @@ CREATE TABLE user_department (
                         CONSTRAINT FK_department_roles_id FOREIGN KEY (department_roles_id) REFERENCES department_roles(department_roles_id)
 
 );
+CREATE SEQUENCE advantages_seq;
+CREATE TABLE advantages (
+                            advantages_id INT DEFAULT NEXTVAL ('advantages_seq') PRIMARY KEY,
+                            advantage_name VARCHAR (50),
+                            advantage_description VARCHAR(100) NOT NULL,
+                            price MONEY,
+                            advantage_category VARCHAR (50),
+                            coupon_code varchar(50),
+                            status varchar(50),
+                            amount varchar(50),
+                            validation_date TIMESTAMP,
+                            third_party_id INT CHECK (third_party_id > 0) NOT NULL,
+
+                            created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+                            deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
+
+                            CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
+
+);
 
 CREATE SEQUENCE transactions_seq;
 CREATE TABLE transactions (
@@ -189,35 +208,19 @@ CREATE TABLE transactions (
                             transaction_type VARCHAR (50),
                             description VARCHAR (250),
                             transaction_date TIMESTAMP(0) NULL DEFAULT NULL,
+                            advantages_id INT CHECK (advantages_id > 0),
                             amount Money,
 
                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
 
                             CONSTRAINT FK_origin_account_id FOREIGN KEY (origin_account_id) REFERENCES users(user_id),
-                            CONSTRAINT FK_destination_account_id FOREIGN KEY (destination_account_id) REFERENCES users(user_id)
+                            CONSTRAINT FK_destination_account_id FOREIGN KEY (destination_account_id) REFERENCES users(user_id),
+                            CONSTRAINT FK_advantages_id  FOREIGN KEY (advantages_id) REFERENCES advantages(advantages_id)
 );
 
 
-CREATE SEQUENCE advantages_seq;
-CREATE TABLE advantages (
-                             advantages_id INT DEFAULT NEXTVAL ('advantages_seq') PRIMARY KEY,
-                             advantage_name VARCHAR (50),
-                             advantage_description VARCHAR(100) NOT NULL,
-                             price MONEY,
-                             advantage_category VARCHAR (50),
-                             coupon_code varchar(50),
-                             status varchar(50),
-                             amount varchar(50),
-                             validation_date TIMESTAMP,
-                             third_party_id INT CHECK (third_party_id > 0) NOT NULL,
 
-                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
-                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
-
-                             CONSTRAINT FK_third_party_id FOREIGN KEY (third_party_id) REFERENCES third_party(third_party_id)
-
-);
 CREATE SEQUENCE advantages_images_seq;
 CREATE TABLE advantages_images (
                             advantages_images_id INT DEFAULT NEXTVAL ('advantages_images_seq') PRIMARY KEY,
