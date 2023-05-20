@@ -15,6 +15,7 @@ import ThirdParty from "./pages/ThirdParty";
 import Institution from "./pages/Institution";
 import Teachers from "./pages/Teachers";
 import CreateAdvantage from "./pages/CreateAdvantage";
+import Alunos from "./pages/Alunos";
 
 export default function App() {
     const [theme, colorMode] = useMode();
@@ -47,6 +48,7 @@ export default function App() {
                                         <Route path="/Institution" element={<Institution />} />
                                         <Route path="/Teachers" element={<Teachers />} />
                                         <Route path="/CreateAdvantage" element={<CreateAdvantage />} />
+                                        <Route path="/Alunos" element={<Alunos />} />
                                     </Routes>
                                 </main>
                             </PrivateRoute>

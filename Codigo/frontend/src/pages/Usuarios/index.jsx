@@ -259,6 +259,7 @@ const EditarUser = (values) => {
         values.papel
       ],
       sex: values.sexo,
+      wallet: values.wallet
     }
     api
         .post("/user/edit", UserBody)
@@ -288,7 +289,13 @@ const EditarUser = (values) => {
 
 const handleCreateSubmit = (values) => {
     var role = values.papel
+    var Moedas = 0.00
 
+    console.log(values.papel)
+
+    if(values.papel == "PROFESSOR"){
+      Moedas = 1000.00
+    }
     const UserBody = {
       address: {
         addressId: 0,
@@ -307,9 +314,11 @@ const handleCreateSubmit = (values) => {
       password: values.senha,
       phone1: values.telefone1,
       phone2: values.telefone2,
-      roles: 
+      roles: [
         role,
+      ],
       sex: values.sexo,
+      wallet: Moedas,
     }
 
     api

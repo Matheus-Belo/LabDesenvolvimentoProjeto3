@@ -36,14 +36,25 @@ export default function Transferencia(User) {
         const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
         const TransactionBody = {
-            amount: values.envio,
-            description: description,
-            idDestinationAccount: User.User.idUser,
-            idOriginAccount: parseInt(id),
             idTransaction: 0,
+            idOriginAccount: parseInt(id),
+            idDestinationAccount: User.User.idUser,
+            transactionType: "Envio",
+            description: description,            
             transactionDate: date,
-            transactionType: "Envio"
+            amount: values.envio, 
         }
+
+        /**
+         * "amount": 0,
+            "description": "string",
+            "idDestinationAccount": 0,
+            "idOriginAccount": 0,
+            "idTransaction": 0,
+            "itemCode": 0,
+            "transactionDate": "string",
+            "transactionType": "string"
+         */
 
         console.log(TransactionBody)
 

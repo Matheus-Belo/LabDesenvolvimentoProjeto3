@@ -152,6 +152,11 @@ const LayoutSidebar = () => {
                 >
                   Professores
                 </MenuItem>
+                <MenuItem
+                  component={<Link to="/Alunos" />}
+                >
+                  Alunos
+                </MenuItem>
                 <Typography
                 variant="h6"
                 color={colors.grey[300]}
