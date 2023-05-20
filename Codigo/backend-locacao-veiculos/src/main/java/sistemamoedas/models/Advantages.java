@@ -23,7 +23,6 @@ public class Advantages {
     @Column(name = "advantage_name")
     private String advantageName;
 
-
     @OneToOne
     @JoinColumn(name = "third_party_id")
     private ThirdParty thirdParty;
@@ -60,24 +59,39 @@ public class Advantages {
     public Advantages() {
     }
 
-    public Advantages(Long idAdvantages, String advantageName, String advantageDescription, BigDecimal price,
-                      Date validationDate, Date createdAt, Date deletedAt) {
+    public Advantages(Long idAdvantages, String advantageName, ThirdParty thirdParty, List<AdvantagesImages> advantagesImages,
+                      String advantageDescription, BigDecimal price, Date validationDate, String advantageCategory,
+                      String couponCode, String status, String amount, Date createdAt, Date deletedAt) {
         this.idAdvantages = idAdvantages;
         this.advantageName = advantageName;
+        this.thirdParty = thirdParty;
+        this.advantagesImages = advantagesImages;
         this.advantageDescription = advantageDescription;
         this.price = price;
         this.validationDate = validationDate;
+        this.advantageCategory = advantageCategory;
+        this.couponCode = couponCode;
+        this.status = status;
+        this.amount = amount;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
     }
 
-    public Advantages(String advantageName, String advantageDescription, BigDecimal price, Date validationDate,
+    public Advantages(String advantageName, ThirdParty thirdParty, List<AdvantagesImages> advantagesImages, String advantageDescription,
+                      BigDecimal price, Date validationDate, String advantageCategory, String couponCode, String status, String amount,
                       Date createdAt, Date deletedAt) {
         this.advantageName = advantageName;
+        this.thirdParty = thirdParty;
+        this.advantagesImages = advantagesImages;
         this.advantageDescription = advantageDescription;
         this.price = price;
         this.validationDate = validationDate;
+        this.advantageCategory = advantageCategory;
+        this.couponCode = couponCode;
+        this.status = status;
+        this.amount = amount;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
     }
+
 }

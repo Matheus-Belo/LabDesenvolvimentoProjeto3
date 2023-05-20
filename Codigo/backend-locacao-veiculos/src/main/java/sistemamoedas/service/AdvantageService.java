@@ -13,6 +13,7 @@ import sistemamoedas.models.Transactions;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 public interface AdvantageService {
 
@@ -42,4 +43,6 @@ public interface AdvantageService {
     public String uploadImage(MultipartFile riskAreaImage);
 
     public LinkedList<String> getImagesPaths(Long idRiskArea) throws IOException;
+
+    List<String> getAllCategories();
 }

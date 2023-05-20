@@ -7,6 +7,8 @@ import sistemamoedas.models.RequestEntity.ThirdPartyRequest;
 import sistemamoedas.models.ResponseEntity.ThirdPartyResponse;
 import sistemamoedas.models.ThirdParty;
 
+import java.util.List;
+
 public interface ThirdPartyService {
     ThirdPartyResponse create(ThirdPartyRequest request) throws NotFoundException;
 
@@ -22,4 +24,7 @@ public interface ThirdPartyService {
     ThirdPartyResponse getThirdPartyById(Long idThirdParty);
 
     ThirdParty getThirdPartyByIdThirdParty(Long idThirdParty);
+
+    List<ThirdParty> getAllThirdParties()throws NotFoundException;
+
 }

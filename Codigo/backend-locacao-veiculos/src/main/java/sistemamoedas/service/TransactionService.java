@@ -21,7 +21,7 @@ public interface TransactionService {
 
     Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta);
 
-    LinkedList<TransactionResponse> enviaMoedasProfessores();
+    LinkedList<TransactionResponse> enviaMoedasProfessores() throws NotFoundException ;
 
     Transactions getTransactionById(Long idTransaction);
 }

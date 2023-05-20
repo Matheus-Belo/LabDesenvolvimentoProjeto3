@@ -1,12 +1,14 @@
 package sistemamoedas.service.impl;
 
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sistemamoedas.enums.RolesEnum;
 import sistemamoedas.models.*;
 import sistemamoedas.models.RequestEntity.AdvantagesRequest;
 import sistemamoedas.models.RequestEntity.UserRequest;
@@ -48,48 +50,11 @@ public class AdvantageServiceImpl implements AdvantageService {
 
         if(!advantageCheck.isPresent()){
 
-            ThirdParty thirdParty = thirdPartyService.getThirdPartyByIdThirdParty(request.getThirdPartyId());
-
-            List<AdvantagesImages> receivedImages = new LinkedList<AdvantagesImages>();
-            LinkedList<String> paths = new LinkedList<String>();
-
-            if(request.getAdvantagesImages()!= null) {
-
-                int contLista = 0;
-                for (MultipartFile actualImage :
-                        request.getAdvantagesImages()) {
-
-                    String actualPath = uploadImage(actualImage);
-
-                    receivedImages.add(new AdvantagesImages(
-                            0L,
-                            request.getImagesNames().get(contLista),
-                            request.getImagesDescription().get(contLista),
-                            actualPath,
-                            new Date(),
-                            null
-                    ));
-                    contLista++;
-                    paths.add(actualPath);
-                }
-            }
-
-            Advantages savedAdvantage = this.advantagesRepository.save(AdvantagesRequest.toAdvantages(request, thirdParty, receivedImages));
-
-            AdvantagesResponse advantagesResponse = AdvantagesResponse.fromAdvantages(
-                    savedAdvantage
-            );
-
-
-
-            advantagesResponse.getImagePaths().addAll(paths);
-
-            return advantagesResponse;
+            return getAdvantagesResponse(request,false);
         }else{
             throw new NonUniqueResultException("Vantagem ja cadastrado!");
         }
     }
-
     @Override
     public AdvantagesResponse editAdvantage(AdvantagesRequest request) {
 
@@ -101,69 +66,124 @@ public class AdvantageServiceImpl implements AdvantageService {
 
         if(advantages != null){
 
-            ThirdParty thirdParty = thirdPartyService.getThirdPartyByIdThirdParty(request.getThirdPartyId());
-
-            List<AdvantagesImages> receivedImages = new LinkedList<AdvantagesImages>();
-            LinkedList<String> paths = new LinkedList<String>();
-
-            if(request.getAdvantagesImages()!= null) {
-
-                int contLista = 0;
-                for (MultipartFile actualImage :
-                        request.getAdvantagesImages()) {
-
-                    String actualPath = uploadImage(actualImage);
-
-                    receivedImages.add(new AdvantagesImages(
-                            0L,
-                            request.getImagesNames().get(contLista),
-                            request.getImagesDescription().get(contLista),
-                            actualPath,
-                            new Date(),
-                            null
-                    ));
-                    contLista++;
-                    paths.add(actualPath);
-                }
-            }
-
-            Advantages savedAdvantage = this.advantagesRepository.save(AdvantagesRequest.toAdvantages(request, thirdParty,receivedImages));
-
-            return AdvantagesResponse.fromAdvantages(savedAdvantage);
+            return getAdvantagesResponse(request,true);
 
         }else{
             throw new NonUniqueResultException("Vantagem nao encontrada");
         }
     }
 
+
+
+    private String generateCoupon(Long id) {
+
+
+        ThirdParty thirdParty = getThirdParty(id);
+
+        List<Advantages> advantages = this.advantagesRepository.findAllByDeletedAtIsNullOrderByIdAdvantagesAsc();
+
+        String couponForCheck = thirdParty.getThirdPartyName()+nextRandom(id)+nextRandomString();
+
+        boolean checkCode = advantages.stream().anyMatch(code -> code.getCouponCode().equals(couponForCheck));
+
+        String coupon = couponForCheck;
+
+        while (checkCode){
+            String newCouponForCheck = thirdParty.getThirdPartyName()+nextRandom(id)+nextRandomString();
+            checkCode = advantages.stream().anyMatch(code -> code.getCouponCode().equals(newCouponForCheck));
+            coupon = newCouponForCheck;
+        }
+        return coupon;
+    }
+    private int nextRandom(Long id){
+        Random random = new Random();
+        int range = Integer.MAX_VALUE-1000000;
+        return Math.abs(random.nextInt(range)+id.intValue());
+    }
+    private String nextRandomString(){
+        int length = 10;
+        boolean useLetters = true;
+        boolean useNumbers = false;
+        return RandomStringUtils.random(length, useLetters, useNumbers);
+    }
+    private AdvantagesResponse getAdvantagesResponse(AdvantagesRequest request, boolean edit) {
+        ThirdParty thirdParty = getThirdParty(request.getThirdPartyId());
+
+        Optional<Advantages> advantageCheck = Optional.ofNullable(
+                this.advantagesRepository.findOneByIdAdvantagesAndDeletedAtIsNull(request.getIdAdvantages())
+        );
+
+        List<AdvantagesImages> receivedImages = new LinkedList<AdvantagesImages>();
+        LinkedList<String> paths = new LinkedList<String>();
+
+        if(request.getAdvantagesImages()!= null) {
+
+            int contLista = 0;
+            for (MultipartFile actualImage :
+                    request.getAdvantagesImages()) {
+
+                String actualPath = uploadImage(actualImage);
+
+                receivedImages.add(new AdvantagesImages(
+                        0L,
+                        request.getImagesNames().get(contLista),
+                        request.getImagesDescription().get(contLista),
+                        actualPath,
+                        new Date(),
+                        null
+                ));
+                contLista++;
+                paths.add(actualPath);
+            }
+        }
+
+        Advantages savedAdvantage = this.advantagesRepository.save(
+                AdvantagesRequest.toAdvantages(
+                        request,
+                        thirdParty,
+                        receivedImages,
+                        edit ? this.generateCoupon(request.getThirdPartyId()) : advantageCheck.get().getCouponCode()
+                )
+        );
+
+
+        return AdvantagesResponse.fromAdvantages(savedAdvantage, paths);
+    }
+
+    private ThirdParty getThirdParty(Long idThirdParty) {
+        return thirdPartyService.getThirdPartyByIdThirdParty(idThirdParty);
+    }
+
     @Override
     public AdvantagesResponse deleteAdvantage(Long idAdvantage) {
-        return null;
+        Advantages advantages = this.advantagesRepository.findOneByIdAdvantagesAndDeletedAtIsNull(idAdvantage);
+
+        advantages.setDeletedAt(new Date());
+        return AdvantagesResponse.fromAdvantages(this.advantagesRepository.save(advantages),new LinkedList<String>());
     }
 
     @Override
     public Page<Advantages> listAdvantagesByPage(Pageable pages) {
-        return null;
+        return this.advantagesRepository.findAllByDeletedAtIsNullOrderByIdAdvantages(pages);
     }
 
     @Override
     public Page<Advantages> listAdvantagesByPageAndThirdPartyId(Pageable pages, Long idThirdParty) {
-        return null;
+        return this.advantagesRepository.findAllByThirdPartyAndDeletedAtIsNullOrderByIdAdvantages(pages,getThirdParty(idThirdParty));
     }
-
     @Override
     public Advantages getAdvantageById(Long idAdvantage) {
-        return null;
+        return this.advantagesRepository.findOneByIdAdvantagesAndDeletedAtIsNull(idAdvantage);
     }
 
     @Override
     public Page<Advantages> listAdvantagesByPageAndCategory(Pageable pages, String category) {
-        return null;
+        return this.advantagesRepository.findAllByAdvantageCategoryAndDeletedAtIsNullOrderByIdAdvantages(pages,category);
     }
 
     @Override
-    public Page<Advantages> listAdvantagesByPageAndName(Pageable pages, String advantagename) {
-        return null;
+    public Page<Advantages> listAdvantagesByPageAndName(Pageable pages, String advantageName) {
+        return this.advantagesRepository.findAllByAdvantageNameAndDeletedAtIsNullOrderByIdAdvantages(pages,advantageName);
     }
 
     @Override
@@ -208,5 +228,16 @@ public class AdvantageServiceImpl implements AdvantageService {
 
         return paths;*/
         return null;
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+
+        List<Advantages> allAdvantages = this.advantagesRepository.findAllByDeletedAtIsNullOrderByIdAdvantagesAsc();
+        List<String> categories = new LinkedList<String>();
+
+        allAdvantages.stream().forEach(category -> categories.add(category.getAdvantageCategory()));
+
+        return categories;
     }
 }

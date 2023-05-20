@@ -21,6 +21,7 @@ import sistemamoedas.service.AdvantageService;
 import sistemamoedas.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -163,4 +164,11 @@ public class AdvantagesController {
         );
     }
 
+    @GetMapping(path = "getAllCategories")
+    @ApiOperation(value = "retorna todas as categorias existentes")
+    //retorna uma vantagem por id
+    public List<String> getAllCategories()throws NotFoundException{
+
+        return this.advantageService.getAllCategories();
+    }
 }

@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NonUniqueResultException;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -216,6 +213,15 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findOneByIdUser(userId);
     }
 
+    @Override
+    public List<User> getAllTeachers() throws NotFoundException {
+        return this.userRepository.findAllTeachers();
+    }
+
+    @Override
+    public LinkedList<User> giveMonthlyCoinsForTeachers() throws NotFoundException {
+        return null;
+    }
 
 
 }

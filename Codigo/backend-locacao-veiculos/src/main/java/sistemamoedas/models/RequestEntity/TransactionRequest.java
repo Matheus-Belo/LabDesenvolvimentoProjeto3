@@ -37,6 +37,21 @@ public class TransactionRequest {
     public TransactionRequest() {
     }
 
+    public TransactionRequest(Long idTransaction, Long idOriginAccount, Long idDestinationAccount,
+                              String transactionType, String description, String transactionDate,
+                              BigDecimal amount, Date createdAt, Date deletedAt) {
+
+        this.idTransaction = idTransaction;
+        this.idOriginAccount = idOriginAccount;
+        this.idDestinationAccount = idDestinationAccount;
+        this.transactionType = transactionType;
+        this.description = description;
+        this.transactionDate = transactionDate;
+        this.amount = amount;
+        this.createdAt = createdAt;
+        this.deletedAt = deletedAt;
+    }
+
     public static Transactions toTransactions(TransactionRequest request,
                                               User originAccount,
                                               User destinationAccount,
@@ -44,8 +59,34 @@ public class TransactionRequest {
 
         return new Transactions(
 
+                request.getIdTransaction() != null ? request.getIdTransaction(): 0,
+                originAccount,
+                destinationAccount,
+                transactionType,
+                request.getDescription(),
+                new Date().toString(),
+                request.getAmount(),
+                new Date(),
+                null
+        );
 
+    }
 
+    public static Transactions toTransactionsAuto(User originAccount,
+                                              User destinationAccount,
+                                              String transactionType) {
+
+        return new Transactions(
+
+                0L,
+                originAccount,
+                destinationAccount,
+                transactionType,
+                "Automatic monthly deposit for teachers",
+                new Date().toString(),
+                BigDecimal.valueOf(1000),
+                new Date(),
+                null
         );
 
     }

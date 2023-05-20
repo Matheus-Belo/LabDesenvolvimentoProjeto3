@@ -16,6 +16,8 @@ public interface ThirdPartyRepository extends JpaRepository<ThirdParty,Long > {
 
     ThirdParty findOneByIdThirdPartyAndDeletedAtIsNull(Long idThirdParty);
     Page<ThirdParty> findAllByDeletedAtIsNullOrderByIdThirdParty(Pageable page);
+
+    List<ThirdParty> findAllByDeletedAtIsNullOrderByIdThirdPartyAsc();
     Page<ThirdParty> findAllByAreaOfOperationIgnoreCaseAndDeletedAtIsNull(Pageable page, String areaOfOperation);
 
     ThirdParty findOneByEmailAndDeletedAtIsNull(String email);

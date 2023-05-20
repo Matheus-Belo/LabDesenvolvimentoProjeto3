@@ -1,6 +1,7 @@
 package sistemamoedas.schedules;
 
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class ScheduleTasks {
     TransactionService transactionService;
 
     @Scheduled(cron = "0 1 1 * * *")
-    private void create(){
+    private void create() throws NotFoundException {
         LinkedList<TransactionResponse> sendCoinsList = transactionService.enviaMoedasProfessores();
     }
 }

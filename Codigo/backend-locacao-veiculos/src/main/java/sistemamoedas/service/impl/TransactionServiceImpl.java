@@ -20,6 +20,7 @@ import sistemamoedas.service.TransactionService;
 import sistemamoedas.service.UserService;
 
 import javax.persistence.NonUniqueResultException;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +79,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionResponse createSale(TransactionRequest request) {
+
+
+
+
+
+
         return null;
     }
 
@@ -94,12 +101,40 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public LinkedList<TransactionResponse> enviaMoedasProfessores() {
-        return null;
+    public LinkedList<TransactionResponse> enviaMoedasProfessores () throws NotFoundException {
+
+
+        //LinkedList<User> professores = this.userService.giveMonthlyCoinsForTeachers();
+
+        LinkedList<TransactionResponse> responses = new LinkedList<TransactionResponse>();
+
+        List<User> professores = this.userService.getAllTeachers();
+
+        for (User professor:
+               professores) {
+
+                User originAccount = Optional.of(this.userService.getUserById(1L))
+                        .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de origem não encontrado"));
+
+                User destinationAccount = Optional.of(this.userService.getUserById(professor.getIdUser()))
+                        .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de destino não encontrado"));
+
+                professor.setWallet(professor.getWallet().add(BigDecimal.valueOf(1000)));
+                this.userService.saveUser(professor);
+
+                Transactions transactionResponse = this.transactionsRepository.save(
+                        TransactionRequest.toTransactionsAuto(originAccount, destinationAccount, TransactionTypeEnum.DEPOSIT.getCode())
+                );
+
+                responses.add(TransactionResponse.fromTransactions(transactionResponse));
+        }
+
+        return responses;
     }
+
 
     @Override
     public Transactions getTransactionById(Long idTransaction) {
-        return null;
+        return this.transactionsRepository.findOneByIdTransactionAndDeletedAtIsNull(idTransaction);
     }
 }

@@ -19,6 +19,7 @@ import sistemamoedas.service.ThirdPartyService;
 
 import javax.persistence.NonUniqueResultException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -119,4 +120,12 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
     public ThirdParty getThirdPartyByIdThirdParty(Long idThirdParty) {
         return this.thirdPartyRepository.findOneByIdThirdPartyAndDeletedAtIsNull(idThirdParty);
     }
+
+    @Override
+    public List<ThirdParty> getAllThirdParties() throws NotFoundException {
+        return thirdPartyRepository.findAllByDeletedAtIsNullOrderByIdThirdPartyAsc();
+    }
+
+
+
 }

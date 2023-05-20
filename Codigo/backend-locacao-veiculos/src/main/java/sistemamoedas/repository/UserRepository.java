@@ -26,5 +26,16 @@ public interface UserRepository extends JpaRepository<User,Long > {
     nativeQuery = true)
     List<User> findAllByCurrentDay();
 
+
+    @Query(value = "select * from users u " +
+            " inner join user_roles ur " +
+            "  on u.user_id = ur.user_id " +
+            " inner join roles r " +
+            "  on r.roles_id = ur.role_id " +
+            "where r.\"name\" = 'PROFESSOR'",
+            nativeQuery = true)
+    List<User> findAllTeachers();
+
+
     User findOneByEmail(String email);
 }

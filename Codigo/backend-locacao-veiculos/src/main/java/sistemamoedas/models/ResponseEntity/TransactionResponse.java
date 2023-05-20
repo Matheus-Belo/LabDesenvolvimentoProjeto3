@@ -39,13 +39,33 @@ public class TransactionResponse {
 
     private Date deletedAt;
 
-
+    public TransactionResponse(Long idTransaction, User idOriginAccount, User idDestinationAccount,
+                               String transactionType, String description, String transactionDate,
+                               BigDecimal amount, Date createdAt, Date deletedAt) {
+        this.idTransaction = idTransaction;
+        this.idOriginAccount = idOriginAccount;
+        this.idDestinationAccount = idDestinationAccount;
+        this.transactionType = transactionType;
+        this.description = description;
+        this.transactionDate = transactionDate;
+        this.amount = amount;
+        this.createdAt = createdAt;
+        this.deletedAt = deletedAt;
+    }
 
     public static TransactionResponse fromTransactions (Transactions transaction){
 
         return  new TransactionResponse(
 
-
+                transaction.getIdTransaction(),
+                transaction.getIdOriginAccount(),
+                transaction.getIdDestinationAccount(),
+                transaction.getTransactionType(),
+                transaction.getDescription(),
+                transaction.getTransactionDate(),
+                transaction.getAmount(),
+                transaction.getCreatedAt(),
+                transaction.getDeletedAt()
 
         );
     }
