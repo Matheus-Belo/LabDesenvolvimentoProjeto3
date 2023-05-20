@@ -34,7 +34,7 @@ public class Transactions {
     private String description;
 
     @Column(name = "transaction_date")
-    private String transactionDate;
+    private Date transactionDate;
 
     @Column(name = "amount")
     private BigDecimal amount;
@@ -54,7 +54,7 @@ public class Transactions {
     }
 
     public Transactions(Long idTransaction, User idOriginAccount,
-                        User idDestinationAccount, String transactionType, String description, String transactionDate,
+                        User idDestinationAccount, String transactionType, String description,Date transactionDate,
                         BigDecimal amount, Advantages desiredItem, Date createdAt, Date deletedAt) {
         this.idTransaction = idTransaction;
         this.idOriginAccount = idOriginAccount;
@@ -69,7 +69,7 @@ public class Transactions {
     }
 
     public Transactions(User idOriginAccount, User idDestinationAccount, String transactionType,
-                        String description, String transactionDate, BigDecimal amount, Advantages desiredItem,
+                        String description, Date transactionDate, BigDecimal amount, Advantages desiredItem,
                         Date createdAt, Date deletedAt){
 
         this.idOriginAccount = idOriginAccount;
