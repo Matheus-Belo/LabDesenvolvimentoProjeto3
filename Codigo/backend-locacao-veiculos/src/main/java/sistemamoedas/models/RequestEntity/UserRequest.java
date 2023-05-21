@@ -89,7 +89,7 @@ public class UserRequest {
 
         User newUSer;
 
-        if(!roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.ALUNO.getCode()))) {
+        if(roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.ALUNO.getCode()))) {
             newUSer = new User(
                     user.getName(),
                     user.getEmail(),
@@ -104,7 +104,7 @@ public class UserRequest {
                     new BigDecimal(0)
                     );
 
-        }else if (!roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.PROFESSOR.getCode()))){
+        }else if (roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.PROFESSOR.getCode()))){
 
             newUSer = new User(
                     user.getName(),
@@ -119,7 +119,7 @@ public class UserRequest {
                     user.getPhone2(),
                     new BigDecimal(1000)
             );
-        }else if (!roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.THIRDPARTY.getCode()))){
+        }else if (roles.stream().anyMatch(f -> f.getName().equals(RolesEnum.THIRDPARTY.getCode()))){
 
             newUSer = new User(
                     user.getName(),
