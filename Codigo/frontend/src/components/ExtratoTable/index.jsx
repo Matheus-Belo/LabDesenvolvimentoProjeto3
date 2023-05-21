@@ -74,7 +74,7 @@ const ExtratoTable = () => {
 
       //Pegar os dados para mostrar na Tabela
       const [tableData, setTableData] = useState([])
-
+/** 
       useEffect(() => {
         api
           .get("/transaction/viewExtractPaged/0/size/10/idConta/" + sessionStorage.getItem("ID"))
@@ -102,7 +102,7 @@ const ExtratoTable = () => {
             console.log(error.config);
           });
         }, []);
-
+*/
         const LogResponse = (values) =>{
           var arr = [];
       
@@ -121,29 +121,24 @@ const ExtratoTable = () => {
     },
     {
       field: "name",
-      headerName: "Nome",
+      headerName: "Nome da Origem",
       flex: 1,
     },
     {
       field: "email",
-      headerName: "Email",
+      headerName: "Tipo de Transação",
       headerAlign: "center",
       align: "center",
       flex: 1,
     },
     {
-      field: "phone1",
-      headerName: "Telefone 1",
-      flex: 1,
-    },
-    {
-      field: "phone2",
-      headerName: "Telefone 2",
+      field: "nameDestino",
+      headerName: "Nome do Destino",
       flex: 1,
     },
     {
     field: "legal_document",
-    headerName: "Documento Legal",
+    headerName: "Quantidade",
     flex: 1,
     },
   ];
@@ -151,7 +146,7 @@ const ExtratoTable = () => {
 
     return (
         <Box m="20px">
-            <Header title="Alunos" subtitle="Aqui você pode Criar, Visualizar, Editar ou Deletar Professores" />
+            <Header title="Extrato" subtitle="Aqui esta todos os seus gastos e ganhos" />
             <Box
                 m="40px 0 0 0"
                 height="70vh"
