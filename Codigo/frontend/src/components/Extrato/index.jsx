@@ -75,18 +75,11 @@ const Extrato = () => {
                     </OverviewBudget>
                 </Grid>
                 <Grid
-                    sx={{
-                        backgroundColor: colors.background,
-                        border: "1px solid black",
-                    }}
                 >
 
                 </Grid>
                 <Grid
-                    sx={{
-                        backgroundColor: colors.background,
-                        border: "1px solid black",
-                    }}
+
                 >
                     
                 </Grid>

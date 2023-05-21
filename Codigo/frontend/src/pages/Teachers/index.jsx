@@ -415,7 +415,7 @@ const Teachers = () => {
             <Box
                 m="40px 0 0 0"
                 height="70vh"
-                width='99.9%'
+                width='99%'
                 sx={{
                     "& .MuiDataGrid-root": {
                     border: "none",
@@ -726,7 +726,7 @@ const handleCreateSubmit = (values) => {
             <Box
                 m="40px 0 0 0"
                 height="70vh"
-                width='99.9%'
+                width='99%'
                 sx={{
                     "& .MuiDataGrid-root": {
                     border: "none",
@@ -760,6 +760,12 @@ const handleCreateSubmit = (values) => {
                     rows={tableData}
                     columns={columns}
                     getRowId={(row) => row.idUser}
+                    initialState={{
+                      pagination: {
+                        paginationModel: { pageSize: 10 },
+                      },
+                    }}
+                    pageSizeOptions={[5, 10]}
                 />
             </Box>
         </Box>

@@ -398,7 +398,7 @@ api
             <Box
                 m="40px 0 0 0"
                 height="70vh"
-                width='99.9%'
+                width='99%'
                 sx={{
                     "& .MuiDataGrid-root": {
                     border: "none",
