@@ -4,13 +4,6 @@ import api from "../../services/API/api";
 import {OverviewBudget} from "../Saldo"
 import { ColorTokens } from "../../theme";
 
-
-import PropTypes from 'prop-types';
-import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
-import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
-import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
-
 const Extrato = () => {
     const theme = useTheme();
     const colors = ColorTokens(theme.palette.mode);

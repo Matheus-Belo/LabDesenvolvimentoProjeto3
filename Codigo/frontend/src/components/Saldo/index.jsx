@@ -1,7 +1,4 @@
 import PropTypes from 'prop-types';
-import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
-import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
 import { Box, useTheme, Avatar, Card, CardContent, Stack, SvgIcon, Typography, Unstable_Grid2 as Grid  } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import api from "../../services/API/api";
