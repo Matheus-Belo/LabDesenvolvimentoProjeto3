@@ -37,7 +37,7 @@ export default function Transferencia(User) {
     const handleFormSubmit = (values) => {
 
         if(wallet > values.envio){
-            const description = "ID: " + id + " Manda " + values.envio + " para  ID: " + User.User.idUser
+            const description = "Professor ID: " + id + " Manda " + values.envio + " para Aluno ID: " + User.User.idUser
             const current = new Date();
             const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
@@ -48,29 +48,6 @@ export default function Transferencia(User) {
                 idOriginAccount: parseInt(id),
                 idTransaction: 0,           
             }
-
-            /**
-             * "amount":  quantidade de dinheiro transferida, sem virgula nem cifrao ex: 1500   1600,
-                "description": "descriçao",
-                "idDestinationAccount": id origem,
-                "idOriginAccount": id destino,
-                "idTransaction": 0
-             * 
-             * 
-             * 
-             * 
-             * 
-             * "amount": 0,
-                "description": "string",
-                "idDestinationAccount": 0,
-                "idOriginAccount": 0,
-                "idTransaction": 0,
-                "itemCode": 0,
-                "transactionDate": "string",
-                "transactionType": "string"
-            */
-
-            console.log(TransactionBody)
 
             api
             .post("/transaction/createDeposit", TransactionBody)

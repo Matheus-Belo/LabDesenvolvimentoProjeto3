@@ -3,6 +3,7 @@ import { ColorTokens } from "../../theme";
 import { Box } from "@mui/material";
 import Header from "../../components/Header/Header";
 import Extrato from "../../components/Extrato";
+import ExtratoTable from "../../components/ExtratoTable";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -22,6 +23,7 @@ const Dashboard = () => {
             }}
         >
             <Extrato />
+            <ExtratoTable />
         </Box>
       </Box>
     );
