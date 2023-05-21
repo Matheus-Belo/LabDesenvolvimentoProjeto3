@@ -18,7 +18,7 @@ public interface TransactionsRepository extends JpaRepository <Transactions,Long
 
     Page<Transactions> findAllByDeletedAtIsNullOrderByIdTransaction(Pageable page);
 
-    Page<Transactions> findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdTransaction(Pageable page, Long idOriginAccount);
+    Page<Transactions> findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdTransaction(Pageable page, User idOriginAccount);
 
-    List<Transactions> findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdOriginAccount(Long idOriginAccount);
+    List<Transactions> findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdOriginAccount(User idOriginAccount);
 }

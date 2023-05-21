@@ -185,7 +185,7 @@ CREATE TABLE advantages (
                             advantages_id INT DEFAULT NEXTVAL ('advantages_seq') PRIMARY KEY,
                             advantage_name VARCHAR (50),
                             advantage_description VARCHAR(100) NOT NULL,
-                            price MONEY,
+                            price NUMERIC,
                             advantage_category VARCHAR (50),
                             coupon_code varchar(50),
                             status varchar(50),
@@ -209,7 +209,7 @@ CREATE TABLE transactions (
                             description VARCHAR (250),
                             transaction_date TIMESTAMP(0) NULL DEFAULT NULL,
                             advantages_id INT CHECK (advantages_id > 0),
-                            amount Money,
+                            amount NUMERIC,
 
                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,

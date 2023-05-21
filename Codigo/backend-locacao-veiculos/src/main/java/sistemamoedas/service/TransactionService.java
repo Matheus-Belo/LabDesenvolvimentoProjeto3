@@ -17,9 +17,9 @@ public interface TransactionService {
 
     TransactionResponse createSale(TransactionRequest request) throws NotFoundException;
 
-    List<Transactions> getExtractAsList(Long idConta);
+    List<Transactions> getExtractAsList(Long idConta) throws NotFoundException;
 
-    Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta);
+    Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta) throws NotFoundException;
 
     LinkedList<TransactionResponse> enviaMoedasProfessores() throws NotFoundException ;
 

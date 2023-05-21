@@ -83,7 +83,7 @@ public class TransactionController {
                     int size,
             @PathVariable(value="idConta")
                     Long idConta
-    ){
+    ) throws NotFoundException {
 
         Pageable pages = PageRequest.of(page, size);
 

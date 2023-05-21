@@ -140,14 +140,19 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
-    public List<Transactions> getExtractAsList(Long idConta) {
-        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdOriginAccount(idConta);
+    public List<Transactions> getExtractAsList(Long idConta) throws NotFoundException {
+
+        User conta = this.userService.getUserById(idConta);
+
+        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdOriginAccount(conta);
     }
 
     @Override
     //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
-    public Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta) {
-        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdTransaction(pages,idConta);
+    public Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta) throws NotFoundException {
+
+        User conta = this.userService.getUserById(idConta);
+        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdTransaction(pages,conta);
     }
 
     @Override
