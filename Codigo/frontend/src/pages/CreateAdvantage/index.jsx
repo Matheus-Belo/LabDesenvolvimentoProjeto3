@@ -10,7 +10,7 @@ import Header from "../../components/Header/Header";
 import api from "../../services/API/api";
 import DateObject from "react-date-object";
 
-import CreateInstitution from "../../components/CreateInstitution"
+import CreateAdvantages from "../../components/CreateAdvantages"
 import EditInstitution from "../../components/EditInstitution"
 
 const ODD_OPACITY = 0.2;
@@ -111,55 +111,7 @@ const CreateAdvantage = () => {
       headerName: "Telefone 2",
       flex: 1,
     },
-      {
-      field: "Edit",
-      headerName: "Alterar",
-      flex: 1,
-      renderCell: (params) => {
-          return (
-              <Button
-
-                onClick={ (e) => { 
-                    if(isCriarOpen){
-                        setIsCriarOpen(!isCriarOpen);
-                        handleEditToggle();
-                    }else if(isEditOpen){
-                        if(initialValues.idThirdParty === params.row.idThirdParty){
-                            handleEditToggle();
-                        }
-                    }else{
-                        handleEditToggle();
-                    };
-                        const newInitialValues = {
-                            idThirdParty: params.row.idThirdParty ,
-                            nome: params.row.thirdPartyName ,
-                            operacao: params.row.areaOfOperation ,
-                            email: params.row.email ,
-                            telefone1: params.row.phone1 ,
-                            telefone2: params.row.phone2 ,
-                            documentoLegal: params.row.legalDocument ,
-                            bairro: params.row.address.district ,
-                            cidade: params.row.address.city.city ,
-                            numero: params.row.address.number ,
-                            estado: params.row.address.state.uf ,
-                            rua: params.row.address.street ,
-                            cep: params.row.address.zipCode ,
-                        }
-                        const rowData = e.row;
-                        setInitialValues(newInitialValues);
-                        setEditRowData(rowData);
-
-                        //console.log(params.row)
-                    }
-                    
-                }
-              variant="contained"
-              >
-              Editar
-              </Button>
-          );
-      }},
-      {
+    {
       field: "Delete",
       headerName: "Deleta",
       flex: 1,
@@ -172,7 +124,8 @@ const CreateAdvantage = () => {
               Deletar
               </Button>
           );
-      }}
+      }
+    }
   ];
 
   const DeleteUser = (e, row) => {
@@ -374,9 +327,9 @@ const LogResponse = (values) =>{
                     {handleCriarToggle()};
                 }}
             >
-                Criar Instuições
+                Criar Vantagem
             </Button>
-            <CreateInstitution isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
+            <CreateAdvantages isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
             <EditInstitution isFormOpen = {isEditOpen} handleFormSubmit={EditarTerceiro} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
             <Box
                 m="40px 0 0 0"

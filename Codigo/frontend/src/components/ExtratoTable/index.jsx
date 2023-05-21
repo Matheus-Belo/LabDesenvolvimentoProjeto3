@@ -74,7 +74,7 @@ const ExtratoTable = () => {
 
       //Pegar os dados para mostrar na Tabela
       const [tableData, setTableData] = useState([])
-/** 
+
       useEffect(() => {
         api
           .get("/transaction/viewExtractPaged/0/size/10/idConta/" + sessionStorage.getItem("ID"))
@@ -102,30 +102,28 @@ const ExtratoTable = () => {
             console.log(error.config);
           });
         }, []);
-*/
+
         const LogResponse = (values) =>{
-          var arr = [];
-      
-          for(let i = 0; i < values.length; i++){
-              if(values[i].roles[0].name == "ALUNO"){
-                  arr.push(values[i])
-              } 
-          }
-          setTableData(arr)
+          console.log(values);
+          setTableData(values);
         }
 
   const columns = [
     { 
-      field: "idUser", 
+      field: "idTransaction", 
       headerName: "ID",
     },
     {
       field: "name",
       headerName: "Nome da Origem",
       flex: 1,
+      valueGetter: (params) => {
+        let result = params.row.idOriginAccount.name;
+        return result;
+      }
     },
     {
-      field: "email",
+      field: "transactionType",
       headerName: "Tipo de Transação",
       headerAlign: "center",
       align: "center",
@@ -135,9 +133,13 @@ const ExtratoTable = () => {
       field: "nameDestino",
       headerName: "Nome do Destino",
       flex: 1,
+      valueGetter: (params) => {
+        let result = params.row.idDestinationAccount.name;
+        return result;
+      }
     },
     {
-    field: "legal_document",
+    field: "amount",
     headerName: "Quantidade",
     flex: 1,
     },
@@ -150,7 +152,7 @@ const ExtratoTable = () => {
             <Box
                 m="40px 0 0 0"
                 height="70vh"
-                width='99.9%'
+                width='99%'
                 sx={{
                     "& .MuiDataGrid-root": {
                     border: "none",
@@ -183,7 +185,7 @@ const ExtratoTable = () => {
                 <StripedDataGrid           
                     rows={tableData}
                     columns={columns}
-                    getRowId={(row) => row.idUser}
+                    getRowId={(row) => row.idTransaction}
                 />
             </Box>
         </Box>
