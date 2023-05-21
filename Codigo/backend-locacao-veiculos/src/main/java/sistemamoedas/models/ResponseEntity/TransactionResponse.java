@@ -28,7 +28,7 @@ public class TransactionResponse {
     private String description;
 
 
-    private String transactionDate;
+    private Date transactionDate;
 
 
     private BigDecimal amount;
@@ -41,7 +41,7 @@ public class TransactionResponse {
     private Date deletedAt;
 
     public TransactionResponse(Long idTransaction, User idOriginAccount, User idDestinationAccount,
-                               String transactionType, String description, String transactionDate,
+                               String transactionType, String description, Date transactionDate,
                                BigDecimal amount, Advantages boughtItem, Date createdAt, Date deletedAt) {
         this.idTransaction = idTransaction;
         this.idOriginAccount = idOriginAccount;
