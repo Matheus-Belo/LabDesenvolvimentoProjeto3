@@ -9,8 +9,10 @@ import api from "../../services/API/api";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 
-const CreateAdvantages = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) => {
+const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     api
@@ -55,6 +57,64 @@ const CreateAdvantages = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) 
     setData(Data)
   }
 
+  const handleFormSubmit = (values) => {
+    if(selectedImage === null){
+      alert("Selecione uma imagem")
+    }else{
+      const imgPath = URL.createObjectURL(selectedImage);
+
+      const formData = {
+        advantageCategory: values.categoria,
+        advantageDescription: values.disconto + "% de desconto <br>" + values.descricao,
+        AdvantageName: values.nome,
+        AdvantageImages: [
+          {
+            advantageImageDescription: "Imagem da Vantagem",
+            advantageImageName: selectedImage.name,
+            advantageImagePath: imgPath,
+            idAdvantages: 0,
+            idAdvantagesImage: 0,
+          }
+        ],
+        couponCode: 0,
+        idAdvantages: 0,
+        imagePaths: [
+          imgPath
+        ],
+        price: values.preco,
+        status: "ATIVO",
+        thirdParty: values.idThirdParty,
+        validationDate: values.dias
+      }
+
+      api
+        .post("/advantages/create", formData)
+        .then(() => window.location.reload(false))
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("The request was made and the server responded with a status code that falls out of the range of 2xx");
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log("The request was made but no response was received");
+            console.log(error.request);
+            console.log(error.toJSON());
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+          isFormOpen(false);
+      }
+  }
+
   return (
     <>
       <Collapse in={isFormOpen}>
@@ -91,6 +151,19 @@ const CreateAdvantages = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) 
                 name="nome"
                 error={!!touched.nome && !!errors.nome}
                 helperText={touched.nome && errors.nome}
+                sx={{ gridColumn: "span 3" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Preço da Vantagem"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.preco}
+                name="preco"
+                error={!!touched.preco && !!errors.preco}
+                helperText={touched.preco && errors.preco}
                 sx={{ gridColumn: "span 3" }}
               />
               <TextField
@@ -180,20 +253,6 @@ const CreateAdvantages = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) 
                   })}
               </TextField>
 
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Telefone"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.telefone1}
-                name="telefone1"
-                error={!!touched.telefone1 && !!errors.telefone1}
-                helperText={touched.telefone1 && errors.telefone1}
-                sx={{ gridColumn: "span 3" }}
-              />
-
               <Button
                 variant="contained"
                 component="label"
@@ -203,6 +262,9 @@ const CreateAdvantages = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) 
                 <input
                   type="file"
                   hidden
+                  onChange={(event) => {
+                    setSelectedImage(event.target.files[0]);
+                  }}
                 />
               </Button>
 
@@ -218,6 +280,7 @@ const CreateAdvantages = ( { isFormOpen, handleFormSubmit, handleFormCancel } ) 
           </form>
         )}
       </Formik>
+      
       </Collapse>
       </>
   );
