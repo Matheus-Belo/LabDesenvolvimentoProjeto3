@@ -86,6 +86,7 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
         thirdParty: values.idThirdParty,
         validationDate: values.dias
       }
+      console.log(formData)
 
       api
         .post("/advantages/create", formData)
