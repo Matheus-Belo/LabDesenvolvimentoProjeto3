@@ -7,7 +7,21 @@ import * as yup from "yup";
 import MenuItem from '@mui/material/MenuItem';
 import api from "../../services/API/api";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import populateFormData from "../../components/FormData";
+import axios from "axios";
 
+
+let reqInstance = axios.create({
+  baseURL: "http://localhost:9999",
+  headers: {
+    Authorization : `Bearer ${sessionStorage.getItem("token")}`,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Request-Method' : '*',
+    }
+  }
+})
 
 const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -63,7 +77,7 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
     }else{
       const imgPath = URL.createObjectURL(selectedImage);
 
-      const formData = {
+      const AdvantageData = {
         advantageCategory: values.categoria,
         advantageDescription: values.disconto + "% de desconto <br>" + values.descricao,
         AdvantageName: values.nome,
@@ -82,15 +96,22 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
           imgPath
         ],
         price: values.preco,
-        status: "ATIVO",
+        status: "AVAILABLE",
         thirdParty: values.idThirdParty,
         validationDate: values.dias
       }
-      console.log(formData)
+      console.log(AdvantageData)
 
-      api
-        .post("/advantages/create", formData)
-        .then(() => window.location.reload(false))
+      var FormData2 = new FormData();
+
+
+
+
+      console.log(populateFormData(values = {AdvantageData}))
+
+      reqInstance
+        .post("/advantages/create", populateFormData(values = {AdvantageData}))
+        //.then(() => window.location.reload(false))
         .catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
@@ -112,7 +133,6 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
           }
           console.log(error.config);
         });
-          isFormOpen(false);
       }
   }
 

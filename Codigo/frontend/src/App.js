@@ -3,13 +3,10 @@ import "./styles.css";
 import { Link, Router, Routes, Route, useNavigate, Navigate, useLocation, Switch, Redirect } from "react-router-dom";
 import Topbar from "./components/Topbar/Topbar";
 import LayoutSidebar from "./components/Sidebar/Sidebar";
-//import { AuthProvider } from "./service/AuthProvider";
-//import useAuth from "./service/useAuth";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Login from "./pages/Login/index"
 import Dashboard from "./pages/dashboard";
-//import PrivateRoute from "./service/PrivateRoute";
 import Usuarios from "./pages/Usuarios";
 import ThirdParty from "./pages/ThirdParty";
 import Institution from "./pages/Institution";

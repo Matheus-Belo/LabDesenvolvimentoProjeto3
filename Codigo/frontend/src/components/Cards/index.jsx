@@ -4,6 +4,12 @@ import Header from "../../components/Header/Header";
 
 
 const Cards = () => {
+
+    const Compra = () => {
+        console.log("Comprar");
+    }
+
+
     return(
             <Card 
                 sx={{ 
@@ -27,7 +33,7 @@ const Cards = () => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" sx={{width: "100%"}}>Comprar</Button>
+                    <Button variant="contained" sx={{width: "100%"}} onClick={Compra}>Comprar</Button>
                 </CardActions>
             </Card>
     )
