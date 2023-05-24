@@ -50,20 +50,24 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 
 
 const CreateAdvantage = () => {
-    const[initialValues, setInitialValues] = useState({
-        nome: "",
-        //senha: "",
-        operacao: "",
-        email: "",
-        telefone1: "",
-        telefone2: "",
-        documentoLegal: "",
-        bairro: "",
-        numero: "",
-        estado: "",
-        rua: "",
-        cep: "",
-      });
+  const[initialValues, setInitialValues] = useState({
+    nome: "",
+    senha: "",
+    papel: "",
+    email: "",
+    telefone1: "",
+    telefone2: "",
+    sexo: "",
+    documentoLegal: "",
+    bairro: "",
+    numero: "",
+    estado: "",
+    rua: "",
+    cep: "",
+    dia: "",
+    mes: "",
+    ano: "2000",
+  });
 
 
     const [isCriarOpen, setIsCriarOpen] = useState(false);
@@ -86,29 +90,22 @@ const CreateAdvantage = () => {
 
   const columns = [
     { 
-      field: "idThirdParty", 
+      field: "idAdvantages", 
       headerName: "ID",
     },
     {
-      field: "thirdPartyName",
+      field: "advantageName",
       headerName: "Nome",
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
-      headerAlign: "center",
-      align: "center",
+      field: "price",
+      headerName: "Preço",
       flex: 1,
     },
     {
-      field: "phone1",
-      headerName: "Telefone 1",
-      flex: 1,
-    },
-    {
-      field: "phone2",
-      headerName: "Telefone 2",
+      field: "advantageDescription",
+      headerName: "Descrição",
       flex: 1,
     },
     {
@@ -118,7 +115,7 @@ const CreateAdvantage = () => {
       renderCell: (params) => {
           return (
               <Button
-              onClick={(e) => {if(window.confirm('Delete the item?')){DeleteUser(e, params.row)}}}
+              onClick={(e) => {if(window.confirm('Delete the item?')){DeleteAdvantage(e, params.row)}}}
               variant="contained"
               >
               Deletar
@@ -128,11 +125,11 @@ const CreateAdvantage = () => {
     }
   ];
 
-  const DeleteUser = (e, row) => {
+  const DeleteAdvantage = (e, row) => {
     e.stopPropagation();
     console.log(row)
     api
-    .delete("/thirdParty/delete/idThirdParty/"+row.idThirdParty)
+    .delete("/advantages/delete/idAdvantage/"+row.idAdvantage)
     .then(() => window.location.reload(false))
     .catch(function (error) {
       if (error.response) {
@@ -156,16 +153,7 @@ const CreateAdvantage = () => {
       console.log(error.config);
     });
 };
-
-let handleEditCancel = () => {
-    setisEditOpen(false);
-  };
-  
-  let handleCriarCancel = () => {
-    setIsCriarOpen(false);
-  };
-
-const EditarTerceiro = (values) => {
+  const EditarTerceiro = (values) => {
     console.log(values)
 
     var cidade = values.cidade
@@ -278,9 +266,9 @@ const [tableData, setTableData] = useState([])
 
 useEffect(() => {
   api
-    .get("/thirdParty/page/0/size/10")
+    .get("/advantages/page/0/size/10")
     .then((response) =>  response.data.content)
-    .then((response) => LogResponse(response))
+    .then((response) => setTableData(response))
     
     .catch(function (error) {
       if (error.response) {
@@ -305,18 +293,9 @@ useEffect(() => {
     });
     
 }, []);
-
-const LogResponse = (values) =>{
-  var arr = [];
-
-  for(let i = 0; i < values.length; i++){
-    if(values[i].areaOfOperation == "Educação"){
-      arr.push(values[i])
-    }
-  }
-
-  setTableData(arr)
-}
+let handleCriarCancel = () => {
+  setIsCriarOpen(false);
+};
 
     return (
       <Box m="20px">
@@ -330,7 +309,6 @@ const LogResponse = (values) =>{
                 Criar Vantagem
             </Button>
             <CreateAdvantages isFormOpen = {isCriarOpen} handleFormSubmit={handleCreateSubmit}  handleFormCancel={handleCriarCancel} />
-            <EditInstitution isFormOpen = {isEditOpen} handleFormSubmit={EditarTerceiro} handleFormCancel={handleEditCancel} initialValues={initialValues}/>
             <Box
                 m="40px 0 0 0"
                 height="70vh"
@@ -367,7 +345,7 @@ const LogResponse = (values) =>{
                 <StripedDataGrid           
                     rows={tableData}
                     columns={columns}
-                    getRowId={(row) => row.idThirdParty}
+                    getRowId={(row) => row.idAdvantages}
                 />
             </Box>
         </Box>
