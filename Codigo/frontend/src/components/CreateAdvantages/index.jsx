@@ -98,6 +98,10 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
       }
       console.log(AdvantageData)
 
+      const imgPath = URL.createObjectURL(selectedImage);
+
+      sessionStorage.setItem("imgPath", imgPath);
+
       var FormData2 = new FormData();
 
 
@@ -107,7 +111,7 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
 
       reqInstance
         .post("/advantages/create", populateFormData(AdvantageData))
-        //.then(() => window.location.reload(false))
+        .then(() => window.location.reload(false))
         .catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code

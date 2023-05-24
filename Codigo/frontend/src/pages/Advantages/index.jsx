@@ -14,9 +14,11 @@ const Advantage = () => {
         <Header title="Vantagems" subtitle="Aqui esta todas as Vantagems" />
         
         <Box 
+            gridTemplateColumns="repeat(5, minmax(0, 1fr))"
             sx={{
                 width: "100%",
                 height: "auto",
+                
             }}
         >
             <Cards />
