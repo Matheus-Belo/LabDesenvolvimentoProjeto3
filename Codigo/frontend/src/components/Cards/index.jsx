@@ -171,6 +171,7 @@ const Cards = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
+                            {errorMessage && <div className="error"> {errorMessage} </div>}
                         <Button variant="contained" sx={{width: "100%"}} onClick={() =>Compra(Data[i].idAdvantages, Data[i].price, Data[i].thirdParty.idThirdParty)}>Comprar</Button>
                     </CardActions>
                 </Card>
