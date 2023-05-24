@@ -1,11 +1,8 @@
-function populateFormData(values, form = new FormData(), base = '') {
-	console.log("values: " + values);
-
+export default function populateFormData(values, form = new FormData(), base = '') {
+	const append = base.endsWith('[') ? ']' : ''
 
 	Object.keys(values).forEach((key) => {
 		let value = values[key];
-
-		const append = base.endsWith('[') ? ']' : ''
 
 		if (typeof value === 'string' ||
 			typeof value === 'number' ||
@@ -31,5 +28,3 @@ function populateFormData(values, form = new FormData(), base = '') {
 	})
 	return form;
 }
-
-export default populateFormData;

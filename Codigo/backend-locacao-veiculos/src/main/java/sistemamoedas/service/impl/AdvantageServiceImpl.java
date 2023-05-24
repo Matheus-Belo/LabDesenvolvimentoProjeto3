@@ -143,7 +143,7 @@ public class AdvantageServiceImpl implements AdvantageService {
                         request,
                         thirdParty,
                         receivedImages,
-                        edit ? this.generateCoupon(request.getThirdPartyId()) : advantageCheck.get().getCouponCode()
+                        edit ? advantageCheck.get().getCouponCode():this.generateCoupon(request.getThirdPartyId())
                 )
         );
 

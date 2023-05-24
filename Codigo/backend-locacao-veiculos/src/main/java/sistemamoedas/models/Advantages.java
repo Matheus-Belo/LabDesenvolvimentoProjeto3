@@ -27,7 +27,7 @@ public class Advantages {
     @JoinColumn(name = "third_party_id")
     private ThirdParty thirdParty;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "advantages_images_id")
     private List<AdvantagesImages> advantagesImages;
 

@@ -75,30 +75,26 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
     if(selectedImage === null){
       alert("Selecione uma imagem")
     }else{
-      const imgPath = URL.createObjectURL(selectedImage);
 
+        //couponCode
       const AdvantageData = {
-        advantageCategory: values.categoria,
-        advantageDescription: values.disconto + "% de desconto <br>" + values.descricao,
-        AdvantageName: values.nome,
-        AdvantageImages: [
-          {
-            advantageImageDescription: "Imagem da Vantagem",
-            advantageImageName: selectedImage.name,
-            advantageImagePath: imgPath,
-            idAdvantages: 0,
-            idAdvantagesImage: 0,
-          }
-        ],
-        couponCode: 0,
         idAdvantages: 0,
-        imagePaths: [
-          imgPath
-        ],
+        AdvantageName: values.nome,
+        thirdPartyId: values.idThirdParty,
+        advantageDescription: values.disconto + "% de desconto <br>" + values.descricao,
         price: values.preco,
-        status: "AVAILABLE",
-        thirdParty: values.idThirdParty,
-        validationDate: values.dias
+        validationDate: values.dias,
+        advantageCategory: values.categoria,
+        advantagesImages: [
+          selectedImage
+        ],
+        imagesNames: [
+          'desc'
+        ],
+        imagesDescription: [
+          'desc'
+        ],
+
       }
       console.log(AdvantageData)
 
@@ -107,10 +103,10 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
 
 
 
-      console.log(populateFormData(values = {AdvantageData}))
+      console.log(AdvantageData)
 
       reqInstance
-        .post("/advantages/create", populateFormData(values = {AdvantageData}))
+        .post("/advantages/create", populateFormData(AdvantageData))
         //.then(() => window.location.reload(false))
         .catch(function (error) {
           if (error.response) {

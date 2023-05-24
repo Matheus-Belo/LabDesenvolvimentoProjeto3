@@ -224,9 +224,9 @@ CREATE TABLE transactions (
 CREATE SEQUENCE advantages_images_seq;
 CREATE TABLE advantages_images (
                             advantages_images_id INT DEFAULT NEXTVAL ('advantages_images_seq') PRIMARY KEY,
-                            advantages_id INT CHECK (advantages_id > 0) NOT NULL,
+                            advantages_id INT ,
                             advantage_image_name VARCHAR (50),
-                            advantage_image_description VARCHAR(100) NOT NULL,
+                            advantage_image_description VARCHAR(100),
                             advantage_image_path VARCHAR(100) NOT NULL,
 
                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,

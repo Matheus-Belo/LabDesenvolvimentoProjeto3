@@ -15,6 +15,7 @@ import CreateAdvantage from "./pages/CreateAdvantage";
 import Alunos from "./pages/Alunos";
 import Advantage from "./pages/Advantages";
 
+
 export default function App() {
     const [theme, colorMode] = useMode();
     const [isSidebar, setIsSidebar] = useState(true);
