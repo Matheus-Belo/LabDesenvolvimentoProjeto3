@@ -85,11 +85,11 @@ const ThirdParty = () => {
 
   const columns = [
     { 
-      field: "institution_id", 
+      field: "idInstitution", 
       headerName: "ID",
     },
     {
-      field: "institution_name",
+      field: "nome",
       headerName: "Nome",
       flex: 1,
     },
