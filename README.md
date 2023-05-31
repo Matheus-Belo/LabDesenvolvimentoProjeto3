@@ -26,5 +26,8 @@ História de Usuário:
 
 #HU 9: Como Professor, gostaria de distribuir moedas aos alunos para eles receberem as moedas de merecimento
 
-#UH 10: Como Empresa Parceira, gostaria de cadastrar vantagens na plataforma para os alunos terem as opções para compra de vantagens
+#HU 10: Como Empresa Parceira, gostaria de cadastrar vantagens na plataforma para os alunos terem as opções para compra de vantagens
 
+#HU 11: Como Aluno, gostaria de receber um relatório em pdf do meu extrato para poder ver os meus gastos e ganhos no mês.
+
+#HU 12: Como Professor, gostaria de receber um relatório em pdf do meu extrato para poder ver os meus gastos no mês.
