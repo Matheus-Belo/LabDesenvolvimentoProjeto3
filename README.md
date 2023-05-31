@@ -16,18 +16,16 @@ História de Usuário:
 
 #HU 4: Como Usuário Consultando, gostaria de visualizar as transações que realizei para ter um histórico disponível
 
-#HU 5: Como Usuário Cadastrado, gostaria de cadastrar na plataforma para ter acesso ao sistema de mérito
+#HU 5: Como Usuário Consultando, gostaria de receber um relatório em pdf do meu extrato para ter informação das minhas transferências
 
-#HU 6: Como Aluno, gostaria de trocar moedas por vantagens para ter acesso as vantagens oferecidas pela instituição 
+#HU 6: Como Usuário Cadastrado, gostaria de cadastrar na plataforma para ter acesso ao sistema de mérito
 
-#HU 7: Como Aluno, gostaria de selecionar a vantagem desejada para escolher uma vantagem específica dentre as disponíveis
+#HU 7: Como Aluno, gostaria de trocar moedas por vantagens para ter acesso as vantagens oferecidas pela instituição 
 
-#HU 8: Como Aluno, gostaria de selecionar uma instituição já cadastrada para ter acesso as suas vantagens
+#HU 8: Como Aluno, gostaria de selecionar a vantagem desejada para escolher uma vantagem específica dentre as disponíveis
 
-#HU 9: Como Professor, gostaria de distribuir moedas aos alunos para eles receberem as moedas de merecimento
+#HU 9: Como Aluno, gostaria de selecionar uma instituição já cadastrada para ter acesso as suas vantagens
+
+#HU 10: Como Professor, gostaria de distribuir moedas aos alunos para eles receberem as moedas de merecimento
 
 #HU 10: Como Empresa Parceira, gostaria de cadastrar vantagens na plataforma para os alunos terem as opções para compra de vantagens
-
-#HU 11: Como Aluno, gostaria de receber um relatório em pdf do meu extrato para poder ver os meus gastos e ganhos no mês.
-
-#HU 12: Como Professor, gostaria de receber um relatório em pdf do meu extrato para poder ver os meus gastos no mês.
