@@ -225,7 +225,7 @@ const EditarTerceiro = (values) => {
         zipCode: values.cep
         },
         email: values.email,
-        idInstitution: values.idThirdParty,
+        idInstitution: values.idInstitution,
         legalDocument: values.documentoLegal,
         name: values.nome,
         phone1: values.telefone1,
