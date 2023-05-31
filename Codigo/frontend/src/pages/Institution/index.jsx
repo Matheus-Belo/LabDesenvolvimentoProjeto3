@@ -52,7 +52,6 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 const ThirdParty = () => {
     const[initialValues, setInitialValues] = useState({
         nome: "",
-        //senha: "",
         operacao: "",
         email: "",
         telefone1: "",
@@ -86,11 +85,11 @@ const ThirdParty = () => {
 
   const columns = [
     { 
-      field: "idThirdParty", 
+      field: "idInstitution", 
       headerName: "ID",
     },
     {
-      field: "thirdPartyName",
+      field: "nome",
       headerName: "Nome",
       flex: 1,
     },
@@ -124,16 +123,15 @@ const ThirdParty = () => {
                         setIsCriarOpen(!isCriarOpen);
                         handleEditToggle();
                     }else if(isEditOpen){
-                        if(initialValues.idThirdParty === params.row.idThirdParty){
+                        if(initialValues.idInstitution === params.row.idInstitution){
                             handleEditToggle();
                         }
                     }else{
                         handleEditToggle();
                     };
                         const newInitialValues = {
-                            idThirdParty: params.row.idThirdParty ,
-                            nome: params.row.thirdPartyName ,
-                            operacao: params.row.areaOfOperation ,
+                            idInstitution: params.row.idInstitution ,
+                            nome: params.row.name ,
                             email: params.row.email ,
                             telefone1: params.row.phone1 ,
                             telefone2: params.row.phone2 ,
@@ -148,8 +146,6 @@ const ThirdParty = () => {
                         const rowData = e.row;
                         setInitialValues(newInitialValues);
                         setEditRowData(rowData);
-
-                        //console.log(params.row)
                     }
                     
                 }
@@ -179,7 +175,7 @@ const ThirdParty = () => {
     e.stopPropagation();
     console.log(row)
     api
-    .delete("/thirdParty/delete/idThirdParty/"+row.idThirdParty)
+    .delete("/institution/delete/idInstitution/"+row.idInstitution)
     .then(() => window.location.reload(false))
     .catch(function (error) {
       if (error.response) {
@@ -228,18 +224,16 @@ const EditarTerceiro = (values) => {
         street: values.rua,
         zipCode: values.cep
         },
-        areaOfOperation: values.operacao,
         email: values.email,
-        idThirdParty: values.idThirdParty,
+        idInstitution: values.idInstitution,
         legalDocument: values.documentoLegal,
-        thirdPartyName: values.nome,
+        name: values.nome,
         phone1: values.telefone1,
         phone2: values.telefone2,
-        thirdPartyName: values.nome,
   }
 
   api 
-    .post("/thirdParty/edit", UserBody)
+    .post("/institution/edit", UserBody)
     .then(() => window.location.reload(false))
     .catch(function (error) {
       if (error.response) {
@@ -279,20 +273,18 @@ const handleCreateSubmit = (values) => {
       street: values.rua,
       zipCode: values.cep
     },
-    areaOfOperation: values.operacao,
     email: values.email,
-    idThirdParty: 0,
+    idInstitution: 0,
     legalDocument: values.documentoLegal,
-    thirdPartyName: values.nome,
+    name: values.nome,
     phone1: values.telefone1,
     phone2: values.telefone2,
-    thirdPartyName: values.nome,
   }
 
   
 
   api
-      .post("/thirdParty/create", UserBody)
+      .post("/institution/create", UserBody)
       .then(() => window.location.reload(false))
       .catch(function (error) {
         if (error.response) {
@@ -325,9 +317,9 @@ const [tableData, setTableData] = useState([])
 
 useEffect(() => {
   api
-    .get("/thirdParty/page/0/size/10")
+    .get("/institution/page/0/size/10")
     .then((response) =>  response.data.content)
-    .then((response) => LogResponse(response))
+    .then((response) => setTableData(response))
     
     .catch(function (error) {
       if (error.response) {
@@ -352,19 +344,6 @@ useEffect(() => {
     });
     
 }, []);
-
-const LogResponse = (values) =>{
-  var arr = [];
-
-  for(let i = 0; i < values.length; i++){
-    if(values[i].areaOfOperation == "Educação"){
-      arr.push(values[i])
-    }
-  }
-
-  setTableData(arr)
-}
-
     return (
       <Box m="20px">
         <Header title="Instuição" subtitle="Aqui está todas as Instuições" />

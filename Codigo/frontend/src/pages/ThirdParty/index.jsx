@@ -327,7 +327,7 @@ useEffect(() => {
   api
     .get("/thirdParty/page/0/size/10")
     .then((response) =>  response.data.content)
-    .then((response) => LogResponse(response))
+    .then((response) => setTableData(response))
     
     .catch(function (error) {
       if (error.response) {
@@ -352,19 +352,6 @@ useEffect(() => {
     });
     
 }, []);
-
-const LogResponse = (values) =>{
-  var arr = [];
-
-  for(let i = 0; i < values.length; i++){
-    if(values[i].areaOfOperation != "Educação"){
-      arr.push(values[i])
-    }
-  }
-
-  setTableData(arr)
-}
-
     return (
       <Box m="20px">
         <Header title="Empresa Parceira" subtitle="Aqui está todas as Empresas Parceiras" />
