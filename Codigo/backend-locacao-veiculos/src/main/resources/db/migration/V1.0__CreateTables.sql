@@ -184,7 +184,7 @@ CREATE SEQUENCE advantages_seq;
 CREATE TABLE advantages (
                             advantages_id INT DEFAULT NEXTVAL ('advantages_seq') PRIMARY KEY,
                             advantage_name VARCHAR (50),
-                            advantage_description VARCHAR(100) NOT NULL,
+                            advantage_description VARCHAR(100),
                             price NUMERIC,
                             advantage_category VARCHAR (50),
                             coupon_code varchar(50),
@@ -227,7 +227,7 @@ CREATE TABLE advantages_images (
                             advantages_id INT ,
                             advantage_image_name VARCHAR (50),
                             advantage_image_description VARCHAR(100),
-                            advantage_image_path VARCHAR(100) NOT NULL,
+                            advantage_image_path VARCHAR(100),
 
                             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                             deleted_at TIMESTAMP(0) NULL DEFAULT NULL,

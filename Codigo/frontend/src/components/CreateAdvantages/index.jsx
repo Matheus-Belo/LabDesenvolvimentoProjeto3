@@ -78,14 +78,14 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
 
         //couponCode
       const AdvantageData = {
-        idAdvantages: 0,
+        idAdvantages: null,
         AdvantageName: values.nome,
         thirdPartyId: values.idThirdParty,
         advantageDescription: values.disconto + "% de desconto <br>" + values.descricao,
         price: values.preco,
         validationDate: values.dias,
         advantageCategory: values.categoria,
-        advantagesImages: [
+        /*advantagesImages: [
           selectedImage
         ],
         imagesNames: [
@@ -93,7 +93,7 @@ const CreateAdvantages = ( { isFormOpen, handleFormCancel } ) => {
         ],
         imagesDescription: [
           'desc'
-        ],
+        ],*/
 
       }
       console.log(AdvantageData)

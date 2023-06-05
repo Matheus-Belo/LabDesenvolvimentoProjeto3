@@ -91,7 +91,8 @@ public class User {
                 String legal_document,
                 Address address,
                 SexEnum sex,
-                List<Role> roles
+                List<Role> roles,
+                BigDecimal wallet
     ) {
         this.name = name;
         this.email = email;
@@ -103,6 +104,7 @@ public class User {
         this.legal_document = legal_document;
         this.address = address;
         this.roles = roles;
+        this.wallet = wallet;
     }
 
     public User(String name, String email, String password, String sex, String legal_document, Address address,

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 
@@ -74,7 +75,8 @@ public class SistemaMoedaJavaApplication {
 					"123456789",
 					address,
 					SexEnum.MALE,
-					Collections.singletonList(admRole)
+					Collections.singletonList(admRole),
+					new BigDecimal(9000)
 				);
 		}else if(admin.getRoles().stream().noneMatch(role -> role.equals(admRole))){
 			System.out.println("Adding role to existing Admin account...");

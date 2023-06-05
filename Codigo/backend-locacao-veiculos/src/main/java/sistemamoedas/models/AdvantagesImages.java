@@ -20,8 +20,9 @@ public class AdvantagesImages {
     private Long idAdvantagesImages;
 
 
-    @Column(name = "advantages_id")
-    private Long idAdvantages;
+    @ManyToOne
+    @JoinColumn(name = "advantages_id")
+    private Advantages idAdvantages;
 
     @Column(name = "advantage_image_name")
     private String advantageImageName;
@@ -42,7 +43,7 @@ public class AdvantagesImages {
     public AdvantagesImages() {
     }
 
-    public AdvantagesImages(Long idAdvantagesImages, Long idAdvantages, String advantageImageName,
+    public AdvantagesImages(Long idAdvantagesImages, Advantages idAdvantages, String advantageImageName,
                             String advantageImageDescription, String advantageImagePath, Date createdAt, Date deletedAt) {
         this.idAdvantagesImages = idAdvantagesImages;
         this.idAdvantages = idAdvantages;
@@ -53,7 +54,7 @@ public class AdvantagesImages {
         this.deletedAt = deletedAt;
     }
 
-    public AdvantagesImages(Long idAdvantages, String advantageImageName, String advantageImageDescription,
+    public AdvantagesImages(Advantages idAdvantages, String advantageImageName, String advantageImageDescription,
                             String advantageImagePath, Date createdAt, Date deletedAt) {
         this.idAdvantages = idAdvantages;
         this.advantageImageName = advantageImageName;

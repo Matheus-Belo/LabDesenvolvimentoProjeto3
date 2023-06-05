@@ -126,7 +126,7 @@ public class AdvantageServiceImpl implements AdvantageService {
                 String actualPath = uploadImage(actualImage);
 
                 receivedImages.add(new AdvantagesImages(
-                        0L,
+                        null,
                         request.getImagesNames().get(contLista),
                         request.getImagesDescription().get(contLista),
                         actualPath,
