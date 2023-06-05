@@ -1,5 +1,6 @@
 package sistemamoedas.controller;
 
+import com.itextpdf.text.DocumentException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import javassist.NotFoundException;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import sistemamoedas.service.TransactionService;
 import sistemamoedas.service.UserService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,6 +91,19 @@ public class TransactionController {
         Pageable pages = PageRequest.of(page, size);
 
         return this.transactionService.getExtractAsPaged(pages, idConta);
+
+    }
+    @GetMapping(
+            value = "/getExtractAsPDF/idConta/{idConta}",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    @ApiOperation(value = "get image")
+    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
+    public @ResponseBody byte[] getExtractAsPDF(
+            @ApiParam("id monthly payment")
+            @PathVariable (value="idConta") Long idConta) throws IOException, NotFoundException, DocumentException {
+
+        return this.transactionService.getExtractAsPDF(idConta);
 
     }
 
