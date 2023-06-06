@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import Header from "../../components/Header/Header";
 import Extrato from "../../components/Extrato";
 import ExtratoTable from "../../components/ExtratoTable";
+import PDFDownload from "../../components/PDFDownloader";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -23,6 +24,7 @@ const Dashboard = () => {
             }}
         >
             <Extrato />
+            <PDFDownload />
             <ExtratoTable />
         </Box>
       </Box>
