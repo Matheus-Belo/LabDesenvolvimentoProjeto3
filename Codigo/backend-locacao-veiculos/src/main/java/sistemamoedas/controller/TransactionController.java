@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +25,10 @@ import sistemamoedas.models.dto.UserDto;
 import sistemamoedas.service.TransactionService;
 import sistemamoedas.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,16 +99,38 @@ public class TransactionController {
 
     }
     @GetMapping(
-            value = "/getExtractAsPDF/idConta/{idConta}",
-            produces = MediaType.APPLICATION_PDF_VALUE
+            value = "/getExtractAsPDF/idConta/{idConta}"
     )
-    @ApiOperation(value = "get image")
+    @ApiOperation(value = "get pdf")
     @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
-    public @ResponseBody byte[] getExtractAsPDF(
-            @ApiParam("id monthly payment")
+    public ResponseEntity<byte[]> getExtractAsPDF(
+            @ApiParam("id conta")
             @PathVariable (value="idConta") Long idConta) throws IOException, NotFoundException, DocumentException {
 
-        return this.transactionService.getExtractAsPDF(idConta);
+        //return this.transactionService.getExtractAsPDF(idConta);
+
+        byte[] contents = this.transactionService.getExtractAsPDF(idConta);
+
+
+        /*// Lógica para obter o arquivo PDF do disco local
+        File pdfFile = this.transactionService.getExtractAsPDF(idConta);
+
+        // Converter o arquivo em um array de bytes
+        FileInputStream fis = new FileInputStream(pdfFile);
+        byte[] contents = new byte[(int) pdfFile.length()];
+        fis.read(contents);
+        fis.close();*/
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        // Here you have to set the actual filename of your pdf
+        String filename = "extract.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+
+        return response;
 
     }
 
@@ -118,5 +145,7 @@ public class TransactionController {
                 this.transactionService.getTransactionById(idTransaction)
         );
     }
+
+
 
 }

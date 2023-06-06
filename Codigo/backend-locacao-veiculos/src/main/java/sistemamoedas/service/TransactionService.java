@@ -10,6 +10,7 @@ import sistemamoedas.models.ResponseEntity.TransactionResponse;
 import sistemamoedas.models.Transactions;
 
 import javax.persistence.NonUniqueResultException;
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,4 +30,5 @@ public interface TransactionService {
     Transactions getTransactionById(Long idTransaction);
 
     byte[] getExtractAsPDF(Long idConta) throws NonUniqueResultException, NotFoundException, IOException, DocumentException;
+    //File getExtractAsPDF(Long idConta) throws NonUniqueResultException, NotFoundException, IOException, DocumentException;
 }

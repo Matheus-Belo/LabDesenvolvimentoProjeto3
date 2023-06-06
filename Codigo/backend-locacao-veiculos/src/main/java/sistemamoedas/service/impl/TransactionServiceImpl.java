@@ -29,6 +29,7 @@ import sistemamoedas.service.UserService;
 
 
 import javax.persistence.NonUniqueResultException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -167,8 +168,15 @@ public class TransactionServiceImpl implements TransactionService {
     //Professores e alunos devem ser capazes de consultar o extrato de sua conta, visualizando o total de moedas que ainda possui, bem como as transações que realizou
     public Page<Transactions> getExtractAsPaged(Pageable pages, Long idConta) throws NotFoundException {
 
-        User conta = this.userService.getUserById(idConta);
-        return this.transactionsRepository.findAllByIdOriginAccountAndDeletedAtIsNullOrderByIdTransaction(pages,conta);
+
+        User originAccount = Optional.of(this.userService.getUserById(idConta))
+                .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de origem não encontrado"));
+
+        User destination = Optional.of(this.userService.getUserById(idConta))
+                .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de destino não encontrado"));
+
+        return this.transactionsRepository.findAllByIdOriginAccountOrIdDestinationAccountAndDeletedAtIsNullOrderByIdTransaction(pages,originAccount,destination);
+
     }
 
     @Override
@@ -214,6 +222,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public byte[] getExtractAsPDF(Long idConta) throws NonUniqueResultException, NotFoundException, IOException, DocumentException {
+    //public File getExtractAsPDF(Long idConta) throws NonUniqueResultException, NotFoundException, IOException, DocumentException {
 
         User originAccount = Optional.of(this.userService.getUserById(idConta))
                 .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de origem não encontrado"));
@@ -225,7 +234,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
         Page<Transactions> transactions = Optional.of(
-                    this.transactionsRepository.findAllByIdOriginAccountOrIdDestinationAccountAndDeletedAtIsNullOrderByIdOriginAccount(pages,originAccount,destination)
+                    this.transactionsRepository.findAllByIdOriginAccountOrIdDestinationAccountAndDeletedAtIsNullOrderByIdTransaction(pages,originAccount,destination)
                 )
                 .orElseThrow(()-> new NonUniqueResultException("sem transaçoes para esta conta"));
 
@@ -269,7 +278,15 @@ public class TransactionServiceImpl implements TransactionService {
 
 
         Path PDFPath = Paths.get(this.systemPathPDF+fileName);
+
         return Files.readAllBytes(PDFPath);
 
+        /*File pdfFile = new File(this.systemPathPDF+fileName);
+        return pdfFile;*/
+
     }
+
+
+
+
 }
