@@ -98,28 +98,28 @@ public class TransactionController {
         return this.transactionService.getExtractAsPaged(pages, idConta);
 
     }
-    @GetMapping(
-            value = "/getExtractAsPDF/idConta/{idConta}"
-    )
+
+    @RequestMapping(value = "/getExtractAsPDF/idConta/{idConta}", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiOperation(value = "get pdf")
     @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
-    public ResponseEntity<byte[]> getExtractAsPDF(
+    public @ResponseBody byte[] getExtractAsPDF(
             @ApiParam("id conta")
             @PathVariable (value="idConta") Long idConta) throws IOException, NotFoundException, DocumentException {
 
         //return this.transactionService.getExtractAsPDF(idConta);
 
-        byte[] contents = this.transactionService.getExtractAsPDF(idConta);
+        //byte[] contents =
+                return this.transactionService.getExtractAsPDF(idConta);
 
-
-        /*// Lógica para obter o arquivo PDF do disco local
+/*
+        // Lógica para obter o arquivo PDF do disco local
         File pdfFile = this.transactionService.getExtractAsPDF(idConta);
 
         // Converter o arquivo em um array de bytes
         FileInputStream fis = new FileInputStream(pdfFile);
         byte[] contents = new byte[(int) pdfFile.length()];
         fis.read(contents);
-        fis.close();*/
+        fis.close();
 
 
         HttpHeaders headers = new HttpHeaders();
@@ -131,6 +131,7 @@ public class TransactionController {
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
 
         return response;
+        */
 
     }
 

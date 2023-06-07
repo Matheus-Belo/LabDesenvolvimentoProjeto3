@@ -11,7 +11,7 @@ const PDFDownload = () => {
 
     const BaixarPDF = () => {
       api 
-        .get(link)
+        .get(link, { responseType: 'arraybuffer' })
         .then(response => ConvertPDF(response.data))
         .catch(function (error) {
           if (error.response) {
