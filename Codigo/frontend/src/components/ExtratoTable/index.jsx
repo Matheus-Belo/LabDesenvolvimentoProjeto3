@@ -104,7 +104,6 @@ const ExtratoTable = () => {
         }, []);
 
         const LogResponse = (values) =>{
-          console.log(values);
           setTableData(values);
         }
 

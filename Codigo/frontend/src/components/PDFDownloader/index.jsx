@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/API/api";
 import Alert from '@mui/material/Alert';
 
-
 const PDFDownload = () => {
 
     var link = "/transaction/getExtractAsPDF/idConta/" + sessionStorage.getItem("ID")
@@ -13,20 +12,7 @@ const PDFDownload = () => {
     const BaixarPDF = () => {
       api 
         .get(link)
-        .then(response => response.blob())
-        .then(blob => {
-            // Criar um link temporário para fazer o download do arquivo
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'arquivo.pdf';
-            
-            // Clicar no link para iniciar o download
-            link.click();
-            
-            // Remover o link temporário
-            window.URL.revokeObjectURL(url);
-        })
+        .then(response => ConvertPDF(response.data))
         .catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
@@ -51,6 +37,19 @@ const PDFDownload = () => {
         
     };
 
+    const ConvertPDF = (data) => {
+      var blob = new Blob([data], { type: 'application/pdf' });
+      console.log(blob)
+
+      var downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = 'Extrato.pdf';
+
+      // Trigger the download
+      downloadLink.click();
+    };
+
+    
 
     return(
         <>

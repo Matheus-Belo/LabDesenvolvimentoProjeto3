@@ -260,8 +260,8 @@ public class TransactionServiceImpl implements TransactionService {
              transactions.getContent()) {
             content = "Tipo Transação: " + actualTransaction.getTransactionType() +
                     ", Quantidade : " + actualTransaction.getAmount() +
-                    ", Conta Origem: " + actualTransaction.getIdOriginAccount().getIdUser() +
-                    ", Conta Destino: " + actualTransaction.getIdDestinationAccount().getIdUser() +
+                    ", Conta Origem: " + actualTransaction.getIdOriginAccount().getName() +
+                    ", Conta Destino: " + actualTransaction.getIdDestinationAccount().getName() +
                     ", Data: " + actualTransaction.getTransactionDate().toString() + "; \n\n";
 
 
