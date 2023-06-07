@@ -30,6 +30,15 @@ const Cards = () => {
 
             api
                 .post("/transaction/createSale", TransactionBody)
+                .then(() =>
+                    setErrorMessage(
+                        <Alert
+                            severity="success"
+                        >
+                            Comprado com Sucesso
+                        </Alert>
+                    )
+                )
                 .then(() => window.location.reload(false))
                 .catch(function (error) {
                 if (error.response) {

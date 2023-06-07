@@ -6,6 +6,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -49,12 +50,15 @@ public class ThirdParty {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
+    @Column(name = "wallet")
+    private BigDecimal wallet;
+
     public ThirdParty() {
     }
 
     public ThirdParty(Long idThirdParty, String thirdPartyName,
                       String phone1, String phone2, String email, String legalDocument,
-                      String areaOfOperation, Address address, Date createdAt, Date deletedAt) {
+                      String areaOfOperation, Address address, Date createdAt, Date deletedAt, BigDecimal wallet) {
         this.idThirdParty = idThirdParty;
         this.thirdPartyName = thirdPartyName;
         this.phone1 = phone1;
@@ -65,11 +69,12 @@ public class ThirdParty {
         this.address = address;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+        this.wallet = wallet;
     }
 
     public ThirdParty(String thirdPartyName, String phone1, String phone2,
                       String email, String legalDocument, String areaOfOperation, Address address,
-                      Date createdAt, Date deletedAt) {
+                      Date createdAt, Date deletedAt, BigDecimal wallet) {
         this.thirdPartyName = thirdPartyName;
         this.phone1 = phone1;
         this.phone2 = phone2;
@@ -79,5 +84,6 @@ public class ThirdParty {
         this.address = address;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+        this.wallet = wallet;
     }
 }

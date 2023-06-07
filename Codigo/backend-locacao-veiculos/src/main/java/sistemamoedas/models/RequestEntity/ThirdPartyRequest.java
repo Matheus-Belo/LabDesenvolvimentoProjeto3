@@ -6,6 +6,7 @@ import sistemamoedas.models.ThirdParty;
 import sistemamoedas.models.dto.AddressDto;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 @Data
 public class ThirdPartyRequest {
@@ -46,7 +47,8 @@ public class ThirdPartyRequest {
                 request.getAreaOfOperation(),
                 address,
                 new Date(),
-                null
+                null,
+                new BigDecimal(0)
 
         );
     }

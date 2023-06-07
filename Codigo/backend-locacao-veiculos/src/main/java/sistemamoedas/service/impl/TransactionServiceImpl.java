@@ -22,10 +22,7 @@ import sistemamoedas.models.ResponseEntity.ThirdPartyResponse;
 import sistemamoedas.models.ResponseEntity.TransactionResponse;
 import sistemamoedas.models.dto.AddressDto;
 import sistemamoedas.repository.TransactionsRepository;
-import sistemamoedas.service.AdvantageService;
-import sistemamoedas.service.EmailService;
-import sistemamoedas.service.TransactionService;
-import sistemamoedas.service.UserService;
+import sistemamoedas.service.*;
 
 
 import javax.persistence.NonUniqueResultException;
@@ -48,6 +45,9 @@ public class TransactionServiceImpl implements TransactionService {
     TransactionsRepository transactionsRepository;
     @Autowired
     UserService userService;
+
+    @Autowired
+    ThirdPartyService thirdPartyService;
 
     @Autowired
     AdvantageService advantageService;
@@ -94,6 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     private TransactionResponse getTransactionResponse(TransactionRequest request, boolean sale) throws NotFoundException {
         Advantages advantage = null;
+        ThirdParty thirdParty = null;
 
         User originAccount = Optional.of(this.userService.getUserById(request.getIdOriginAccount()))
                 .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de origem não encontrado"));
@@ -101,23 +102,45 @@ public class TransactionServiceImpl implements TransactionService {
         User destinationAccount = Optional.of(this.userService.getUserById(request.getIdDestinationAccount()))
                 .orElseThrow(() -> new NonUniqueResultException("Usuario da conta de destino não encontrado"));
 
+
         if(request.getItemCode()!=null && sale){
            advantage = Optional.of(this.advantageService.getAdvantageById(request.getItemCode()))
                     .orElseThrow(() -> new NonUniqueResultException("Vantagem não encontrada"));
 
             request.setAmount(advantage.getPrice());
 
+
         }
+
+
+
 
 
 
         if (originAccount.getWallet().compareTo(request.getAmount()) >= 0) {
 
-            originAccount.setWallet(originAccount.getWallet().subtract(request.getAmount()));
-            destinationAccount.setWallet(destinationAccount.getWallet().add(request.getAmount()));
+            if(sale && advantage.getStatus().equals(AdvantageStatusEnum.SOLD.getCode()) ){
 
-            this.userService.saveUser(originAccount);
-            this.userService.saveUser(destinationAccount);
+                throw new NonUniqueResultException(" Transação não concluida, vantagem ja foi vendida");
+            }
+
+            if(!sale) {
+                originAccount.setWallet(originAccount.getWallet().subtract(request.getAmount()));
+                destinationAccount.setWallet(destinationAccount.getWallet().add(request.getAmount()));
+
+                this.userService.saveUser(originAccount);
+                this.userService.saveUser(destinationAccount);
+            }else{
+
+                thirdParty = Optional.of(this.thirdPartyService.getThirdPartyByIdThirdParty(request.getIdDestinationAccount()))
+                        .orElseThrow(() -> new NonUniqueResultException("empresa parceira nao encontrada"));
+
+                originAccount.setWallet(originAccount.getWallet().subtract(request.getAmount()));
+                thirdParty.setWallet(thirdParty.getWallet().add(request.getAmount()));
+
+                this.userService.saveUser(originAccount);
+                this.userService.saveUser(destinationAccount);
+            }
 
             if(sale){
                 advantage.setStatus(AdvantageStatusEnum.SOLD.getCode());
@@ -140,7 +163,7 @@ public class TransactionServiceImpl implements TransactionService {
                 String messageToBuyer = "Compra do item: "+advantage.getAdvantageName()+" Efetuada com sucesso. Cupom: "+advantage.getCouponCode()+" .";
                 String messageToOwner = "Venda do item: "+advantage.getAdvantageName()+" Efetuada com sucesso. Cupom: "+advantage.getCouponCode()+" .";
                 emailService.sendEmail(originAccount.getEmail(),"Compra Sistema Moedas", messageToBuyer);
-                emailService.sendEmail(destinationAccount.getEmail(),"Venda Sistema Moedas", messageToOwner);
+                emailService.sendEmail(thirdParty.getEmail(),"Venda Sistema Moedas", messageToOwner);
             }else{
                 String messageToDestination = "Transferencia no valor de: "+transactionResponse.getAmount()+" Recebida com sucesso.";
                 String messageToOrigin = "Transferencia no valor de: "+transactionResponse.getAmount()+" Efetuada com sucesso.";

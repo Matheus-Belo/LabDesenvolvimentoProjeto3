@@ -101,7 +101,6 @@ public class TransactionController {
 
     @RequestMapping(value = "/getExtractAsPDF/idConta/{idConta}", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiOperation(value = "get pdf")
-    @PreAuthorize("@authorityChecker.isAllowed({'ADMIN'})")
     public @ResponseBody byte[] getExtractAsPDF(
             @ApiParam("id conta")
             @PathVariable (value="idConta") Long idConta) throws IOException, NotFoundException, DocumentException {

@@ -52,6 +52,7 @@ CREATE TABLE third_party (
                              legal_document VARCHAR(40) NOT NULL,
                              email VARCHAR(100) NOT NULL ,
                              area_of_operation VARCHAR(100) NOT NULL,
+                             wallet NUMERIC,
 
                              created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
                              deleted_at TIMESTAMP(0) NULL DEFAULT NULL,
